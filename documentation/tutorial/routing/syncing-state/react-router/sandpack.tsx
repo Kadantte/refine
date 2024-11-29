@@ -8,16 +8,16 @@ import { finalFiles as initialFiles } from "../../redirects/react-router/sandpac
 import { removeActiveFromFiles } from "@site/src/utils/remove-active-from-files";
 
 export const Sandpack = ({ children }: { children: React.ReactNode }) => {
-    return (
-        <TutorialSandpack
-            showNavigator
-            dependencies={dependencies}
-            files={initialFiles}
-            finalFiles={finalFiles}
-        >
-            {children}
-        </TutorialSandpack>
-    );
+  return (
+    <TutorialSandpack
+      showNavigator
+      dependencies={dependencies}
+      files={initialFiles}
+      finalFiles={finalFiles}
+    >
+      {children}
+    </TutorialSandpack>
+  );
 };
 
 // updates
@@ -27,7 +27,7 @@ import { useTable, useMany, useNavigation } from "@refinedev/core";
 
 export const ListProducts = () => {
   const {
-    tableQueryResult: { data, isLoading },
+    tableQuery: { data, isLoading },
     current,
     setCurrent,
     pageCount,
@@ -72,19 +72,21 @@ export const ListProducts = () => {
     if (sorter) {
       return sorter.order;
     }
-  }
+  };
 
   const onSort = (field: string) => {
     const sorter = getSorter(field);
     setSorters(
-        sorter === "desc" ? [] : [
-        {
-            field,
-            order: sorter === "asc" ? "desc" : "asc",
-        },
-        ]
+      sorter === "desc"
+        ? []
+        : [
+            {
+              field,
+              order: sorter === "asc" ? "desc" : "asc",
+            },
+          ],
     );
-  }
+  };
 
   const indicator = { asc: "⬆️", desc: "⬇️" };
 
@@ -100,18 +102,14 @@ export const ListProducts = () => {
             <th onClick={() => onSort("name")}>
               Name {indicator[getSorter("name")]}
             </th>
-            <th>
-              Category
-            </th>
+            <th>Category</th>
             <th onClick={() => onSort("material")}>
               Material {indicator[getSorter("material")]}
             </th>
             <th onClick={() => onSort("price")}>
               Price {indicator[getSorter("price")]}
             </th>
-            <th>
-              Actions
-            </th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -129,10 +127,16 @@ export const ListProducts = () => {
               <td>{product.material}</td>
               <td>{product.price}</td>
               <td>
-                <button type="button" onClick={() => show("protected-products", product.id)}>
+                <button
+                  type="button"
+                  onClick={() => show("protected-products", product.id)}
+                >
                   Show
                 </button>
-                <button type="button" onClick={() => edit("protected-products", product.id)}>
+                <button
+                  type="button"
+                  onClick={() => edit("protected-products", product.id)}
+                >
                   Edit
                 </button>
               </td>
@@ -145,9 +149,13 @@ export const ListProducts = () => {
           {"<"}
         </button>
         <div>
-          {current - 1 > 0 && <span onClick={() => onPage(current - 1)}>{current - 1}</span>}
+          {current - 1 > 0 && (
+            <span onClick={() => onPage(current - 1)}>{current - 1}</span>
+          )}
           <span className="current">{current}</span>
-          {current + 1 < pageCount && <span onClick={() => onPage(current + 1)}>{current + 1}</span>}
+          {current + 1 < pageCount && (
+            <span onClick={() => onPage(current + 1)}>{current + 1}</span>
+          )}
         </div>
         <button type="button" onClick={onNext}>
           {">"}
@@ -161,27 +169,27 @@ export const ListProducts = () => {
 // actions
 
 export const AddLocationSyncToListProducts = () => {
-    const { sandpack } = useSandpack();
+  const { sandpack } = useSandpack();
 
-    return (
-        <TutorialUpdateFileButton
-            onClick={() => {
-                sandpack.updateFile(
-                    "src/pages/products/list.tsx",
-                    ListProductsWithSyncWithLocation,
-                );
-                sandpack.setActiveFile("/src/pages/products/list.tsx");
-            }}
-        />
-    );
+  return (
+    <TutorialUpdateFileButton
+      onClick={() => {
+        sandpack.updateFile(
+          "src/pages/products/list.tsx",
+          ListProductsWithSyncWithLocation,
+        );
+        sandpack.setActiveFile("/src/pages/products/list.tsx");
+      }}
+    />
+  );
 };
 
 // files
 
 export const finalFiles = {
-    ...removeActiveFromFiles(initialFiles),
-    "src/pages/products/list.tsx": {
-        code: ListProductsWithSyncWithLocation,
-        active: true,
-    },
+  ...removeActiveFromFiles(initialFiles),
+  "src/pages/products/list.tsx": {
+    code: ListProductsWithSyncWithLocation,
+    active: true,
+  },
 };

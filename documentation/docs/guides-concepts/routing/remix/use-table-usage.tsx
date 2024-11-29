@@ -75,7 +75,7 @@ export default function App() {
 const ListPageTsxCode = /* tsx */ `
 import React from "react";
 
-import { json, LoaderArgs } from "@remix-run/node";
+import { json, LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 
 import { useTable } from "@refinedev/core";
@@ -84,7 +84,7 @@ import dataProvider from "@refinedev/simple-rest";
 
 import { ProductList } from "../components/products/list";
 
-export async function loader({ request }: LoaderArgs) {
+export async function loader({ request }: LoaderFunctionArgs) {
   const url = new URL(request.url);
 
   const {
@@ -144,7 +144,7 @@ import React from "react";
 
 export const ProductList: React.FC = ({ tableProps }) => {
   const {
-    tableQueryResult,
+    tableQuery,
     isLoading,
     current,
     setCurrent,
@@ -170,7 +170,7 @@ export const ProductList: React.FC = ({ tableProps }) => {
           </tr>
         </thead>
         <tbody>
-          {tableQueryResult.data?.data?.map((record) => (
+          {tableQuery.data?.data?.map((record) => (
             <tr key={record.id}>
               <td>{record.id}</td>
               <td>{record.name}</td>

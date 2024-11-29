@@ -9,7 +9,12 @@ body {
 ```
 
 ```tsx live shared
-import { useMany, useNavigation, useSelect as useSelectShared, useTable } from "@refinedev/core";
+import {
+  useMany,
+  useNavigation,
+  useSelect as useSelectShared,
+  useTable,
+} from "@refinedev/core";
 import { useStepsForm as useStepsFormShared } from "@refinedev/react-hook-form";
 
 interface ICategory {
@@ -30,7 +35,7 @@ interface IPost {
 const stepTitlesShared = ["Title", "Status", "Category and content"];
 
 const PostList: React.FC = () => {
-  const { tableQueryResult } = useTable<IPost>({
+  const { tableQuery } = useTable<IPost>({
     sorters: {
       initial: [
         {
@@ -42,7 +47,8 @@ const PostList: React.FC = () => {
   });
   const { edit, create } = useNavigation();
 
-  const categoryIds = tableQueryResult?.data?.data.map((item) => item.category.id) ?? [];
+  const categoryIds =
+    tableQuery?.data?.data.map((item) => item.category.id) ?? [];
   const { data, isLoading } = useMany<ICategory>({
     resource: "categories",
     ids: categoryIds,
@@ -65,11 +71,16 @@ const PostList: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {tableQueryResult.data?.data.map((post) => (
+          {tableQuery.data?.data.map((post) => (
             <tr key={post.id}>
               <td>{post.id}</td>
               <td>{post.title}</td>
-              <td>{isLoading ? "Loading" : data?.data.find((item) => item.id == post.category.id)?.title}</td>
+              <td>
+                {isLoading
+                  ? "Loading"
+                  : data?.data.find((item) => item.id == post.category.id)
+                      ?.title}
+              </td>
               <td>{post.status}</td>
               <td>
                 <button onClick={() => edit("posts", post.id)}>Edit</button>
@@ -191,7 +202,9 @@ const PostCreate: React.FC = () => {
             Next
           </button>
         )}
-        {currentStep === stepTitlesShared.length - 1 && <button onClick={handleSubmit(onFinish)}>Save</button>}
+        {currentStep === stepTitlesShared.length - 1 && (
+          <button onClick={handleSubmit(onFinish)}>Save</button>
+        )}
       </div>
     </div>
   );
@@ -199,7 +212,7 @@ const PostCreate: React.FC = () => {
 
 const PostEdit: React.FC = () => {
   const {
-    refineCore: { onFinish, formLoading, queryResult },
+    refineCore: { onFinish, formLoading, query },
     register,
     handleSubmit,
     formState: { errors },
@@ -208,7 +221,7 @@ const PostEdit: React.FC = () => {
 
   const { options } = useSelectShared({
     resource: "categories",
-    defaultValue: queryResult?.data?.data.category.id,
+    defaultValue: query?.data?.data.category.id,
   });
 
   const renderFormByStep = (step: number) => {
@@ -244,7 +257,7 @@ const PostEdit: React.FC = () => {
               {...register("category.id", {
                 required: "This field is required",
               })}
-              defaultValue={queryResult?.data?.data.category.id}
+              defaultValue={query?.data?.data.category.id}
             >
               {options?.map((category) => (
                 <option key={category.value} value={category.value}>
@@ -308,7 +321,9 @@ const PostEdit: React.FC = () => {
             Next
           </button>
         )}
-        {currentStep === stepTitlesShared.length - 1 && <button onClick={handleSubmit(onFinish)}>Save</button>}
+        {currentStep === stepTitlesShared.length - 1 && (
+          <button onClick={handleSubmit(onFinish)}>Save</button>
+        )}
       </div>
     </div>
   );
@@ -452,7 +467,9 @@ const PostCreatePage: React.FC = () => {
             Next
           </button>
         )}
-        {currentStep === stepTitles.length - 1 && <button onClick={handleSubmit(onFinish)}>Save</button>}
+        {currentStep === stepTitles.length - 1 && (
+          <button onClick={handleSubmit(onFinish)}>Save</button>
+        )}
       </div>
     </div>
   );
@@ -505,7 +522,7 @@ const stepTitles = ["Title", "Status", "Category and content"];
 
 const PostEditPage: React.FC = () => {
   const {
-    refineCore: { onFinish, formLoading, queryResult },
+    refineCore: { onFinish, formLoading, query },
     register,
     handleSubmit,
     formState: { errors },
@@ -514,7 +531,7 @@ const PostEditPage: React.FC = () => {
 
   const { options } = useSelect<ICategory, HttpError>({
     resource: "categories",
-    defaultValue: queryResult?.data?.data.category.id,
+    defaultValue: query?.data?.data.category.id,
   });
 
   const renderFormByStep = (step: number) => {
@@ -550,7 +567,7 @@ const PostEditPage: React.FC = () => {
               {...register("category.id", {
                 required: "This field is required",
               })}
-              defaultValue={queryResult?.data?.data.category.id}
+              defaultValue={query?.data?.data.category.id}
             >
               {options?.map((category) => (
                 <option key={category.value} value={category.value}>
@@ -614,7 +631,9 @@ const PostEditPage: React.FC = () => {
             Next
           </button>
         )}
-        {currentStep === stepTitles.length - 1 && <button onClick={handleSubmit(onFinish)}>Save</button>}
+        {currentStep === stepTitles.length - 1 && (
+          <button onClick={handleSubmit(onFinish)}>Save</button>
+        )}
       </div>
     </div>
   );
@@ -915,7 +934,9 @@ const PostCreate = () => {
             Next
           </button>
         )}
-        {currentStep === stepTitles.length - 1 && <button onClick={handleSubmit(onFinish)}>Save</button>}
+        {currentStep === stepTitles.length - 1 && (
+          <button onClick={handleSubmit(onFinish)}>Save</button>
+        )}
       </div>
     </div>
   );

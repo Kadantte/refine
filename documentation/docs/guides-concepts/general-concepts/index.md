@@ -8,7 +8,7 @@ Refine is an extensible framework designed for rapidly building web applications
 
 Instead of being limited to a set of pre-styled components, **Refine** provides collections of helper `hooks`, `components` and `providers` and more. Since business logic and UI are completely decoupled, you can customize UI without constraints.
 
-It means, **Refine** just works _seamlessly_ with any _custom designs_ or _UI frameworks_. Thanks to it's headless architecture, you can use popular CSS frameworks like [TailwindCSS](https://tailwindcss.com/) or even create your own styles from scratch.
+It means, **Refine** just works _seamlessly_ with any _custom designs_ or _UI frameworks_. Thanks to its headless architecture, you can use popular CSS frameworks like [TailwindCSS](https://tailwindcss.com/) or even create your own styles from scratch.
 
 Refine also provides integrations with [Ant Design](https://ant.design/), [Material UI](https://mui.com/material-ui/getting-started/overview/), [Mantine](https://mantine.dev/), and [Chakra UI](https://chakra-ui.com/) to get you started quickly. These libraries are set of components which are nicely integrated with headless `@refinedev/core` package.
 
@@ -90,7 +90,9 @@ import { DataProvider } from "@refinedev/core";
 
 const myDataProvider: DataProvider = {
   getOne: async ({ resource, id }) => {
-    const response = await fetch(`https://example.com/api/v1/${resource}/${id}`);
+    const response = await fetch(
+      `https://example.com/api/v1/${resource}/${id}`,
+    );
     const data = await response.json();
 
     return { data };
@@ -217,7 +219,9 @@ const myAccessControlProvider: AccessControlProvider = {
 };
 
 export const App = () => {
-  return <Refine accessControlProvider={myAccessControlProvider}>{/* ... */}</Refine>;
+  return (
+    <Refine accessControlProvider={myAccessControlProvider}>{/* ... */}</Refine>
+  );
 };
 ```
 
@@ -233,7 +237,12 @@ export const MyPage = () => {
     <CanAccess resource="users" action="show" params={{ id: 1 }}>
       <>
         My Page
-        <CanAccess resource="users" action="block" params={{ id: 1 }} fallback={"You are not authorized."}>
+        <CanAccess
+          resource="users"
+          action="block"
+          params={{ id: 1 }}
+          fallback={"You are not authorized."}
+        >
           // Only authorized users can see this button.
           <BlockUserButton />
         </CanAccess>
@@ -251,8 +260,16 @@ You can use `useCan` hook to control access in your components.
 import { ErrorComponent, useCan } from "@refinedev/core";
 
 export const MyPage = () => {
-  const { data: show } = useCan({ resource: "users", action: "show", params: { id: 1 } });
-  const { data: block } = useCan({ resource: "users", action: "block", params: { id: 1 } });
+  const { data: show } = useCan({
+    resource: "users",
+    action: "show",
+    params: { id: 1 },
+  });
+  const { data: block } = useCan({
+    resource: "users",
+    action: "block",
+    params: { id: 1 },
+  });
 
   if (!show?.can) {
     return <ErrorComponent />;
@@ -467,11 +484,11 @@ For example, `useShow` hook can infer `resource` and `id` parameters from the cu
 import { useShow } from "@refinedev/core";
 
 export const ShowPage = () => {
-  // const { queryResult } = useShow({ resource: "products", id: 1 });
+  // const { query } = useShow({ resource: "products", id: 1 });
   // We don't need to pass "resource" and "id" parameters manually.
-  const { queryResult } = useShow();
+  const { query } = useShow();
 
-  const { data, isLoading } = queryResult;
+  const { data, isLoading } = query;
 
   if (isLoading) {
     return <>Loading...</>;
@@ -496,9 +513,12 @@ const auditLogProvider: AuditLogProvider = {
   get: async (params) => {
     const { resource, meta, action, author, metaData } = params;
 
-    const response = await fetch(`https://example.com/api/audit-logs/${resource}/${meta.id}`, {
-      method: "GET",
-    });
+    const response = await fetch(
+      `https://example.com/api/audit-logs/${resource}/${meta.id}`,
+      {
+        method: "GET",
+      },
+    );
 
     const data = await response.json();
 
@@ -712,9 +732,12 @@ export const App = () => {
 import { useShow } from "@refinedev/core";
 
 export const ShowPage = () => {
-  const { data, isLoading } = useShow({ {/* or useOne */}
-    resource: "products",
-    id: 1,
+  const {
+    query: { data, isLoading },
+    /* or use useOne */
+  } = useShow({
+    resource: "posts",
+    id: "1",
     // highlight-start
     meta: {
       fromHook: "Hello from hook.meta",
@@ -849,7 +872,9 @@ const Component = () => {
     .data("default") // Name of the data provider
     .resource("products") // Identifier of the resource
     .action("list") // Type of the operation
-    .params({ filters: [{ field: "title", operator: "contains", value: "test" }] }) // Parameters of the operation
+    .params({
+      filters: [{ field: "title", operator: "contains", value: "test" }],
+    }) // Parameters of the operation
     .get();
 
   console.log(generatedKey);
@@ -908,11 +933,11 @@ An example of **List Page** scaffolded by inferencer looks like this;
 
 ```tsx title="generated-list.tsx"
 import { List, ShowButton, useTable } from "@refinedev/antd";
-import { BaseRecord, IResourceComponentsProps } from "@refinedev/core";
+import { BaseRecord } from "@refinedev/core";
 import { Space, Table } from "antd";
 import React from "react";
 
-export const ProductList: React.FC<IResourceComponentsProps> = () => {
+export const ProductList = () => {
   const { tableProps } = useTable({
     syncWithLocation: true,
   });

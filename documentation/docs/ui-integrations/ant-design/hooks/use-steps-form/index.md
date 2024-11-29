@@ -29,7 +29,8 @@ import {
 const PostList = () => {
   const { tableProps } = useTable<IPost>();
 
-  const categoryIds = tableProps?.dataSource?.map((item) => item.category.id) ?? [];
+  const categoryIds =
+    tableProps?.dataSource?.map((item) => item.category.id) ?? [];
   const { data, isLoading } = useMany({
     resource: "categories",
     ids: categoryIds,
@@ -51,7 +52,11 @@ const PostList = () => {
               return <TextField value="Loading..." />;
             }
 
-            return <TextField value={data?.data.find((item) => item.id === value)?.title} />;
+            return (
+              <TextField
+                value={data?.data.find((item) => item.id === value)?.title}
+              />
+            );
           }}
         />
         <Table.Column
@@ -69,7 +74,8 @@ const PostList = () => {
 };
 
 const PostEdit = () => {
-  const { current, gotoStep, stepsProps, formProps, saveButtonProps } = useStepsFormAntd();
+  const { current, gotoStep, stepsProps, formProps, saveButtonProps } =
+    useStepsFormAntd();
 
   const { selectProps: categorySelectProps } = useSelectAntd({
     resource: "categories",
@@ -163,7 +169,9 @@ const PostEdit = () => {
               Next
             </AntdButton>
           )}
-          {current === formList.length - 1 && <AntdSaveButton {...saveButtonProps} />}
+          {current === formList.length - 1 && (
+            <AntdSaveButton {...saveButtonProps} />
+          )}
         </>
       }
     >
@@ -180,7 +188,8 @@ const PostEdit = () => {
 };
 
 const PostCreate = () => {
-  const { current, gotoStep, stepsProps, formProps, saveButtonProps } = useStepsFormAntd();
+  const { current, gotoStep, stepsProps, formProps, saveButtonProps } =
+    useStepsFormAntd();
 
   const { selectProps: categorySelectProps } = useSelectAntd({
     resource: "categories",
@@ -274,7 +283,9 @@ const PostCreate = () => {
               Next
             </AntdButton>
           )}
-          {current === formList.length - 1 && <AntdSaveButton {...saveButtonProps} />}
+          {current === formList.length - 1 && (
+            <AntdSaveButton {...saveButtonProps} />
+          )}
         </>
       }
     >
@@ -323,7 +334,8 @@ import { Button, Form, Input, Select, Steps } from "antd";
 const { Step } = Steps;
 
 const PostCreatePage: React.FC = () => {
-  const { current, gotoStep, stepsProps, formProps, saveButtonProps } = useStepsForm<IPost, HttpError, IPost>();
+  const { current, gotoStep, stepsProps, formProps, saveButtonProps } =
+    useStepsForm<IPost, HttpError, IPost>();
 
   const { selectProps: categorySelectProps } = useSelect<ICategory, HttpError>({
     resource: "categories",
@@ -417,7 +429,9 @@ const PostCreatePage: React.FC = () => {
               Next
             </Button>
           )}
-          {current === formList.length - 1 && <SaveButton {...saveButtonProps} />}
+          {current === formList.length - 1 && (
+            <SaveButton {...saveButtonProps} />
+          )}
         </>
       }
     >
@@ -480,13 +494,10 @@ import { Button, Form, Input, Select, Steps } from "antd";
 const { Step } = Steps;
 
 const PostEditPage: React.FC = () => {
-  const { current, gotoStep, stepsProps, formProps, saveButtonProps, queryResult } = useStepsForm<
-    IPost,
-    HttpError,
-    IPost
-  >();
+  const { current, gotoStep, stepsProps, formProps, saveButtonProps, query } =
+    useStepsForm<IPost, HttpError, IPost>();
 
-  const postData = queryResult?.data?.data;
+  const postData = query?.data?.data;
   const { selectProps: categorySelectProps } = useSelect<ICategory, HttpError>({
     resource: "categories",
     defaultValue: postData?.category.id,
@@ -580,7 +591,9 @@ const PostEditPage: React.FC = () => {
               Next
             </Button>
           )}
-          {current === formList.length - 1 && <SaveButton {...saveButtonProps} />}
+          {current === formList.length - 1 && (
+            <SaveButton {...saveButtonProps} />
+          )}
         </>
       }
     >
@@ -638,11 +651,8 @@ import { HttpError } from "@refinedev/core";
 import React from "react";
 
 export const PostCreate: React.FC = () => {
-  const { current, gotoStep, stepsProps, formProps, saveButtonProps, queryResult } = useStepsForm<
-    IPost,
-    HttpError,
-    IPost
-  >();
+  const { current, gotoStep, stepsProps, formProps, saveButtonProps, query } =
+    useStepsForm<IPost, HttpError, IPost>();
 
   return null;
 };
@@ -674,7 +684,8 @@ import { Form, Input, Select } from "antd";
 import React from "react";
 
 export const PostCreate: React.FC = () => {
-  const { current, gotoStep, stepsProps, formProps, saveButtonProps } = useStepsForm<IPost, HttpError, IPost>();
+  const { current, gotoStep, stepsProps, formProps, saveButtonProps } =
+    useStepsForm<IPost, HttpError, IPost>();
 
   const { selectProps: categorySelectProps } = useSelect<ICategory, HttpError>({
     resource: "categories",
@@ -753,11 +764,8 @@ import {
 import React from "react";
 
 export const PostCreate: React.FC = () => {
-  const { current, gotoStep, stepsProps, formProps, saveButtonProps, queryResult } = useStepsForm<
-    IPost,
-    HttpError,
-    IPost
-  >();
+  const { current, gotoStep, stepsProps, formProps, saveButtonProps, query } =
+    useStepsForm<IPost, HttpError, IPost>();
 
   const { selectProps: categorySelectProps } = useSelect<ICategory, HttpError>({
     resource: "categories",
@@ -829,7 +837,7 @@ Make sure to add as much `<Steps.Step>` components as the number of steps in the
 
 <br />
 
-To help users navigate between steps in the form, you can use the action buttons. Your navigation buttons should use the `gotoStep` function that was previously returned from the the `useStepsForm` hook.
+To help users navigate between steps in the form, you can use the action buttons. Your navigation buttons should use the `gotoStep` function that was previously returned from the `useStepsForm` hook.
 
 ```tsx title="pages/posts/create.tsx"
 import {
@@ -844,11 +852,15 @@ import { Button, Form, Input, Select, Steps } from "antd";
 import React from "react";
 
 export const PostCreate: React.FC = () => {
-  const { current, gotoStep, stepsProps, formProps, saveButtonProps, queryResult, submit } = useStepsForm<
-    IPost,
-    HttpError,
-    IPost
-  >();
+  const {
+    current,
+    gotoStep,
+    stepsProps,
+    formProps,
+    saveButtonProps,
+    query,
+    submit,
+  } = useStepsForm<IPost, HttpError, IPost>();
 
   const { selectProps: categorySelectProps } = useSelect<ICategory, HttpError>({
     resource: "categories",
@@ -907,7 +919,11 @@ export const PostCreate: React.FC = () => {
             </Button>
           )}
           {current === formList.length - 1 && (
-            <SaveButton {...saveButtonProps} style={{ marginRight: 10 }} onClick={() => submit()} />
+            <SaveButton
+              {...saveButtonProps}
+              style={{ marginRight: 10 }}
+              onClick={() => submit()}
+            />
           )}
         </>
       }
@@ -1074,6 +1090,32 @@ useStepsForm({
 });
 ```
 
+### defaultFormValues
+
+Default values for the form. Use this to pre-populate the form with data that needs to be displayed.
+
+```tsx
+useForm({
+  defaultFormValues: {
+    title: "Hello World",
+  },
+});
+```
+
+Also, it can be provided as an async function to fetch the default values. The loading state can be tracked using the [`defaultFormValuesLoading`](#defaultformvaluesloading) state returned from the hook.
+
+> 🚨 When `action` is "edit" or "clone" a race condition with `async defaultFormValues` may occur. In this case, the form values will be the result of the last completed operation.
+
+```tsx
+const { defaultFormValuesLoading } = useForm({
+  defaultFormValues: async () => {
+    const response = await fetch("https://my-api.com/posts/1");
+    const data = await response.json();
+    return data;
+  },
+});
+```
+
 ## Return Values
 
 All [`useForm`](/docs/ui-integrations/ant-design/hooks/use-form) return values also available in `useStepsForm`. You can find descriptions on [`useForm`](/docs/ui-integrations/ant-design/hooks/use-form#return-values) docs.
@@ -1103,10 +1145,6 @@ It takes in one argument, step, which is a number representing the index of the 
 
 `submit` is a function that can submit the form. It's useful when you want to submit the form manually.
 
-### defaultFormValuesLoading
-
-When `action` is `"edit"` or `"clone"`, `useStepsForm` will fetch the data from the API and set it as default values. This prop is `true` when the data is being fetched.
-
 ### overtime
 
 `overtime` object is returned from this hook. `elapsedTime` is the elapsed time in milliseconds. It becomes `undefined` when the request is completed.
@@ -1121,6 +1159,10 @@ console.log(overtime.elapsedTime); // undefined, 1000, 2000, 3000 4000, ...
 
 If `autoSave` is enabled, this hook returns `autoSaveProps` object with `data`, `error`, and `status` properties from mutation.
 
+### defaultFormValuesLoading
+
+If [`defaultFormValues`](#defaultformvalues) is an async function, `defaultFormValuesLoading` will be `true` until the function is resolved.
+
 ## FAQ
 
 ### How can I change the form data before submitting it to the API?
@@ -1132,18 +1174,19 @@ We need to send the values we received from the user in two separate inputs, `na
 ```tsx title="pages/user/create.tsx"
 import { useStepsForm } from "@refinedev/antd";
 // ...
-const { current, gotoStep, stepsProps, formProps, saveButtonProps, onFinish } = useStepsForm<IPost>({
-  submit: (values) => {
-    // highlight-start
-    const data = {
-      fullName: `${formValues.name} ${formValues.surname}`,
-      age: formValues.age,
-      city: formValues.city,
-    };
-    onFinish(data as any);
-    // highlight-end
-  },
-});
+const { current, gotoStep, stepsProps, formProps, saveButtonProps, onFinish } =
+  useStepsForm<IPost>({
+    submit: (values) => {
+      // highlight-start
+      const data = {
+        fullName: `${formValues.name} ${formValues.surname}`,
+        age: formValues.age,
+        city: formValues.city,
+      };
+      onFinish(data as any);
+      // highlight-end
+    },
+  });
 // ...
 ```
 
@@ -1175,10 +1218,10 @@ const { current, gotoStep, stepsProps, formProps, saveButtonProps, onFinish } = 
 | gotoStep                 | Go to the target step                                        | `(step: number) => void`                                                                                                                |
 | formProps                | Ant Design form props                                        | [`FormProps`](/docs/ui-integrations/ant-design/hooks/use-form#formprops)                                                                |
 | form                     | Ant Design form instance                                     | [`FormInstance<TVariables>`](https://ant.design/components/form/#FormInstance)                                                          |
-| defaultFormValuesLoading | DefaultFormValues loading status of form                     | `boolean`                                                                                                                               |
 | submit                   | Submit method, the parameter is the value of the form fields | `() => void`                                                                                                                            |
 | overtime                 | Overtime loading props                                       | `{ elapsedTime?: number }`                                                                                                              |
 | autoSaveProps            | Auto save props                                              | `{ data: UpdateResponse<TData>` \| `undefined, error: HttpError` \| `null, status: "loading"` \| `"error"` \| `"idle"` \| `"success" }` |
+| defaultFormValuesLoading | DefaultFormValues loading status of form                     | `boolean`                                                                                                                               |
 
 ## Example
 

@@ -155,10 +155,10 @@ const PostCreate: React.FC = () => {
 };
 
 const PostEdit: React.FC = () => {
-    const { formProps, saveButtonProps, queryResult } =
+    const { formProps, saveButtonProps, query } =
         RefineAntdUseForm<IPost>();
 
-    const postData = queryResult?.data?.data;
+    const postData = query?.data?.data;
     const { selectProps: categorySelectProps } = RefineAntdUseSelect<ICategory>({
         resource: "categories",
         defaultValue: postData?.category.id,
@@ -298,7 +298,13 @@ export const PostCreate: React.FC = () => {
             noStyle
           >
             // highlight-start
-            <Upload.Dragger name="file" action={`${apiUrl}/media/upload`} listType="picture" maxCount={5} multiple>
+            <Upload.Dragger
+              name="file"
+              action={`${apiUrl}/media/upload`}
+              listType="picture"
+              maxCount={5}
+              multiple
+            >
               <p className="ant-upload-text">Drag & drop a file in this area</p>
             </Upload.Dragger>
             // highlight-end
@@ -496,7 +502,13 @@ export const PostEdit: React.FC = () => {
             noStyle
           >
             // highlight-start
-            <Upload.Dragger name="file" action={`${apiUrl}/media/upload`} listType="picture" maxCount={5} multiple>
+            <Upload.Dragger
+              name="file"
+              action={`${apiUrl}/media/upload`}
+              listType="picture"
+              maxCount={5}
+              multiple
+            >
               <p className="ant-upload-text">Drag & drop a file in this area</p>
             </Upload.Dragger>
             // highlight-end
@@ -642,7 +654,12 @@ export const PostCreate: React.FC = () => {
           <Input />
         </Form.Item>
         <Form.Item label="Image">
-          <Form.Item name="image" valuePropName="fileList" getValueFromEvent={getValueFromEvent} noStyle>
+          <Form.Item
+            name="image"
+            valuePropName="fileList"
+            getValueFromEvent={getValueFromEvent}
+            noStyle
+          >
             <Upload.Dragger
               name="file"
               action={`${apiUrl}/media/upload`}

@@ -12,7 +12,7 @@ import Example from "./previews/example.tsx";
 
 Installing the package is as simple as just by running the following command without any additional configuration:
 
-<InstallPackagesCommand args="@refinedev/mantine @refinedev/react-table @mantine/core@5 @mantine/hooks@5 @mantine/form@5 @mantine/notifications@5 @emotion/react@11 @tabler/icons@1 @tanstack/react-table"/>
+<InstallPackagesCommand args="@refinedev/mantine @refinedev/react-table @mantine/core@5 @mantine/hooks@5 @mantine/form@5 @mantine/notifications@5 @emotion/react@11 @tabler/icons-react @tanstack/react-table"/>
 
 :::info Version Support
 Refine's Mantine integration currently uses Mantine v5.
@@ -56,11 +56,23 @@ import { useTable } from "@refinedev/react-table";
 import { ColumnDef, flexRender } from "@tanstack/react-table";
 import { List, ShowButton, EditButton, DeleteButton } from "@refinedev/mantine";
 
-import { Box, Group, ScrollArea, Select, Table, Pagination } from "@mantine/core";
+import {
+  Box,
+  Group,
+  ScrollArea,
+  Select,
+  Table,
+  Pagination,
+} from "@mantine/core";
 
 const columns = [
   { id: "id", header: "ID", accessorKey: "id" },
-  { id: "name", header: "Name", accessorKey: "name", meta: { filterOperator: "contains" } },
+  {
+    id: "name",
+    header: "Name",
+    accessorKey: "name",
+    meta: { filterOperator: "contains" },
+  },
   { id: "price", header: "Price", accessorKey: "price" },
   {
     id: "actions",
@@ -89,7 +101,7 @@ export const ProductList = () => {
       setCurrent,
       pageCount,
       current,
-      tableQueryResult: { data: tableData },
+      tableQuery: { data: tableData },
     },
   } = useTable<IProduct>({ columns });
 
@@ -101,7 +113,12 @@ export const ProductList = () => {
             {getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
-                  <th key={header.id}>{flexRender(header.column.columnDef.header, header.getContext())}</th>
+                  <th key={header.id}>
+                    {flexRender(
+                      header.column.columnDef.header,
+                      header.getContext(),
+                    )}
+                  </th>
                 ))}
               </tr>
             ))}
@@ -110,14 +127,21 @@ export const ProductList = () => {
             {getRowModel().rows.map((row) => (
               <tr key={row.id}>
                 {row.getVisibleCells().map((cell) => (
-                  <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
+                  <td key={cell.id}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </td>
                 ))}
               </tr>
             ))}
           </tbody>
         </Table>
         <br />
-        <Pagination position="right" total={pageCount} page={current} onChange={setCurrent} />
+        <Pagination
+          position="right"
+          total={pageCount}
+          page={current}
+          onChange={setCurrent}
+        />
       </List>
     </ScrollArea>
   );
@@ -153,9 +177,27 @@ export const ProductCreate = () => {
   return (
     <Create saveButtonProps={saveButtonProps}>
       <form>
-        <TextInput mt={8} id="name" label="Name" placeholder="Name" {...getInputProps("name")} />
-        <TextInput mt={8} id="material" label="Material" placeholder="Material" {...getInputProps("material")} />
-        <NumberInput mt={8} id="price" label="Price" placeholder="Price" {...getInputProps("price")} />
+        <TextInput
+          mt={8}
+          id="name"
+          label="Name"
+          placeholder="Name"
+          {...getInputProps("name")}
+        />
+        <TextInput
+          mt={8}
+          id="material"
+          label="Material"
+          placeholder="Material"
+          {...getInputProps("material")}
+        />
+        <NumberInput
+          mt={8}
+          id="price"
+          label="Price"
+          placeholder="Price"
+          {...getInputProps("price")}
+        />
       </form>
     </Create>
   );
@@ -177,7 +219,9 @@ const App = () => {
   return (
     // `@mantine/notifications` also requires a context provider to be used
     <NotificationsProvider position="top-right">
-      <Refine notificationProvider={useNotificationProvider}>{/* ... */}</Refine>
+      <Refine notificationProvider={useNotificationProvider}>
+        {/* ... */}
+      </Refine>
     </NotificationsProvider>
   );
 };
@@ -213,7 +257,7 @@ import LayoutRemix from "./previews/layout-remix.tsx";
 </TabItem>
 </Tabs>
 
-[`<ThemedLayoutV2 />`](/docs/ui-integrations/mantine/components/themed-layout) component consists of a header, sider and a content area. The sider have a navigation menu items for the defined resources of Refine, if an authentication provider is present, it will also have a functional logout buttun. The header contains the app logo and name and also information about the current user if an authentication provider is present.
+[`<ThemedLayoutV2 />`](/docs/ui-integrations/mantine/components/themed-layout) component consists of a header, sider and a content area. The sider have a navigation menu items for the defined resources of Refine, if an authentication provider is present, it will also have a functional logout button. The header contains the app logo and name and also information about the current user if an authentication provider is present.
 
 Additionally, Refine also provides a [`<Breadcrumb />`](/docs/ui-integrations/mantine/components/breadcrumb) component that uses the Mantine's component as a base and provide appropriate breadcrumbs for the current route. This component is used in the basic views provided by Refine's Mantine package automatically.
 
@@ -309,7 +353,12 @@ The list of provided field components are:
 
 ```tsx title="pages/products/show.tsx"
 import { useShow } from "@refinedev/core";
-import { Show, TextField, NumberField, MarkdownField } from "@refinedev/mantine";
+import {
+  Show,
+  TextField,
+  NumberField,
+  MarkdownField,
+} from "@refinedev/mantine";
 
 import { Title } from "@mantine/core";
 
@@ -336,7 +385,10 @@ export const ProductShow = () => {
         Price
       </Title>
       {/* highlight-next-line */}
-      <NumberField value={record?.price} options={{ style: "currency", currency: "USD" }} />
+      <NumberField
+        value={record?.price}
+        options={{ style: "currency", currency: "USD" }}
+      />
     </Show>
   );
 };
@@ -389,4 +441,4 @@ To learn more about the theme configuration of Mantine, please refer to the [off
 
 You can automatically generate views for your resources using `@refinedev/inferencer`. Inferencer exports the `MantineListInferencer`, `MantineShowInferencer`, `MantineEditInferencer`, `MantineCreateInferencer` components and finally the `MantineInferencer` component, which combines all in one place.
 
-To learn more about Inferencer, please refer to the [Material UI Inferencer](/docs/ui-integrations/mantine/components/inferencer) docs.
+To learn more about Inferencer, please refer to the [Mantine Inferencer](/docs/ui-integrations/mantine/components/inferencer) docs.

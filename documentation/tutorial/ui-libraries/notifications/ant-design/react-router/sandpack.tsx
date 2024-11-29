@@ -9,16 +9,16 @@ import { dependencies } from "@site/tutorial/ui-libraries/intro/ant-design/react
 import { removeActiveFromFiles } from "@site/src/utils/remove-active-from-files";
 
 export const Sandpack = ({ children }: { children: React.ReactNode }) => {
-    return (
-        <TutorialSandpack
-            showNavigator
-            dependencies={dependencies}
-            files={initialFiles}
-            finalFiles={finalFiles}
-        >
-            {children}
-        </TutorialSandpack>
-    );
+  return (
+    <TutorialSandpack
+      showNavigator
+      dependencies={dependencies}
+      files={initialFiles}
+      finalFiles={finalFiles}
+    >
+      {children}
+    </TutorialSandpack>
+  );
 };
 
 // updates
@@ -26,7 +26,11 @@ export const Sandpack = ({ children }: { children: React.ReactNode }) => {
 const AppTsxWithNotificationProvider = /* tsx */ `
 import { Refine, Authenticated } from "@refinedev/core";
 import routerProvider, { NavigateToResource } from "@refinedev/react-router-v6";
-import { ThemedLayoutV2, ThemedTitleV2, useNotificationProvider } from "@refinedev/antd";
+import {
+  ThemedLayoutV2,
+  ThemedTitleV2,
+  useNotificationProvider,
+} from "@refinedev/antd";
 
 import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
 
@@ -74,10 +78,7 @@ export default function App(): JSX.Element {
                   >
                     <ThemedLayoutV2
                       Title={(props) => (
-                        <ThemedTitleV2
-                          {...props}
-                          text="Awesome Project"
-                        />
+                        <ThemedTitleV2 {...props} text="Awesome Project" />
                       )}
                     >
                       <Outlet />
@@ -117,27 +118,24 @@ export default function App(): JSX.Element {
 // actions
 
 export const AddNotificationProviderToApp = () => {
-    const { sandpack } = useSandpack();
+  const { sandpack } = useSandpack();
 
-    return (
-        <TutorialUpdateFileButton
-            onClick={() => {
-                sandpack.updateFile(
-                    "src/App.tsx",
-                    AppTsxWithNotificationProvider,
-                );
-                sandpack.setActiveFile("/src/App.tsx");
-            }}
-        />
-    );
+  return (
+    <TutorialUpdateFileButton
+      onClick={() => {
+        sandpack.updateFile("src/App.tsx", AppTsxWithNotificationProvider);
+        sandpack.setActiveFile("/src/App.tsx");
+      }}
+    />
+  );
 };
 
 // files
 
 export const finalFiles = {
-    ...removeActiveFromFiles(initialFiles),
-    "src/App.tsx": {
-        code: AppTsxWithNotificationProvider,
-        active: true,
-    },
+  ...removeActiveFromFiles(initialFiles),
+  "src/App.tsx": {
+    code: AppTsxWithNotificationProvider,
+    active: true,
+  },
 };

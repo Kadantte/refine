@@ -1,6 +1,4 @@
-import { IResourceComponentsProps } from "@refinedev/core";
-
-import { HttpError, useBack, useSelect } from "@refinedev/core";
+import { type HttpError, useBack, useSelect } from "@refinedev/core";
 import { useForm } from "@refinedev/react-hook-form";
 import { Controller } from "react-hook-form";
 
@@ -17,9 +15,9 @@ import {
 
 import { ArrowLongLeftIcon } from "@heroicons/react/24/outline";
 
-import { IProduct, IProductCategory } from "../../interfaces";
+import type { IProduct, IProductCategory } from "../../interfaces";
 
-export const ProductEdit: React.FC<IResourceComponentsProps> = () => {
+export const ProductEdit = () => {
   const goBack = useBack();
 
   const {
@@ -116,7 +114,7 @@ export const ProductEdit: React.FC<IResourceComponentsProps> = () => {
                       selectedKeys={[`${field.value}`]}
                       onSelectionChange={(selectedItem) => {
                         field.onChange(
-                          +(selectedItem as Set<string>).values().next().value
+                          +(selectedItem as Set<string>).values().next().value,
                         );
                       }}
                     >

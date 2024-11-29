@@ -1,10 +1,9 @@
 import {
-  IResourceComponentsProps,
   useTable,
   getDefaultFilter,
   useNavigation,
   useDelete,
-  CrudSort,
+  type CrudSort,
 } from "@refinedev/core";
 import {
   Table,
@@ -17,7 +16,7 @@ import {
   Input,
   Button,
   useDisclosure,
-  SortDescriptor,
+  type SortDescriptor,
   Dropdown,
   DropdownTrigger,
   DropdownMenu,
@@ -32,7 +31,7 @@ import {
   PlusIcon,
 } from "@heroicons/react/24/outline";
 
-import { IProduct } from "../../interfaces";
+import type { IProduct } from "../../interfaces";
 
 import { DeleteModal } from "../../components/modal";
 import { useState, useCallback } from "react";
@@ -43,9 +42,9 @@ const columns = [
   { header: "Actions", key: "actions", sortable: false },
 ];
 
-export const CategoryList: React.FC<IResourceComponentsProps> = () => {
+export const CategoryList = () => {
   const {
-    tableQueryResult,
+    tableQuery: tableQueryResult,
     pageCount,
     current,
     pageSize,

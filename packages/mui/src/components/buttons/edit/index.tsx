@@ -1,23 +1,14 @@
-import React, { useContext } from "react";
+import React from "react";
+import { useEditButton } from "@refinedev/core";
 import {
-    useCan,
-    useNavigation,
-    useTranslate,
-    useResource,
-    useRouterContext,
-    useRouterType,
-    useLink,
-    AccessControlContext,
-} from "@refinedev/core";
-import {
-    RefineButtonClassNames,
-    RefineButtonTestIds,
+  RefineButtonClassNames,
+  RefineButtonTestIds,
 } from "@refinedev/ui-types";
 
 import Button from "@mui/material/Button";
 import EditOutlined from "@mui/icons-material/EditOutlined";
 
-import { EditButtonProps } from "../types";
+import type { EditButtonProps } from "../types";
 
 /**
  * `<EditButton>` uses uses Material UI {@link https://mui.com/components/buttons/ `<Button>`} component.
@@ -27,108 +18,63 @@ import { EditButtonProps } from "../types";
  * @see {@link https://refine.dev/docs/api-reference/mui/components/buttons/edit-button} for more details.
  */
 export const EditButton: React.FC<EditButtonProps> = ({
-    resource: resourceNameFromProps,
-    resourceNameOrRouteName,
-    recordItemId,
-    hideText = false,
-    accessControl,
-    svgIconProps,
-    meta,
-    children,
-    onClick,
-    ...rest
+  resource: resourceNameFromProps,
+  resourceNameOrRouteName,
+  recordItemId,
+  hideText = false,
+  accessControl,
+  svgIconProps,
+  meta,
+  children,
+  onClick,
+  ...rest
 }) => {
-    const accessControlContext = useContext(AccessControlContext);
+  const { to, label, title, hidden, disabled, LinkComponent } = useEditButton({
+    resource: resourceNameFromProps ?? resourceNameOrRouteName,
+    id: recordItemId,
+    accessControl,
+    meta,
+  });
 
-    const accessControlEnabled =
-        accessControl?.enabled ??
-        accessControlContext.options.buttons.enableAccessControl;
+  if (hidden) return null;
 
-    const hideIfUnauthorized =
-        accessControl?.hideIfUnauthorized ??
-        accessControlContext.options.buttons.hideIfUnauthorized;
-    const translate = useTranslate();
+  const { sx, ...restProps } = rest;
 
-    const routerType = useRouterType();
-    const Link = useLink();
-    const { Link: LegacyLink } = useRouterContext();
-
-    const ActiveLink = routerType === "legacy" ? LegacyLink : Link;
-
-    const { editUrl: generateEditUrl } = useNavigation();
-
-    const { id, resource } = useResource(
-        resourceNameFromProps ?? resourceNameOrRouteName,
-    );
-
-    const { data } = useCan({
-        resource: resource?.name,
-        action: "edit",
-        params: { id: recordItemId ?? id, resource },
-        queryOptions: {
-            enabled: accessControlEnabled,
-        },
-    });
-
-    const disabledTitle = () => {
-        if (data?.can) return "";
-        else if (data?.reason) return data.reason;
-        else
-            return translate(
-                "buttons.notAccessTitle",
-                "You don't have permission to access",
-            );
-    };
-
-    const editUrl =
-        resource && (recordItemId ?? id)
-            ? generateEditUrl(resource, recordItemId! ?? id!, meta)
-            : "";
-
-    const { sx, ...restProps } = rest;
-
-    if (accessControlEnabled && hideIfUnauthorized && !data?.can) {
-        return null;
-    }
-
-    return (
-        <ActiveLink
-            to={editUrl}
-            replace={false}
-            onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-                if (data?.can === false) {
-                    e.preventDefault();
-                    return;
-                }
-                if (onClick) {
-                    e.preventDefault();
-                    onClick(e);
-                }
-            }}
-            style={{ textDecoration: "none" }}
-        >
-            <Button
-                disabled={data?.can === false}
-                startIcon={
-                    !hideText && (
-                        <EditOutlined
-                            sx={{ selfAlign: "center" }}
-                            {...svgIconProps}
-                        />
-                    )
-                }
-                title={disabledTitle()}
-                sx={{ minWidth: 0, ...sx }}
-                data-testid={RefineButtonTestIds.EditButton}
-                className={RefineButtonClassNames.EditButton}
-                {...restProps}
-            >
-                {hideText ? (
-                    <EditOutlined fontSize="small" {...svgIconProps} />
-                ) : (
-                    children ?? translate("buttons.edit", "Edit")
-                )}
-            </Button>
-        </ActiveLink>
-    );
+  return (
+    <LinkComponent
+      to={to}
+      replace={false}
+      onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        if (disabled) {
+          e.preventDefault();
+          return;
+        }
+        if (onClick) {
+          e.preventDefault();
+          onClick(e);
+        }
+      }}
+      style={{ textDecoration: "none" }}
+    >
+      <Button
+        disabled={disabled}
+        startIcon={
+          !hideText && (
+            <EditOutlined sx={{ selfAlign: "center" }} {...svgIconProps} />
+          )
+        }
+        title={title}
+        sx={{ minWidth: 0, ...sx }}
+        data-testid={RefineButtonTestIds.EditButton}
+        className={RefineButtonClassNames.EditButton}
+        {...restProps}
+      >
+        {hideText ? (
+          <EditOutlined fontSize="small" {...svgIconProps} />
+        ) : (
+          children ?? label
+        )}
+      </Button>
+    </LinkComponent>
+  );
 };

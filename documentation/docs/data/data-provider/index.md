@@ -178,7 +178,9 @@ You can either use the `dataProviderName` prop in data hooks and data-related co
 
 ```tsx
 useTable({
-  dataProviderName: "example",
+  meta: {
+    dataProviderName: "example",
+  },
 });
 ```
 
@@ -227,7 +229,8 @@ const dataProvider: DataProvider = {
   createMany: ({ resource, variables, meta }) => Promise,
   deleteMany: ({ resource, ids, variables, meta }) => Promise,
   updateMany: ({ resource, ids, variables, meta }) => Promise,
-  custom: ({ url, method, filters, sorters, payload, query, headers, meta }) => Promise,
+  custom: ({ url, method, filters, sorters, payload, query, headers, meta }) =>
+    Promise,
 };
 ```
 
@@ -235,21 +238,34 @@ const dataProvider: DataProvider = {
 
 ### getList <PropTag required />
 
-`getList` method is used to get a list of resources with sorting, filtering, and pagination features.
-It takes `resource`, `sorters`, `pagination`, and, `filters` as parameters and returns `data` and `total`.
+The `getList` method is used to get a list of resources with sorting, filtering, and pagination features. It takes `resource`, `sorters`, `pagination`, and, `filters` as parameters. And it returns both `data` and `total` fields, regardless of the data provider used.
 
 Refine will consume this method using the [`useList`][use-list] or [`useInfiniteList`][use-infinite-list] data hook.
 
+#### Retrieving the Total Row Count
+
+- Different data providers have specific ways to determine the total row count, and these are just some examples:
+  - **Simple REST Providers:** The `x-total-count` header is commonly used to get the row count.
+  - **GraphQL Providers:** The total count is often sourced from specific data fields, like `response.data.pageInfo.total`.
+
+This documentation provides only illustrative examples. It's up to the data provider to determine how to best source the total count.
+
+The method signature remains the same, and Refine expects a consistent format:
+
 ```ts
 getList: async ({ resource, pagination, sorters, filters, meta }) => {
-  const { current, pageSize, mode } = pagination;
-  const { field, order } = sorters;
-  const { field, operator, value } = filters;
+  const { current, pageSize } = pagination ?? {};
 
-  // You can handle the request according to your API requirements.
+  // Adjust request parameters to meet the requirements of your API
+  const response = await apiClient.get(`/${resource}`, {
+    params: { _page: current, _limit: pageSize },
+  });
+
+  // The total row count could be sourced differently based on the provider
+  const total = response.headers["x-total-count"] ?? response.data.length;
 
   return {
-    data,
+    data: response.data,
     total,
   };
 };
@@ -398,7 +414,16 @@ It's useful if you have non-standard REST API endpoints or want to make a connec
 Refine will consume this method using the [`useCustom`][use-custom] data hook.
 
 ```ts
-custom: async ({ url, method, filters, sorters, payload, query, headers, meta }) => {
+custom: async ({
+  url,
+  method,
+  filters,
+  sorters,
+  payload,
+  query,
+  headers,
+  meta,
+}) => {
   // You can handle the request according to your API requirements.
 
   return {
@@ -678,7 +703,7 @@ Refine will consume:
 
 ### How can I customize existing data providers?
 
-[Refer to the "Create Data Provider with Swizzle" section in the tutorial for more information →][swizzle-a-data-provider]
+[You can swizzle the data provider using the Refine CLI and customize it as needed.][swizzle-a-data-provider]
 
 ### How I can override a specific method of Data Providers?
 
@@ -707,9 +732,9 @@ const myDataProvider = {
 ```
 
 [basekey]: /docs/core/interface-references#basekey
-[create-a-data-provider]: /docs/data/data-provider
-[swizzle-a-data-provider]: /docs/packages/cli
-[data-provider-tutorial]: /docs/data/data-provider
+[create-a-data-provider]: https://refine.dev/tutorial/essentials/data-fetching/intro/#creating-a-data-provider
+[swizzle-a-data-provider]: /docs/packages/cli/#swizzle
+[data-provider-tutorial]: https://refine.dev/tutorial/essentials/data-fetching/intro/
 [use-api-url]: /docs/data/hooks/use-api-url
 [use-create]: /docs/data/hooks/use-create
 [use-create-many]: /docs/data/hooks/use-create

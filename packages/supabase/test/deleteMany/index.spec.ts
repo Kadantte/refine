@@ -3,36 +3,35 @@ import supabaseClient from "../supabaseClient";
 import "./index.mock";
 
 describe("deleteMany", () => {
-    it("correct response", async () => {
-        const { data } = await dataProvider(supabaseClient).deleteMany!({
-            resource: "posts",
-            ids: ["43"],
-        });
-
-        expect(data[0].id).toEqual(43);
-        expect(data[0].title).toEqual("Hello World 2");
+  it("correct response", async () => {
+    const promise = dataProvider(supabaseClient).deleteMany!({
+      resource: "posts",
+      ids: [1],
     });
 
-    it("should change schema", async () => {
-        const ids = [28];
+    await expect(promise).resolves.not.toThrow();
+  });
 
-        const { data } = await dataProvider(supabaseClient).deleteMany({
-            resource: "products",
-            ids,
-        });
+  it("should change schema", async () => {
+    const ids = [1];
 
-        expect(data[0]["id"]).toEqual(28);
-
-        try {
-            await dataProvider(supabaseClient).deleteMany({
-                resource: "products",
-                ids: [],
-                meta: {
-                    schema: "private",
-                },
-            });
-        } catch (error: any) {
-            expect(error.code).toEqual("PGRST106");
-        }
+    const promise = dataProvider(supabaseClient).deleteMany({
+      resource: "posts",
+      ids,
     });
+
+    await expect(promise).resolves.not.toThrow();
+
+    const promise2 = dataProvider(supabaseClient).deleteMany({
+      resource: "posts",
+      ids: [123],
+      meta: {
+        schema: "private",
+      },
+    });
+
+    await expect(promise2).rejects.toEqual(
+      expect.objectContaining({ code: "PGRST106" }),
+    );
+  });
 });

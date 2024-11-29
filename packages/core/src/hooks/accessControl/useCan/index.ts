@@ -1,21 +1,25 @@
-import {
-    useQuery,
-    UseQueryOptions,
-    UseQueryResult,
-} from "@tanstack/react-query";
 import { useContext } from "react";
+
+import { getXRay } from "@refinedev/devtools-internal";
+import {
+  type UseQueryOptions,
+  type UseQueryResult,
+  useQuery,
+} from "@tanstack/react-query";
 
 import { AccessControlContext } from "@contexts/accessControl";
 import { sanitizeResource } from "@definitions/helpers/sanitize-resource";
-import { CanParams, CanReturnType } from "../../../interfaces";
 import { useKeys } from "@hooks/useKeys";
-import { getXRay } from "@refinedev/devtools-internal";
+import type {
+  CanParams,
+  CanReturnType,
+} from "../../../contexts/accessControl/types";
 
 export type UseCanProps = CanParams & {
-    /**
-     * react-query's [useQuery](https://tanstack.com/query/v4/docs/reference/useQuery) options
-     */
-    queryOptions?: UseQueryOptions<CanReturnType>;
+  /**
+   * react-query's [useQuery](https://tanstack.com/query/v4/docs/reference/useQuery) options
+   */
+  queryOptions?: UseQueryOptions<CanReturnType>;
 };
 
 /**
@@ -27,58 +31,59 @@ export type UseCanProps = CanParams & {
  *
  */
 export const useCan = ({
-    action,
-    resource,
-    params,
-    queryOptions: hookQueryOptions,
+  action,
+  resource,
+  params,
+  queryOptions: hookQueryOptions,
 }: UseCanProps): UseQueryResult<CanReturnType> => {
-    const { can, options: globalOptions } = useContext(AccessControlContext);
-    const { keys, preferLegacyKeys } = useKeys();
+  const { can, options: globalOptions } = useContext(AccessControlContext);
+  const { keys, preferLegacyKeys } = useKeys();
 
-    const { queryOptions: globalQueryOptions } = globalOptions || {};
+  const { queryOptions: globalQueryOptions } = globalOptions || {};
 
-    const mergedQueryOptions = {
-        ...globalQueryOptions,
-        ...hookQueryOptions,
-    };
+  const mergedQueryOptions = {
+    ...globalQueryOptions,
+    ...hookQueryOptions,
+  };
 
-    /**
-     * Since `react-query` stringifies the query keys, it will throw an error for a circular dependency if we include `React.ReactNode` elements inside the keys.
-     * The feature in #2220(https://github.com/refinedev/refine/issues/2220) includes such change and to fix this, we need to remove `icon` property in the `resource`
-     */
-    const { resource: _resource, ...paramsRest } = params ?? {};
+  /**
+   * Since `react-query` stringifies the query keys, it will throw an error for a circular dependency if we include `React.ReactNode` elements inside the keys.
+   * The feature in #2220(https://github.com/refinedev/refine/issues/2220) includes such change and to fix this, we need to remove `icon` property in the `resource`
+   */
+  const { resource: _resource, ...paramsRest } = params ?? {};
 
-    /* eslint-disable @typescript-eslint/no-unused-vars */
-    const sanitizedResource = sanitizeResource(_resource);
+  const sanitizedResource = sanitizeResource(_resource);
 
-    /* eslint-enable @typescript-eslint/no-unused-vars */
-    const queryResponse = useQuery<CanReturnType>({
-        queryKey: keys()
-            .access()
-            .resource(resource)
-            .action(action)
-            .params({
-                params: { ...paramsRest, resource: sanitizedResource },
-                enabled: mergedQueryOptions?.enabled,
-            })
-            .get(preferLegacyKeys),
-        // Enabled check for `can` is enough to be sure that it's defined in the query function but TS is not smart enough to know that.
-        queryFn: () =>
-            can?.({
-                action,
-                resource,
-                params: { ...paramsRest, resource: sanitizedResource },
-            }) ?? Promise.resolve({ can: true }),
-        enabled: typeof can !== "undefined",
-        ...mergedQueryOptions,
-        meta: {
-            ...mergedQueryOptions?.meta,
-            ...getXRay("useCan", preferLegacyKeys),
-        },
-        retry: false,
-    });
+  const queryResponse = useQuery<CanReturnType>({
+    queryKey: keys()
+      .access()
+      .resource(resource)
+      .action(action)
+      .params({
+        params: { ...paramsRest, resource: sanitizedResource },
+        enabled: mergedQueryOptions?.enabled,
+      })
+      .get(preferLegacyKeys),
+    // Enabled check for `can` is enough to be sure that it's defined in the query function but TS is not smart enough to know that.
+    queryFn: () =>
+      can?.({
+        action,
+        resource,
+        params: { ...paramsRest, resource: sanitizedResource },
+      }) ?? Promise.resolve({ can: true }),
+    enabled: typeof can !== "undefined",
+    ...mergedQueryOptions,
+    meta: {
+      ...mergedQueryOptions?.meta,
+      ...getXRay("useCan", preferLegacyKeys, resource, [
+        "useButtonCanAccess",
+        "useNavigationButton",
+      ]),
+    },
+    retry: false,
+  });
 
-    return typeof can === "undefined"
-        ? ({ data: { can: true } } as typeof queryResponse)
-        : queryResponse;
+  return typeof can === "undefined"
+    ? ({ data: { can: true } } as typeof queryResponse)
+    : queryResponse;
 };

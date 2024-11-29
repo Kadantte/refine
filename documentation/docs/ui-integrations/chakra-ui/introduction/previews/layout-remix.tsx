@@ -8,7 +8,7 @@ export default function LayoutRemix() {
       hidePreview
       dependencies={{
         "@refinedev/chakra-ui": "^2.26.17",
-        "@tabler/icons": "^1.119.0",
+        "@tabler/icons-react": "^3.1.0",
         "@refinedev/core": "^4.45.1",
         "@refinedev/react-router-v6": "^4.5.4",
         "@refinedev/simple-rest": "^4.5.4",
@@ -90,7 +90,7 @@ export default function App() {
 const ProtectedTsxCode = /* jsx */ `
 import { ThemedLayoutV2 } from "@refinedev/chakra-ui";
 import { Outlet } from "@remix-run/react";
-import { LoaderArgs, redirect } from "@remix-run/node";
+import { LoaderFunctionArgs, redirect } from "@remix-run/node";
 
 /**
  * Routes starting with \`_layout\` will have their children rendered inside the layout.
@@ -161,7 +161,7 @@ export default function ProductList() {
             setCurrent,
             pageCount,
             current,
-            tableQueryResult: { data: tableData },
+            tableQuery: { data: tableData },
         },
     } = useTable({
         columns,

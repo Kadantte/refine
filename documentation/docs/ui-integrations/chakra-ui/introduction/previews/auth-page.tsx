@@ -9,7 +9,7 @@ export default function AuthPage() {
       initialPercentage={40}
       dependencies={{
         "@refinedev/chakra-ui": "^2.26.17",
-        "@tabler/icons": "^1.119.0",
+        "@tabler/icons-react": "^3.1.0",
         "@refinedev/core": "^4.45.1",
         "@refinedev/react-router-v6": "^4.5.4",
         "@refinedev/simple-rest": "^4.5.4",
@@ -20,7 +20,7 @@ export default function AuthPage() {
         "react-dom": "^18.0.0",
         "react-router": "latest",
         "react-router-dom": "^6.8.1",
-        "react-hook-form": "^7.30.0",
+        "react-hook-form": "^7.43.5",
       }}
       startRoute="/login"
       files={{
@@ -200,7 +200,7 @@ export const ProductList = () => {
             setCurrent,
             pageCount,
             current,
-            tableQueryResult: { data: tableData },
+            tableQuery: { data: tableData },
         },
     } = useTable({
         columns,

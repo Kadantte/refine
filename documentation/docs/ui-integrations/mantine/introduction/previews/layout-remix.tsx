@@ -12,7 +12,7 @@ export default function LayoutRemix() {
         "@refinedev/simple-rest": "^4.5.4",
         "@refinedev/react-table": "^5.6.4",
         "@tanstack/react-table": "^8.2.6",
-        "@tabler/icons": "^1.119.0",
+        "@tabler/icons-react": "^3.1.0",
         "@emotion/react": "^11.8.2",
         "@mantine/core": "^5.10.4",
         "@mantine/hooks": "^5.10.4",
@@ -52,7 +52,7 @@ import { Refine } from "@refinedev/core";
 import routerProvider from "@refinedev/remix-router";
 import dataProvider from "@refinedev/simple-rest";
 
-import { RefineThemes, ThemedLayoutV2, notificationProvider } from "@refinedev/mantine";
+import { RefineThemes, ThemedLayoutV2, useNotificationProvider } from "@refinedev/mantine";
 import { NotificationsProvider } from "@mantine/notifications";
 import { MantineProvider, Global } from "@mantine/core";
 
@@ -74,7 +74,7 @@ export default function App() {
             <Refine
               routerProvider={routerProvider}
               dataProvider={dataProvider("https://api.fake-rest.refine.dev")}
-              notificationProvider={notificationProvider}
+              notificationProvider={useNotificationProvider}
               resources={[
                 {
                   name: "products",
@@ -98,7 +98,7 @@ export default function App() {
 const ProtectedTsxCode = /* jsx */ `
 import { ThemedLayoutV2 } from "@refinedev/mantine";
 import { Outlet } from "@remix-run/react";
-import { LoaderArgs, redirect } from "@remix-run/node";
+import { LoaderFunctionArgs, redirect } from "@remix-run/node";
 
 /**
  * Routes starting with \`_layout\` will have their children rendered inside the layout.
@@ -158,7 +158,7 @@ export default function ProductList() {
           setCurrent,
           pageCount,
           current,
-          tableQueryResult: { data: tableData },
+          tableQuery: { data: tableData },
       },
   } = useTable({
       columns,

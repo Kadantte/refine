@@ -14,11 +14,15 @@ setRefineProps({
 });
 
 const Wrapper = ({ children }) => {
-  return <ChakraUI.ChakraProvider theme={RefineChakra.refineTheme}>{children}</ChakraUI.ChakraProvider>;
+  return (
+    <ChakraUI.ChakraProvider theme={RefineChakra.refineTheme}>
+      {children}
+    </ChakraUI.ChakraProvider>
+  );
 };
 ```
 
-This field is used to display boolean values. It uses the [`<Tooltip>`](https://chakra-ui.com/docs/components/tooltip/usage) values from Chakra UI.
+This field is used to display boolean values. It uses the [`<Tooltip>`](https://www.chakra-ui.com/docs/components/tooltip#usage) values from Chakra UI.
 
 :::simple Good to know
 
@@ -42,10 +46,18 @@ import {
   // highlight-next-line
   BooleanField,
 } from "@refinedev/chakra-ui";
-import { TableContainer, Table, Thead, Tr, Th, Tbody, Td } from "@chakra-ui/react";
+import {
+  TableContainer,
+  Table,
+  Thead,
+  Tr,
+  Th,
+  Tbody,
+  Td,
+} from "@chakra-ui/react";
 import { useTable } from "@refinedev/react-table";
 import { ColumnDef, flexRender } from "@tanstack/react-table";
-import { IconX, IconCheck } from "@tabler/icons";
+import { IconX, IconCheck } from "@tabler/icons-react";
 
 const PostList: React.FC = () => {
   const columns = React.useMemo<ColumnDef<IPost>[]>(
@@ -96,7 +108,11 @@ const PostList: React.FC = () => {
                 {headerGroup.headers.map((header) => {
                   return (
                     <Th key={header.id}>
-                      {!header.isPlaceholder && flexRender(header.column.columnDef.header, header.getContext())}
+                      {!header.isPlaceholder &&
+                        flexRender(
+                          header.column.columnDef.header,
+                          header.getContext(),
+                        )}
                     </Th>
                   );
                 })}
@@ -108,7 +124,14 @@ const PostList: React.FC = () => {
               return (
                 <Tr key={row.id}>
                   {row.getVisibleCells().map((cell) => {
-                    return <Td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</Td>;
+                    return (
+                      <Td key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext(),
+                        )}
+                      </Td>
+                    );
                   })}
                 </Tr>
               );
@@ -150,6 +173,6 @@ render(
 
 :::simple External Props
 
-It also accepts all props of Chakra UI [Tooltip](https://chakra-ui.com/docs/components/tooltip/usage).
+It also accepts all props of Chakra UI [Tooltip](https://www.chakra-ui.com/docs/components/tooltip#usage).
 
 :::

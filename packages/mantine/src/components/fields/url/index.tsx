@@ -1,7 +1,7 @@
 import React from "react";
 import { Anchor } from "@mantine/core";
 
-import { UrlFieldProps } from "../types";
+import type { UrlFieldProps } from "../types";
 
 /**
  * This field is used to display email values. It uses the {@link https://mantine.dev/core/text `<Text>` }
@@ -11,14 +11,14 @@ import { UrlFieldProps } from "../types";
  * @see {@link https://refine.dev/docs/api-reference/mantine/components/fields/url} for more details.
  */
 export const UrlField: React.FC<UrlFieldProps> = ({
-    children,
-    value,
-    title,
-    ...rest
+  children,
+  value,
+  title,
+  ...rest
 }) => {
-    return (
-        <Anchor href={value} title={title} {...rest}>
-            {children ?? value}
-        </Anchor>
-    );
+  return (
+    <Anchor href={value} title={title} {...rest}>
+      {children ?? value}
+    </Anchor>
+  );
 };

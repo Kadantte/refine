@@ -5,22 +5,22 @@ import { TutorialSandpack } from "@site/src/refine-theme/tutorial-sandpack";
 import { TutorialUpdateFileButton } from "@site/src/refine-theme/tutorial-update-file-button";
 
 import {
-    finalFiles as initialFiles,
-    dependencies,
+  finalFiles as initialFiles,
+  dependencies,
 } from "@site/tutorial/ui-libraries/intro/ant-design/react-router/sandpack";
 import { removeActiveFromFiles } from "@site/src/utils/remove-active-from-files";
 
 export const Sandpack = ({ children }: { children: React.ReactNode }) => {
-    return (
-        <TutorialSandpack
-            showNavigator
-            dependencies={dependencies}
-            files={initialFiles}
-            finalFiles={finalFiles}
-        >
-            {children}
-        </TutorialSandpack>
-    );
+  return (
+    <TutorialSandpack
+      showNavigator
+      dependencies={dependencies}
+      files={initialFiles}
+      finalFiles={finalFiles}
+    >
+      {children}
+    </TutorialSandpack>
+  );
 };
 
 // updates
@@ -75,10 +75,7 @@ export default function App(): JSX.Element {
                   >
                     <ThemedLayoutV2
                       Title={(props) => (
-                        <ThemedTitleV2
-                          {...props}
-                          text="Awesome Project"
-                        />
+                        <ThemedTitleV2 {...props} text="Awesome Project" />
                       )}
                     >
                       <Outlet />
@@ -118,24 +115,24 @@ export default function App(): JSX.Element {
 // actions
 
 export const AddCustomTitleToLayout = () => {
-    const { sandpack } = useSandpack();
+  const { sandpack } = useSandpack();
 
-    return (
-        <TutorialUpdateFileButton
-            onClick={() => {
-                sandpack.updateFile("/src/App.tsx", LayoutWithCustomTitle);
-                sandpack.setActiveFile("/src/App.tsx");
-            }}
-        />
-    );
+  return (
+    <TutorialUpdateFileButton
+      onClick={() => {
+        sandpack.updateFile("/src/App.tsx", LayoutWithCustomTitle);
+        sandpack.setActiveFile("/src/App.tsx");
+      }}
+    />
+  );
 };
 
 // files
 
 export const finalFiles = {
-    ...removeActiveFromFiles(initialFiles),
-    "src/App.tsx": {
-        code: LayoutWithCustomTitle,
-        active: true,
-    },
+  ...removeActiveFromFiles(initialFiles),
+  "src/App.tsx": {
+    code: LayoutWithCustomTitle,
+    active: true,
+  },
 };

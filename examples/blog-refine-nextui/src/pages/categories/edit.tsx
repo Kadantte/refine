@@ -1,6 +1,4 @@
-import { IResourceComponentsProps } from "@refinedev/core";
-
-import { HttpError, useBack } from "@refinedev/core";
+import { type HttpError, useBack } from "@refinedev/core";
 import { useForm } from "@refinedev/react-hook-form";
 import { Controller } from "react-hook-form";
 
@@ -8,9 +6,9 @@ import { Button, Card, Input } from "@nextui-org/react";
 
 import { ArrowLongLeftIcon } from "@heroicons/react/24/outline";
 
-import { ICategory } from "../../interfaces";
+import type { ICategory } from "../../interfaces";
 
-export const CategoryEdit: React.FC<IResourceComponentsProps> = () => {
+export const CategoryEdit = () => {
   const goBack = useBack();
 
   const {

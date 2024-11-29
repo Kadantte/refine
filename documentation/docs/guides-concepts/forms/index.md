@@ -25,13 +25,17 @@ To learn more about the usage and see `useForm` in action, check out the referen
 import { useForm } from "@refinedev/core";
 
 const EditPage = () => {
-  const { queryResult, formLoading, onFinish } = useForm<IProduct, HttpError, FormValues>({
+  const { query, formLoading, onFinish } = useForm<
+    IProduct,
+    HttpError,
+    FormValues
+  >({
     resource: "products",
     action: "edit",
     id: 123,
   });
 
-  const record = queryResult.data?.data;
+  const record = query.data?.data;
 
   const onSubmit = (event) => {
     const data = Object.fromEntries(new FormData(event.target).entries());
@@ -65,7 +69,7 @@ import { useForm } from "@refinedev/react-hook-form";
 
 const EditPage = () => {
   const {
-    refineCore: { onFinish, formLoading, queryResult },
+    refineCore: { onFinish, formLoading, query },
     register,
     handleSubmit,
     formState: { errors },
@@ -104,10 +108,16 @@ import { useForm, Edit } from "@refinedev/antd";
 import { Form, Input } from "antd";
 
 const EditPage = () => {
-  const { formProps, saveButtonProps, queryResult } = useForm<IProduct, HttpError, FormValues>({
-    resource: "products",
-    action: "edit",
-    id: 123,
+  const { formProps, saveButtonProps, query } = useForm<
+    IProduct,
+    HttpError,
+    FormValues
+  >({
+    refineCoreProps: {
+      resource: "products",
+      action: "edit",
+      id: 123,
+    },
   });
 
   return (
@@ -136,7 +146,7 @@ import { TextInput } from "@mantine/core";
 
 const EditPage = () => {
   const {
-    refineCore: { onFinish, formLoading, queryResult },
+    refineCore: { onFinish, formLoading, query },
     register,
     handleSubmit,
     formState: { errors },
@@ -156,8 +166,18 @@ const EditPage = () => {
   return (
     <Edit saveButtonProps={saveButtonProps}>
       <form>
-        <TextInput mt={8} label="Name" placeholder="Name" {...getInputProps("name")} />
-        <TextInput mt={8} label="Material" placeholder="Material" {...getInputProps("material")} />
+        <TextInput
+          mt={8}
+          label="Name"
+          placeholder="Name"
+          {...getInputProps("name")}
+        />
+        <TextInput
+          mt={8}
+          label="Material"
+          placeholder="Material"
+          {...getInputProps("material")}
+        />
       </form>
     </Edit>
   );
@@ -177,7 +197,7 @@ import { Button, Box, TextField } from "@mui/material";
 
 const EditPage = () => {
   const {
-    refineCore: { onFinish, formLoading, queryResult },
+    refineCore: { onFinish, formLoading, query },
     register,
     handleSubmit,
     saveButtonProps,
@@ -225,7 +245,7 @@ import { FormControl, FormLabel, Input, Button } from "@chakra-ui/react";
 
 const EditPage = () => {
   const {
-    refineCore: { onFinish, formLoading, queryResult },
+    refineCore: { onFinish, formLoading, query },
     register,
     handleSubmit,
     saveButtonProps,
@@ -242,7 +262,11 @@ const EditPage = () => {
       <form>
         <FormControl mb="3">
           <FormLabel>Name</FormLabel>
-          <Input id="name" type="text" {...register("name", { required: "Name is required" })} />
+          <Input
+            id="name"
+            type="text"
+            {...register("name", { required: "Name is required" })}
+          />
         </FormControl>
         <FormControl mb="3">
           <FormLabel>Material</FormLabel>
@@ -315,7 +339,10 @@ useForm({
 
 ```tsx title="app.tsx"
 import { Refine } from "@refinedev/core";
-import { routerProvider, UnsavedChangesNotifier } from "@refinedev/react-router-v6";
+import {
+  routerProvider,
+  UnsavedChangesNotifier,
+} from "@refinedev/react-router-v6";
 import { BrowserRouter, Routes } from "react-router-dom";
 
 const App = () => (
@@ -346,7 +373,10 @@ Check out the [`UnsavedChangesNotifier` section of the React Router integration 
 ```tsx title="_app.tsx"
 import type { AppProps } from "next/app";
 import { Refine } from "@refinedev/core";
-import { routerProvider, UnsavedChangesNotifier } from "@refinedev/nextjs-router/pages";
+import {
+  routerProvider,
+  UnsavedChangesNotifier,
+} from "@refinedev/nextjs-router/pages";
 
 export default function App({ Component, pageProps }) {
   return (
@@ -376,12 +406,21 @@ Check out the [`UnsavedChangesNotifier` section of the React Router integration 
 ```tsx title="app/root.tsx"
 import type { MetaFunction } from "@remix-run/node";
 
-import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration } from "@remix-run/react";
+import {
+  Links,
+  LiveReload,
+  Meta,
+  Outlet,
+  Scripts,
+  ScrollRestoration,
+} from "@remix-run/react";
 
 import { Refine } from "@refinedev/core";
 
 // highlight-next-line
-import routerProvider, { UnsavedChangesNotifier } from "@refinedev/remix-router";
+import routerProvider, {
+  UnsavedChangesNotifier,
+} from "@refinedev/remix-router";
 
 export default function App() {
   return (
@@ -702,7 +741,10 @@ useForm({
   successNotification: (data, values, resource) => {
     return {
       description: translate("notifications.success", "Successful"),
-      message: translate("notifications.(edit|create)Success", "Successfully (updated|created) {resource}"),
+      message: translate(
+        "notifications.(edit|create)Success",
+        "Successfully (updated|created) {resource}",
+      ),
       type: "success",
     };
   },
@@ -916,7 +958,11 @@ export const UserCreate: React.FC = () => {
       <form>
         <FormControl mb="3">
           <FormLabel>Name</FormLabel>
-          <Input id="name" type="text" {...register("name", { required: "Name is required" })} />
+          <Input
+            id="name"
+            type="text"
+            {...register("name", { required: "Name is required" })}
+          />
         </FormControl>
         <FormControl mb="3">
           <FormLabel>Surname</FormLabel>
@@ -999,8 +1045,18 @@ const CreatePage = () => {
   return (
     <Create saveButtonProps={saveButtonProps}>
       <form>
-        <TextInput mt={8} label="Name" placeholder="Name" {...getInputProps("name")} />
-        <TextInput mt={8} label="Surname" placeholder="Surname" {...getInputProps("surname")} />
+        <TextInput
+          mt={8}
+          label="Name"
+          placeholder="Name"
+          {...getInputProps("name")}
+        />
+        <TextInput
+          mt={8}
+          label="Surname"
+          placeholder="Surname"
+          {...getInputProps("surname")}
+        />
       </form>
     </Create>
   );

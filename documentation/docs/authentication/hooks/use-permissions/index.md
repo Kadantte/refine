@@ -22,7 +22,12 @@ import type { AuthProvider } from "@refinedev/core";
 const authProvider: AuthProvider = {
   // ...
   // highlight-start
-  getPermissions: async () => {
+  getPermissions: async (params) => {
+    if (params) {
+      // do some logic like for example you can get roles for specific tenant
+      return ["admin"];
+    }
+
     return ["admin"];
   },
   // highlight-end
@@ -30,7 +35,7 @@ const authProvider: AuthProvider = {
 };
 ```
 
-Get permissions data in the list page with `usePermissions` and check if the user has `"admin`" role:
+Get permissions data in the list page with `usePermissions` and check if the user has `"admin"` role:
 
 ```tsx title="pages/post/list"
 // highlight-next-line
@@ -39,7 +44,9 @@ import { List } from "@refinedev/antd";
 
 export const PostList: React.FC = () => {
   // highlight-next-line
-  const { data: permissionsData } = usePermissions();
+  const { data: permissionsData } = usePermissions({
+    params: { tenantId: "id" }, // you can pass parameters to getPermissions
+  });
 
   return <List canCreate={permissionsData?.includes("admin")}>...</List>;
 };

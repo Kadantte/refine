@@ -1,62 +1,32 @@
 import React from "react";
-import { render, renderHook } from "@testing-library/react";
 
-import { MockJSONServer, TestWrapper, mockRouterBindings } from "@test";
-
+import {
+  MockJSONServer,
+  TestWrapper,
+  mockRouterProvider,
+  renderHook,
+  render,
+} from "@test";
 import { useLink } from "./";
+import "../../../components/link";
+
+jest.mock("../../../components/link", () => ({
+  Link: jest.fn().mockReturnValue(<div data-testid="mocked-link" />),
+}));
 
 describe("useLink Hook", () => {
-    it("should return routerProvider Link compotent", () => {
-        const mockLink = jest.fn();
-
-        const { result } = renderHook(() => useLink(), {
-            wrapper: TestWrapper({
-                resources: [{ name: "posts" }],
-                dataProvider: MockJSONServer,
-                routerProvider: mockRouterBindings({
-                    fns: {
-                        Link: mockLink,
-                    },
-                }),
-            }),
-        });
-
-        expect(result.current).toEqual(mockLink);
+  it("should return Link component", () => {
+    const { result } = renderHook(() => useLink(), {
+      wrapper: TestWrapper({
+        resources: [{ name: "posts" }],
+        dataProvider: MockJSONServer,
+        routerProvider: mockRouterProvider(),
+      }),
     });
 
-    it("if routerProvider go function is not defined, should return undefined", () => {
-        const { result } = renderHook(() => useLink(), {
-            wrapper: TestWrapper({
-                resources: [{ name: "posts" }],
-                dataProvider: MockJSONServer,
-                routerProvider: mockRouterBindings({
-                    fns: {
-                        Link: undefined,
-                    },
-                }),
-            }),
-        });
+    const Component = result.current;
 
-        const Link = result.current;
-
-        const { container } = render(<Link to="/posts" />);
-
-        expect(container.querySelector("a")?.getAttribute("href")).toEqual(
-            "/posts",
-        );
-    });
-
-    it("if it is used outside of router provider, should return undefined", () => {
-        jest.spyOn(React, "useContext").mockReturnValue(undefined);
-
-        const { result } = renderHook(() => useLink());
-
-        const Link = result.current;
-
-        const { container } = render(<Link to="/posts" />);
-
-        expect(container.querySelector("a")?.getAttribute("href")).toEqual(
-            "/posts",
-        );
-    });
+    const { getByTestId } = render(<Component to="posts" />);
+    expect(getByTestId("mocked-link")).toBeInTheDocument();
+  });
 });

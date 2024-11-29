@@ -112,7 +112,7 @@ Update your `src/pages/products/create.tsx` file by adding the following lines:
 import { useForm } from "@refinedev/core";
 
 export const CreateProduct = () => {
-  const { onFinish, mutationResult } = useForm({
+  const { onFinish, mutation } = useForm({
     action: "create",
     resource: "products",
   });
@@ -120,7 +120,7 @@ export const CreateProduct = () => {
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     // Using FormData to get the form values and convert it to an object.
-    const data = Object.fromEntries(new FormData(event.target).entries());
+    const data = Object.fromEntries(new FormData(event.currentTarget).entries());
     // Calling onFinish to submit with the data we've collected from the form.
     onFinish(data);
   };
@@ -142,7 +142,7 @@ export const CreateProduct = () => {
       <label htmlFor="category">Category ID</label>
       <input type="number" id="category" name="category" />
 
-      {mutationResult.isSuccess && <span>successfully submitted!</span>}
+      {mutation.isSuccess && <span>successfully submitted!</span>}
       <button type="submit">Submit</button>
     </form>
   );
@@ -165,7 +165,7 @@ Update your `src/pages/products/create.tsx` file by adding the following lines::
 import { useForm } from "@refinedev/core";
 
 export const CreateProduct = () => {
-  const { onFinish, mutationResult } = useForm({
+  const { onFinish, mutation } = useForm({
     action: "create",
     resource: "products",
   });
@@ -173,7 +173,7 @@ export const CreateProduct = () => {
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     // Using FormData to get the form values and convert it to an object.
-    const data = Object.fromEntries(new FormData(event.target).entries());
+    const data = Object.fromEntries(new FormData(event.currentTarget).entries());
     // Calling onFinish to submit with the data we've collected from the form.
     // highlight-start
     onFinish({
@@ -213,7 +213,7 @@ Update your `src/pages/products/create.tsx` file by adding the following lines t
 import { useForm, useSelect } from "@refinedev/core";
 
 export const CreateProduct = () => {
-  const { onFinish, mutationResult } = useForm({
+  const { onFinish, mutation } = useForm({
     action: "create",
     resource: "products",
   });
@@ -313,7 +313,7 @@ import { useForm, useSelect } from "@refinedev/core";
 
 export const EditProduct = () => {
   // highlight-start
-  const { onFinish, mutationResult, queryResult } = useForm({
+  const { onFinish, mutation, query } = useForm({
     action: "edit",
     resource: "products",
     id: "123",
@@ -321,7 +321,7 @@ export const EditProduct = () => {
   // highlight-end
 
   // highlight-next-line
-  const record = queryResult.data?.data;
+  const record = query.data?.data;
 
   const { options } = useSelect({
     resource: "categories",
@@ -330,7 +330,7 @@ export const EditProduct = () => {
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     // Using FormData to get the form values and convert it to an object.
-    const data = Object.fromEntries(new FormData(event.target).entries());
+    const data = Object.fromEntries(new FormData(event.currentTarget).entries());
     // Calling onFinish to submit with the data we've collected from the form.
     onFinish({
       ...data,
@@ -386,7 +386,7 @@ export const EditProduct = () => {
         ))}
       </select>
 
-      {mutationResult.isSuccess && <span>successfully submitted!</span>}
+      {mutation.isSuccess && <span>successfully submitted!</span>}
       <button type="submit">Submit</button>
     </form>
   );

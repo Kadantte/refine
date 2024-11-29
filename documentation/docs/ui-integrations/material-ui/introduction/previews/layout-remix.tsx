@@ -7,7 +7,7 @@ export default function LayoutRemix() {
       showNavigator
       hidePreview
       dependencies={{
-        "@refinedev/mui": "latest",
+        "@refinedev/mui": "5.0.0",
         "@refinedev/core": "latest",
         "@refinedev/simple-rest": "latest",
         "@refinedev/react-router-v6": "latest",
@@ -16,6 +16,7 @@ export default function LayoutRemix() {
         "@emotion/styled": "^11.8.1",
         "@mui/lab": "^5.0.0-alpha.85",
         "@mui/material": "^5.14.2",
+        "@mui/system": "latest",
         "@mui/x-data-grid": "^6.6.0",
         "@refinedev/remix-router": "latest",
       }}
@@ -99,7 +100,7 @@ export default function App() {
 const ProtectedTsxCode = /* jsx */ `
 import { ThemedLayoutV2 } from "@refinedev/mui";
 import { Outlet } from "@remix-run/react";
-import { LoaderArgs, redirect } from "@remix-run/node";
+import { LoaderFunctionArgs, redirect } from "@remix-run/node";
 
 /**
  * Routes starting with \`_layout\` will have their children rendered inside the layout.

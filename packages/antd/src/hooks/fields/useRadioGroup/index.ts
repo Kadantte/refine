@@ -1,38 +1,39 @@
-import { QueryObserverResult } from "@tanstack/react-query";
+import type { QueryObserverResult } from "@tanstack/react-query";
 import type { Radio } from "antd";
 
 import {
-    BaseKey,
-    BaseOption,
-    BaseRecord,
-    GetListResponse,
-    HttpError,
-    pickNotDeprecated,
-    useSelect,
-    UseSelectProps,
+  type BaseKey,
+  type BaseOption,
+  type BaseRecord,
+  type GetListResponse,
+  type HttpError,
+  pickNotDeprecated,
+  useSelect,
+  type UseSelectProps,
 } from "@refinedev/core";
 
 export type UseRadioGroupReturnType<
-    TData extends BaseRecord = BaseRecord,
-    TOption extends BaseOption = BaseOption,
+  TData extends BaseRecord = BaseRecord,
+  TOption extends BaseOption = BaseOption,
 > = {
-    radioGroupProps: Omit<
-        React.ComponentProps<typeof Radio.Group>,
-        "options"
-    > & {
-        options: TOption[];
-    };
-    queryResult: QueryObserverResult<GetListResponse<TData>>;
+  radioGroupProps: Omit<React.ComponentProps<typeof Radio.Group>, "options"> & {
+    options: TOption[];
+  };
+  query: QueryObserverResult<GetListResponse<TData>>;
+  /**
+   * @deprecated Use `query` instead
+   */
+  queryResult: QueryObserverResult<GetListResponse<TData>>;
 };
 
 type UseRadioGroupProps<TQueryFnData, TError, TData> = Omit<
-    UseSelectProps<TQueryFnData, TError, TData>,
-    "defaultValue"
+  UseSelectProps<TQueryFnData, TError, TData>,
+  "defaultValue"
 > & {
-    /**
-     * Sets the default value
-     */
-    defaultValue?: BaseKey;
+  /**
+   * Sets the default value
+   */
+  defaultValue?: BaseKey;
 };
 
 /**
@@ -47,11 +48,33 @@ type UseRadioGroupProps<TQueryFnData, TError, TData> = Omit<
  */
 
 export const useRadioGroup = <
-    TQueryFnData extends BaseRecord = BaseRecord,
-    TError extends HttpError = HttpError,
-    TData extends BaseRecord = TQueryFnData,
-    TOption extends BaseOption = BaseOption,
+  TQueryFnData extends BaseRecord = BaseRecord,
+  TError extends HttpError = HttpError,
+  TData extends BaseRecord = TQueryFnData,
+  TOption extends BaseOption = BaseOption,
 >({
+  resource,
+  sort,
+  sorters,
+  filters,
+  optionLabel,
+  optionValue,
+  queryOptions,
+  fetchSize,
+  pagination,
+  liveMode,
+  defaultValue,
+  selectedOptionsOrder,
+  onLiveEvent,
+  liveParams,
+  meta,
+  metaData,
+  dataProviderName,
+}: UseRadioGroupProps<TQueryFnData, TError, TData>): UseRadioGroupReturnType<
+  TData,
+  TOption
+> => {
+  const { query, options } = useSelect<TQueryFnData, TError, TData, TOption>({
     resource,
     sort,
     sorters,
@@ -63,44 +86,20 @@ export const useRadioGroup = <
     pagination,
     liveMode,
     defaultValue,
+    selectedOptionsOrder,
     onLiveEvent,
     liveParams,
-    meta,
-    metaData,
+    meta: pickNotDeprecated(meta, metaData),
+    metaData: pickNotDeprecated(meta, metaData),
     dataProviderName,
-}: UseRadioGroupProps<TQueryFnData, TError, TData>): UseRadioGroupReturnType<
-    TData,
-    TOption
-> => {
-    const { queryResult, options } = useSelect<
-        TQueryFnData,
-        TError,
-        TData,
-        TOption
-    >({
-        resource,
-        sort,
-        sorters,
-        filters,
-        optionLabel,
-        optionValue,
-        queryOptions,
-        fetchSize,
-        pagination,
-        liveMode,
-        defaultValue,
-        onLiveEvent,
-        liveParams,
-        meta: pickNotDeprecated(meta, metaData),
-        metaData: pickNotDeprecated(meta, metaData),
-        dataProviderName,
-    });
+  });
 
-    return {
-        radioGroupProps: {
-            options,
-            defaultValue,
-        },
-        queryResult,
-    };
+  return {
+    radioGroupProps: {
+      options,
+      defaultValue,
+    },
+    query,
+    queryResult: query,
+  };
 };

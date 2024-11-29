@@ -9,16 +9,16 @@ import { dependencies } from "@site/tutorial/ui-libraries/intro/ant-design/react
 import { removeActiveFromFiles } from "@site/src/utils/remove-active-from-files";
 
 export const Sandpack = ({ children }: { children: React.ReactNode }) => {
-    return (
-        <TutorialSandpack
-            showNavigator
-            dependencies={dependencies}
-            files={files}
-            finalFiles={finalFiles}
-        >
-            {children}
-        </TutorialSandpack>
-    );
+  return (
+    <TutorialSandpack
+      showNavigator
+      dependencies={dependencies}
+      files={files}
+      finalFiles={finalFiles}
+    >
+      {children}
+    </TutorialSandpack>
+  );
 };
 
 // updates
@@ -54,7 +54,8 @@ export const ListProducts = () => {
               return "Loading...";
             }
 
-            return categories?.data?.find((category) => category.id == value)?.title;
+            return categories?.data?.find((category) => category.id == value)
+              ?.title;
           }}
         />
         <Table.Column dataIndex="material" title="Material" />
@@ -76,7 +77,12 @@ export const ListProducts = () => {
 
 const ListProductsWithSorters = /* tsx */ `
 import { useMany } from "@refinedev/core";
-import { useTable, EditButton, ShowButton, getDefaultSortOrder } from "@refinedev/antd";
+import {
+  useTable,
+  EditButton,
+  ShowButton,
+  getDefaultSortOrder,
+} from "@refinedev/antd";
 
 import { Table, Space } from "antd";
 
@@ -115,7 +121,8 @@ export const ListProducts = () => {
               return "Loading...";
             }
 
-            return categories?.data?.find((category) => category.id == value)?.title;
+            return categories?.data?.find((category) => category.id == value)
+              ?.title;
           }}
         />
         <Table.Column dataIndex="material" title="Material" />
@@ -143,7 +150,7 @@ import {
   ShowButton,
   getDefaultSortOrder,
   FilterDropdown,
-  useSelect
+  useSelect,
 } from "@refinedev/antd";
 
 import { Table, Space, Input, Select } from "antd";
@@ -152,9 +159,7 @@ export const ListProducts = () => {
   const { tableProps, sorters, filters } = useTable({
     sorters: { initial: [{ field: "id", order: "asc" }] },
     filters: {
-      initial: [
-        { field: "category.id", operator: "eq", value: 2 },
-      ],
+      initial: [{ field: "category.id", operator: "eq", value: 2 }],
     },
     syncWithLocation: true,
   });
@@ -186,7 +191,7 @@ export const ListProducts = () => {
           defaultSortOrder={getDefaultSortOrder("name", sorters)}
           filterDropdown={(props) => (
             <FilterDropdown {...props}>
-                <Input />
+              <Input />
             </FilterDropdown>
           )}
         />
@@ -198,24 +203,18 @@ export const ListProducts = () => {
               return "Loading...";
             }
 
-            return categories?.data?.find((category) => category.id == value)?.title;
+            return categories?.data?.find((category) => category.id == value)
+              ?.title;
           }}
           filterDropdown={(props) => (
             <FilterDropdown
               {...props}
               mapValue={(selectedKey) => Number(selectedKey)}
             >
-              <Select
-                  style={{ minWidth: 200 }}
-                  {...selectProps}
-              />
+              <Select style={{ minWidth: 200 }} {...selectProps} />
             </FilterDropdown>
           )}
-          defaultFilteredValue={getDefaultFilter(
-            "category.id",
-            filters,
-            "eq",
-          )}
+          defaultFilteredValue={getDefaultFilter("category.id", filters, "eq")}
         />
         <Table.Column dataIndex="material" title="Material" />
         <Table.Column dataIndex="price" title="Price" />
@@ -241,44 +240,45 @@ import { TextField, NumberField, MarkdownField } from "@refinedev/antd";
 import { Typography } from "antd";
 
 export const ShowProduct = () => {
-    const { queryResult: { data, isLoading } } = useShow();
+  const {
+    query: { data, isLoading },
+  } = useShow();
 
-    const { data: categoryData, isLoading: categoryIsLoading } =
-    useOne({
-        resource: "categories",
-        id: data?.data?.category.id || "",
-        queryOptions: {
-            enabled: !!data?.data,
-        },
-    });
+  const { data: categoryData, isLoading: categoryIsLoading } = useOne({
+    resource: "categories",
+    id: data?.data?.category.id || "",
+    queryOptions: {
+      enabled: !!data?.data,
+    },
+  });
 
-    if (isLoading) {
-        return <div>Loading...</div>;
-    }
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
-    return (
-      <div>
-        <Typography.Title level={5}>Id</Typography.Title>
-        <TextField value={data?.data?.id} />
+  return (
+    <div>
+      <Typography.Title level={5}>Id</Typography.Title>
+      <TextField value={data?.data?.id} />
 
-        <Typography.Title level={5}>Name</Typography.Title>
-        <TextField value={data?.data?.name} />
+      <Typography.Title level={5}>Name</Typography.Title>
+      <TextField value={data?.data?.name} />
 
-        <Typography.Title level={5}>Description</Typography.Title>
-        <MarkdownField value={data?.data?.description} />
+      <Typography.Title level={5}>Description</Typography.Title>
+      <MarkdownField value={data?.data?.description} />
 
-        <Typography.Title level={5}>Material</Typography.Title>
-        <TextField value={data?.data?.material} />
+      <Typography.Title level={5}>Material</Typography.Title>
+      <TextField value={data?.data?.material} />
 
-        <Typography.Title level={5}>Category</Typography.Title>
-        <TextField
-          value={categoryIsLoading ? "Loading..." : categoryData?.data?.title}
-        />
+      <Typography.Title level={5}>Category</Typography.Title>
+      <TextField
+        value={categoryIsLoading ? "Loading..." : categoryData?.data?.title}
+      />
 
-        <Typography.Title level={5}>Price</Typography.Title>
-        <NumberField value={data?.data?.price} />
-      </div>
-    );
+      <Typography.Title level={5}>Price</Typography.Title>
+      <NumberField value={data?.data?.price} />
+    </div>
+  );
 };
 `.trim();
 
@@ -289,7 +289,9 @@ import { Form, Input, Select, InputNumber } from "antd";
 
 export const CreateProduct = () => {
   const { formProps, saveButtonProps } = useForm({
-    redirect: "edit",
+    refineCoreProps: {
+      redirect: "edit",
+    },
   });
 
   const { selectProps } = useSelect({
@@ -325,13 +327,15 @@ import { useForm, useSelect, SaveButton } from "@refinedev/antd";
 import { Form, Input, Select, InputNumber } from "antd";
 
 export const EditProduct = () => {
-  const { formProps, saveButtonProps, queryResult } = useForm({
-    redirect: "show",
+  const { formProps, saveButtonProps, query } = useForm({
+    refineCoreProps: {
+      redirect: "show",
+    },
   });
 
   const { selectProps } = useSelect({
     resource: "categories",
-    defaultValue: queryResult?.data?.data?.category?.id,
+    defaultValue: query?.data?.data?.category?.id,
   });
 
   return (
@@ -360,124 +364,112 @@ export const EditProduct = () => {
 // actions
 
 export const RefactorTableInListProducts = () => {
-    const { sandpack } = useSandpack();
+  const { sandpack } = useSandpack();
 
-    return (
-        <TutorialUpdateFileButton
-            onClick={() => {
-                sandpack.updateFile(
-                    "src/pages/products/list.tsx",
-                    ListProductsTsx,
-                );
-                sandpack.setActiveFile("/src/pages/products/list.tsx");
-            }}
-        />
-    );
+  return (
+    <TutorialUpdateFileButton
+      onClick={() => {
+        sandpack.updateFile("src/pages/products/list.tsx", ListProductsTsx);
+        sandpack.setActiveFile("/src/pages/products/list.tsx");
+      }}
+    />
+  );
 };
 
 export const AddSortersInListProducts = () => {
-    const { sandpack } = useSandpack();
+  const { sandpack } = useSandpack();
 
-    return (
-        <TutorialUpdateFileButton
-            onClick={() => {
-                sandpack.updateFile(
-                    "src/pages/products/list.tsx",
-                    ListProductsWithSorters,
-                );
-                sandpack.setActiveFile("/src/pages/products/list.tsx");
-            }}
-        />
-    );
+  return (
+    <TutorialUpdateFileButton
+      onClick={() => {
+        sandpack.updateFile(
+          "src/pages/products/list.tsx",
+          ListProductsWithSorters,
+        );
+        sandpack.setActiveFile("/src/pages/products/list.tsx");
+      }}
+    />
+  );
 };
 
 export const AddFiltersInListProducts = () => {
-    const { sandpack } = useSandpack();
+  const { sandpack } = useSandpack();
 
-    return (
-        <TutorialUpdateFileButton
-            onClick={() => {
-                sandpack.updateFile(
-                    "src/pages/products/list.tsx",
-                    ListProductsWithFilters,
-                );
-                sandpack.setActiveFile("/src/pages/products/list.tsx");
-            }}
-        />
-    );
+  return (
+    <TutorialUpdateFileButton
+      onClick={() => {
+        sandpack.updateFile(
+          "src/pages/products/list.tsx",
+          ListProductsWithFilters,
+        );
+        sandpack.setActiveFile("/src/pages/products/list.tsx");
+      }}
+    />
+  );
 };
 
 export const RefactorFormInEditProduct = () => {
-    const { sandpack } = useSandpack();
+  const { sandpack } = useSandpack();
 
-    return (
-        <TutorialUpdateFileButton
-            onClick={() => {
-                sandpack.updateFile(
-                    "src/pages/products/edit.tsx",
-                    EditProductTsx,
-                );
-                sandpack.setActiveFile("/src/pages/products/edit.tsx");
-            }}
-        />
-    );
+  return (
+    <TutorialUpdateFileButton
+      onClick={() => {
+        sandpack.updateFile("src/pages/products/edit.tsx", EditProductTsx);
+        sandpack.setActiveFile("/src/pages/products/edit.tsx");
+      }}
+    />
+  );
 };
 
 export const RefactorFormInCreateProduct = () => {
-    const { sandpack } = useSandpack();
+  const { sandpack } = useSandpack();
 
-    return (
-        <TutorialUpdateFileButton
-            onClick={() => {
-                sandpack.updateFile(
-                    "src/pages/products/create.tsx",
-                    CreateProductTsx,
-                );
-                sandpack.setActiveFile("/src/pages/products/create.tsx");
-            }}
-        />
-    );
+  return (
+    <TutorialUpdateFileButton
+      onClick={() => {
+        sandpack.updateFile("src/pages/products/create.tsx", CreateProductTsx);
+        sandpack.setActiveFile("/src/pages/products/create.tsx");
+      }}
+    />
+  );
 };
 
 export const RefactorFieldsInShowProduct = () => {
-    const { sandpack } = useSandpack();
+  const { sandpack } = useSandpack();
 
-    return (
-        <TutorialUpdateFileButton
-            onClick={() => {
-                sandpack.updateFile(
-                    "src/pages/products/show.tsx",
-                    ShowProductTsx,
-                );
-                sandpack.setActiveFile("/src/pages/products/show.tsx");
-            }}
-        />
-    );
+  return (
+    <TutorialUpdateFileButton
+      onClick={() => {
+        sandpack.updateFile("src/pages/products/show.tsx", ShowProductTsx);
+        sandpack.setActiveFile("/src/pages/products/show.tsx");
+      }}
+    />
+  );
 };
 
 // files
 
 export const files = {
-    ...initialFiles,
-    "styles.css": {
-        code: "",
-        hidden: true,
-    },
+  ...initialFiles,
+  "styles.css": {
+    code: "",
+    hidden: true,
+  },
 };
 
 export const finalFiles = {
-    ...removeActiveFromFiles(files),
-    "src/pages/products/list.tsx": {
-        code: ListProductsWithFilters,
-        active: true,
-    },
-    "src/pages/products/show.tsx": {
-        code: ShowProductTsx,
-    },
-    "src/pages/products/create.tsx": {
-        code: CreateProductTsx,
-    },
-    "src/pages/products/edit.tsx": {
-        code: EditProductTsx,
-    },
+  ...removeActiveFromFiles(files),
+  "src/pages/products/list.tsx": {
+    code: ListProductsWithFilters,
+    active: true,
+  },
+  "src/pages/products/show.tsx": {
+    code: ShowProductTsx,
+  },
+  "src/pages/products/create.tsx": {
+    code: CreateProductTsx,
+  },
+  "src/pages/products/edit.tsx": {
+    code: EditProductTsx,
+  },
 };

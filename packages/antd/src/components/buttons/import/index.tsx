@@ -1,13 +1,13 @@
 import React from "react";
 import { Button, Upload } from "antd";
 import { ImportOutlined } from "@ant-design/icons";
-import { useTranslate } from "@refinedev/core";
+import { useImportButton } from "@refinedev/core";
 import {
-    RefineButtonClassNames,
-    RefineButtonTestIds,
+  RefineButtonClassNames,
+  RefineButtonTestIds,
 } from "@refinedev/ui-types";
 
-import { ImportButtonProps } from "../types";
+import type { ImportButtonProps } from "../types";
 
 /**
  * `<ImportButton>` is compatible with the {@link https://refine.dev/docs/api-reference/antd/hooks/import/useImport `useImport`} hook and is meant to be used as it's upload button.
@@ -17,24 +17,25 @@ import { ImportButtonProps } from "../types";
  * @see {@link https://refine.dev/docs/api-reference/antd/components/buttons/import-button} for more details.
  */
 export const ImportButton: React.FC<ImportButtonProps> = ({
-    uploadProps,
-    buttonProps,
-    hideText = false,
-    children,
+  uploadProps,
+  buttonProps,
+  hideText = false,
+  children,
+  loading,
 }) => {
-    const translate = useTranslate();
+  const { label } = useImportButton();
 
-    return (
-        <Upload {...uploadProps}>
-            <Button
-                icon={<ImportOutlined />}
-                data-testid={RefineButtonTestIds.ImportButton}
-                className={RefineButtonClassNames.ImportButton}
-                {...buttonProps}
-            >
-                {!hideText &&
-                    (children ?? translate("buttons.import", "Import"))}
-            </Button>
-        </Upload>
-    );
+  return (
+    <Upload {...uploadProps}>
+      <Button
+        icon={<ImportOutlined />}
+        data-testid={RefineButtonTestIds.ImportButton}
+        className={RefineButtonClassNames.ImportButton}
+        loading={loading}
+        {...buttonProps}
+      >
+        {!hideText && (children ?? label)}
+      </Button>
+    </Upload>
+  );
 };

@@ -38,12 +38,15 @@ interface IPost {
 }
 
 const PostList: React.FC = () => {
-  const { tableQueryResult } = useTable<IPost, HttpError>();
-  const posts = tableQueryResult?.data?.data ?? [];
+  const { tableQuery } = useTable<IPost, HttpError>();
+  const posts = tableQuery?.data?.data ?? [];
 
   // highlight-start
   // Fetches the category of each post. It uses the useMany hook to fetch the category data from the API.
-  const { data: categoryData, isLoading: categoryIsLoading } = useMany<ICategory, HttpError>({
+  const { data: categoryData, isLoading: categoryIsLoading } = useMany<
+    ICategory,
+    HttpError
+  >({
     resource: "categories",
     // Creates the array of ids. This will filter and fetch the category data for the relevant posts.
     ids: posts.map((item) => item?.category?.id),
@@ -54,7 +57,7 @@ const PostList: React.FC = () => {
   });
   // highlight-end
 
-  if (tableQueryResult?.isLoading) {
+  if (tableQuery?.isLoading) {
     return <div>Loading...</div>;
   }
 
@@ -84,7 +87,9 @@ const PostList: React.FC = () => {
                 {categoryIsLoading
                   ? "loading..."
                   : // Gets the title of the category from the categoryData object, which is the result of    the useMany hook.
-                    categoryData?.data.find((item) => item.id === post.category.id)?.title || "-"}
+                    categoryData?.data.find(
+                      (item) => item.id === post.category.id,
+                    )?.title || "-"}
               </td>
               {/* highlight-end */}
             </tr>

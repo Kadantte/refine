@@ -14,11 +14,15 @@ setRefineProps({
 });
 
 const Wrapper = ({ children }) => {
-  return <ChakraUI.ChakraProvider theme={RefineChakra.refineTheme}>{children}</ChakraUI.ChakraProvider>;
+  return (
+    <ChakraUI.ChakraProvider theme={RefineChakra.refineTheme}>
+      {children}
+    </ChakraUI.ChakraProvider>
+  );
 };
 ```
 
-This field lets you show basic text. It uses Chakra UI's [`<Text>`](https://chakra-ui.com/docs/components/text/usage) component.
+This field lets you show basic text. It uses Chakra UI's [`<Text>`](https://www.chakra-ui.com/docs/components/text#usage) component.
 
 :::simple Good to know
 
@@ -107,6 +111,6 @@ render(
 
 :::simple External Props
 
-It also accepts all props of Chakra UI's [Text](https://chakra-ui.com/docs/components/text/usage) component.
+It also accepts all props of Chakra UI's [Text](https://www.chakra-ui.com/docs/components/text#usage) component.
 
 :::

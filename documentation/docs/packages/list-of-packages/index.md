@@ -12,8 +12,9 @@ To learn more about UI Libraries and integrations, check out [UI Libraries](/doc
 
 - [`@refinedev/antd`](/docs/ui-integrations/ant-design/introduction) - [Ant Design](https://ant.design/) System UI Framework support. **20+** framework-specific `hooks` and  `components`  incl. Table, Form, Select, Menu, Layout, Notification and CRUD components.
 - [`@refinedev/mui`](/docs/ui-integrations/material-ui/introduction) - [Material UI](https://mui.com/material-ui/getting-started/overview/) Framework support. **20+** framework-specific `hooks` and  `components`  incl. DataGrid (+ Pro), AutoComplete, Menu, Layout, Notification and CRUD components.
-- [`@refinedev/mantine`](/docs/ui-integrations/mantine/introduction) - [Mantine](https://mantine.dev/) UI Framework support. **20+** framework-specific **hooks** and **components** incl. Table, Form, AutoComplete, Menu, Layout, Notification and CRUD components.
-- [`@refinedev/chakra-ui`](/docs/ui-integrations/chakra-ui/introduction) - [Chakra UI](https://chakra-ui.com/) UI Framework support. **20+** framework-specific **components** incl. Menu, Layout, Notification and CRUD components.
+- [`@refinedev/mantine`](/docs/ui-integrations/mantine/introduction) - [Mantine](https://mantine.dev/) UI Framework support. **20+** framework-specific `hooks` and `components` incl. Table, Form, AutoComplete, Menu, Layout, Notification and CRUD components.
+- [`@refinedev/chakra-ui`](/docs/ui-integrations/chakra-ui/introduction) - [Chakra UI](https://chakra-ui.com/) UI Framework support. **20+** framework-specific `components` incl. Menu, Layout, Notification and CRUD components.
+- [`@ferdiunal/refine-shadcn`](https://github.com/ferdiunal/refine-shadcn) - ShadCN UI components with Refine.
 
 ### Data Provider Packages:
 
@@ -76,3 +77,5 @@ To learn more about Live Providers, check out [Realtime](/docs/guides-concepts/r
 - [`refine-sqlite`](https://github.com/mateusabelli/refine-sqlite) - Connector for [SQLite](https://www.sqlite.org/index.html) backends
 - [`refine-jsonapi`](https://github.com/MahirMahdi/refine-jsonapi) - Connector for [JSON:API](https://jsonapi.org/) backends
 - [`@refine-auth/kinde-react`](https://github.com/hirenf14/refine-auth-kinde-react) - Support for [Kinde](https://kinde.com) authentication.
+- [`refine-pocketbase`](https://github.com/kruschid/refine-pocketbase) - Connector for backends created with [PocketBase](https://pocketbase.io/). Also has auth provider and live provider supports.
+- [`refine-postgrest-ts`](https://github.com/ffimnsr/refine-postgrest-ts) - Connector for [PostgREST](https://postgrest.org) backends.

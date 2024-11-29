@@ -8,16 +8,16 @@ import { finalFiles as initialFiles } from "../../navigation/react-router/sandpa
 import { removeActiveFromFiles } from "@site/src/utils/remove-active-from-files";
 
 export const Sandpack = ({ children }: { children: React.ReactNode }) => {
-    return (
-        <TutorialSandpack
-            showNavigator
-            dependencies={dependencies}
-            files={initialFiles}
-            finalFiles={finalFiles}
-        >
-            {children}
-        </TutorialSandpack>
-    );
+  return (
+    <TutorialSandpack
+      showNavigator
+      dependencies={dependencies}
+      files={initialFiles}
+      finalFiles={finalFiles}
+    >
+      {children}
+    </TutorialSandpack>
+  );
 };
 
 // updates
@@ -29,7 +29,7 @@ import { Link } from "react-router-dom";
 
 export const ListProducts = () => {
   const {
-    tableQueryResult: { data, isLoading },
+    tableQuery: { data, isLoading },
     current,
     setCurrent,
     pageCount,
@@ -73,19 +73,21 @@ export const ListProducts = () => {
     if (sorter) {
       return sorter.order;
     }
-  }
+  };
 
   const onSort = (field: string) => {
     const sorter = getSorter(field);
     setSorters(
-        sorter === "desc" ? [] : [
-        {
-            field,
-            order: sorter === "asc" ? "desc" : "asc",
-        },
-        ]
+      sorter === "desc"
+        ? []
+        : [
+            {
+              field,
+              order: sorter === "asc" ? "desc" : "asc",
+            },
+          ],
     );
-  }
+  };
 
   const indicator = { asc: "⬆️", desc: "⬇️" };
 
@@ -101,18 +103,14 @@ export const ListProducts = () => {
             <th onClick={() => onSort("name")}>
               Name {indicator[getSorter("name")]}
             </th>
-            <th>
-              Category
-            </th>
+            <th>Category</th>
             <th onClick={() => onSort("material")}>
               Material {indicator[getSorter("material")]}
             </th>
             <th onClick={() => onSort("price")}>
               Price {indicator[getSorter("price")]}
             </th>
-            <th>
-              Actions
-            </th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -130,12 +128,8 @@ export const ListProducts = () => {
               <td>{product.material}</td>
               <td>{product.price}</td>
               <td>
-                <Link to={showUrl("protected-products", product.id)}>
-                  Show
-                </Link>
-                <Link to={editUrl("protected-products", product.id)}>
-                  Edit
-                </Link>
+                <Link to={showUrl("protected-products", product.id)}>Show</Link>
+                <Link to={editUrl("protected-products", product.id)}>Edit</Link>
               </td>
             </tr>
           ))}
@@ -146,9 +140,13 @@ export const ListProducts = () => {
           {"<"}
         </button>
         <div>
-          {current - 1 > 0 && <span onClick={() => onPage(current - 1)}>{current - 1}</span>}
+          {current - 1 > 0 && (
+            <span onClick={() => onPage(current - 1)}>{current - 1}</span>
+          )}
           <span className="current">{current}</span>
-          {current + 1 < pageCount && <span onClick={() => onPage(current + 1)}>{current + 1}</span>}
+          {current + 1 < pageCount && (
+            <span onClick={() => onPage(current + 1)}>{current + 1}</span>
+          )}
         </div>
         <button type="button" onClick={onNext}>
           {">"}
@@ -163,13 +161,15 @@ const ShowProductWithInference = /* tsx */ `
 import { useShow } from "@refinedev/core";
 
 export const ShowProduct = () => {
-    const { queryResult: { data, isLoading } } = useShow();
+  const {
+    query: { data, isLoading },
+  } = useShow();
 
-    if (isLoading) {
-        return <div>Loading...</div>;
-    }
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
-    return <div>Product name: {data?.data.name}</div>;
+  return <div>Product name: {data?.data.name}</div>;
 };
 `.trim();
 
@@ -177,7 +177,7 @@ const CreateProductWithInference = /* tsx */ `
 import { useForm, useSelect } from "@refinedev/core";
 
 export const CreateProduct = () => {
-  const { onFinish, mutationResult } = useForm();
+  const { onFinish, mutation } = useForm();
 
   const { options } = useSelect({
     resource: "categories",
@@ -220,7 +220,7 @@ export const CreateProduct = () => {
         ))}
       </select>
 
-      {mutationResult.isSuccess && <span>successfully submitted!</span>}
+      {mutation.isSuccess && <span>successfully submitted!</span>}
       <button type="submit">Submit</button>
     </form>
   );
@@ -231,9 +231,9 @@ const EditProductWithInference = /* tsx */ `
 import { useForm, useSelect } from "@refinedev/core";
 
 export const EditProduct = () => {
-  const { onFinish, mutationResult, queryResult } = useForm();
+  const { onFinish, mutation, query } = useForm();
 
-  const record = queryResult.data?.data;
+  const record = query.data?.data;
 
   const { options } = useSelect({
     resource: "categories",
@@ -283,15 +283,17 @@ export const EditProduct = () => {
       <label htmlFor="category">Category</label>
       <select id="category" name="category">
         {options?.map((option) => (
-          <option key={option.value} value={option.value}
+          <option
+            key={option.value}
+            value={option.value}
             selected={record?.category.id == option.value}
-            >
+          >
             {option.label}
           </option>
         ))}
       </select>
 
-      {mutationResult.isSuccess && <span>successfully submitted!</span>}
+      {mutation.isSuccess && <span>successfully submitted!</span>}
       <button type="submit">Submit</button>
     </form>
   );
@@ -301,84 +303,84 @@ export const EditProduct = () => {
 // actions
 
 export const AddInferenceToListProducts = () => {
-    const { sandpack } = useSandpack();
+  const { sandpack } = useSandpack();
 
-    return (
-        <TutorialUpdateFileButton
-            onClick={() => {
-                sandpack.updateFile(
-                    "src/pages/products/list.tsx",
-                    ListProductsWithInference,
-                );
-                sandpack.setActiveFile("/src/pages/products/list.tsx");
-            }}
-        />
-    );
+  return (
+    <TutorialUpdateFileButton
+      onClick={() => {
+        sandpack.updateFile(
+          "src/pages/products/list.tsx",
+          ListProductsWithInference,
+        );
+        sandpack.setActiveFile("/src/pages/products/list.tsx");
+      }}
+    />
+  );
 };
 
 export const AddInferenceToShowProduct = () => {
-    const { sandpack } = useSandpack();
+  const { sandpack } = useSandpack();
 
-    return (
-        <TutorialUpdateFileButton
-            onClick={() => {
-                sandpack.updateFile(
-                    "src/pages/products/show.tsx",
-                    ShowProductWithInference,
-                );
-                sandpack.setActiveFile("/src/pages/products/show.tsx");
-            }}
-        />
-    );
+  return (
+    <TutorialUpdateFileButton
+      onClick={() => {
+        sandpack.updateFile(
+          "src/pages/products/show.tsx",
+          ShowProductWithInference,
+        );
+        sandpack.setActiveFile("/src/pages/products/show.tsx");
+      }}
+    />
+  );
 };
 
 export const AddInferenceToCreateProduct = () => {
-    const { sandpack } = useSandpack();
+  const { sandpack } = useSandpack();
 
-    return (
-        <TutorialUpdateFileButton
-            onClick={() => {
-                sandpack.updateFile(
-                    "src/pages/products/create.tsx",
-                    CreateProductWithInference,
-                );
-                sandpack.setActiveFile("/src/pages/products/create.tsx");
-            }}
-        />
-    );
+  return (
+    <TutorialUpdateFileButton
+      onClick={() => {
+        sandpack.updateFile(
+          "src/pages/products/create.tsx",
+          CreateProductWithInference,
+        );
+        sandpack.setActiveFile("/src/pages/products/create.tsx");
+      }}
+    />
+  );
 };
 
 export const AddInferenceToEditProduct = () => {
-    const { sandpack } = useSandpack();
+  const { sandpack } = useSandpack();
 
-    return (
-        <TutorialUpdateFileButton
-            onClick={() => {
-                sandpack.updateFile(
-                    "src/pages/products/edit.tsx",
-                    EditProductWithInference,
-                );
-                sandpack.setActiveFile("/src/pages/products/edit.tsx");
-            }}
-        />
-    );
+  return (
+    <TutorialUpdateFileButton
+      onClick={() => {
+        sandpack.updateFile(
+          "src/pages/products/edit.tsx",
+          EditProductWithInference,
+        );
+        sandpack.setActiveFile("/src/pages/products/edit.tsx");
+      }}
+    />
+  );
 };
 
 // files
 
 export const finalFiles = {
-    ...removeActiveFromFiles(initialFiles),
-    "src/pages/products/show.tsx": {
-        code: ShowProductWithInference,
-    },
-    "src/pages/products/edit.tsx": {
-        code: EditProductWithInference,
-    },
-    "src/pages/products/create.tsx": {
-        code: CreateProductWithInference,
-    },
-    "src/pages/products/list.tsx": {
-        code: ListProductsWithInference,
-        active: true,
-    },
+  ...removeActiveFromFiles(initialFiles),
+  "src/pages/products/show.tsx": {
+    code: ShowProductWithInference,
+  },
+  "src/pages/products/edit.tsx": {
+    code: EditProductWithInference,
+  },
+  "src/pages/products/create.tsx": {
+    code: CreateProductWithInference,
+  },
+  "src/pages/products/list.tsx": {
+    code: ListProductsWithInference,
+    active: true,
+  },
 };

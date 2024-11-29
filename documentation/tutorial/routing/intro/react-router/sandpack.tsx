@@ -8,16 +8,16 @@ import { finalFiles as initialFiles } from "@site/tutorial/authentication/data-p
 import { removeActiveFromFiles } from "@site/src/utils/remove-active-from-files";
 
 export const Sandpack = ({ children }: { children: React.ReactNode }) => {
-    return (
-        <TutorialSandpack
-            showNavigator
-            dependencies={dependencies}
-            files={initialFiles}
-            finalFiles={finalFiles}
-        >
-            {children}
-        </TutorialSandpack>
-    );
+  return (
+    <TutorialSandpack
+      showNavigator
+      dependencies={dependencies}
+      files={initialFiles}
+      finalFiles={finalFiles}
+    >
+      {children}
+    </TutorialSandpack>
+  );
 };
 
 // updates
@@ -43,14 +43,11 @@ export default function App(): JSX.Element {
   return (
     <BrowserRouter>
       <Refine
-          dataProvider={dataProvider}
-          authProvider={authProvider}
-          routerProvider={routerProvider}
+        dataProvider={dataProvider}
+        authProvider={authProvider}
+        routerProvider={routerProvider}
       >
-        <Authenticated
-          key="protected"
-          fallback={<Login />}
-        >
+        <Authenticated key="protected" fallback={<Login />}>
           <Header />
           {/* <ShowProduct /> */}
           {/* <EditProduct /> */}
@@ -66,30 +63,30 @@ export default function App(): JSX.Element {
 // actions
 
 export const AddRouterProviderToApp = () => {
-    const { sandpack } = useSandpack();
+  const { sandpack } = useSandpack();
 
-    return (
-        <TutorialUpdateFileButton
-            onClick={() => {
-                sandpack.updateFile("/src/App.tsx", AppTsxWithRouterProvider);
-                sandpack.setActiveFile("/src/App.tsx");
-            }}
-        />
-    );
+  return (
+    <TutorialUpdateFileButton
+      onClick={() => {
+        sandpack.updateFile("/src/App.tsx", AppTsxWithRouterProvider);
+        sandpack.setActiveFile("/src/App.tsx");
+      }}
+    />
+  );
 };
 
 // files
 
 export const dependencies = {
-    ...initialDependencies,
-    "@refinedev/react-router-v6": "latest",
-    "react-router-dom": "latest",
+  ...initialDependencies,
+  "@refinedev/react-router-v6": "latest",
+  "react-router-dom": "^6.8.1",
 };
 
 export const finalFiles = {
-    ...removeActiveFromFiles(initialFiles),
-    "src/App.tsx": {
-        code: AppTsxWithRouterProvider,
-        active: true,
-    },
+  ...removeActiveFromFiles(initialFiles),
+  "src/App.tsx": {
+    code: AppTsxWithRouterProvider,
+    active: true,
+  },
 };

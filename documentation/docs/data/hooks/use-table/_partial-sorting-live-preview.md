@@ -21,7 +21,7 @@ interface IPost {
 }
 
 const PostList: React.FC = () => {
-  const { tableQueryResult, sorter, setSorter } = useTable<IPost, HttpError>({
+  const { tableQuery, sorter, setSorter } = useTable<IPost, HttpError>({
     // highlight-start
     sorters: {
       initial: [
@@ -35,13 +35,14 @@ const PostList: React.FC = () => {
   });
 
   // Fetches the posts for the current page
-  const posts = tableQueryResult?.data?.data ?? [];
+  const posts = tableQuery?.data?.data ?? [];
 
   // Gets the current sort order for the fields
   // highlight-start
   const currentSorterOrders = useMemo(() => {
     return {
-      createdAt: sorter.find((item) => item.field === "createdAt")?.order || "desc",
+      createdAt:
+        sorter.find((item) => item.field === "createdAt")?.order || "desc",
       id: sorter.find((item) => item.field === "id")?.order || "desc",
       title: sorter.find((item) => item.field === "title")?.order || "asc",
     };
@@ -71,13 +72,15 @@ const PostList: React.FC = () => {
         }}
       >
         <button onClick={() => toggleSort("createdAt")}>
-          Sort date by {currentSorterOrders["createdAt"] === "asc" ? "desc" : "asc"}
+          Sort date by{" "}
+          {currentSorterOrders["createdAt"] === "asc" ? "desc" : "asc"}
         </button>
         <button onClick={() => toggleSort("id")}>
           Sort id by {currentSorterOrders["id"] === "asc" ? "desc" : "asc"}
         </button>
         <button onClick={() => toggleSort("title")}>
-          Sort title by {currentSorterOrders["title"] === "asc" ? "desc" : "asc"}
+          Sort title by{" "}
+          {currentSorterOrders["title"] === "asc" ? "desc" : "asc"}
         </button>
       </div>
       {/* highlight-end */}
@@ -92,7 +95,7 @@ const PostList: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {tableQueryResult.data?.data.map((post) => (
+          {tableQuery.data?.data.map((post) => (
             <tr key={post.id}>
               <td>{post.id}</td>
               <td>{post.title}</td>

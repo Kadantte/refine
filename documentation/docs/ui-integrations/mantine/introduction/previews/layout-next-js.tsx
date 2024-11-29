@@ -8,7 +8,7 @@ export default function LayoutNextjs() {
       hidePreview
       dependencies={{
         "@refinedev/chakra-ui": "^2.26.17",
-        "@tabler/icons": "^1.119.0",
+        "@tabler/icons-react": "^3.1.0",
         "@refinedev/core": "^4.45.1",
         "@refinedev/react-router-v6": "^4.5.4",
         "@refinedev/simple-rest": "^4.5.4",
@@ -43,7 +43,7 @@ import type { AppProps } from "next/app";
 import {
     ThemedLayoutV2,
     RefineThemes,
-    notificationProvider,
+    useNotificationProvider,
 } from "@refinedev/mantine";
 import { NotificationsProvider } from "@mantine/notifications";
 import { MantineProvider, Global } from "@mantine/core";
@@ -60,7 +60,7 @@ function App({ Component, pageProps }: AppProps) {
                 <Refine
                     routerProvider={routerProvider}
                     dataProvider={dataProvider("https://api.fake-rest.refine.dev")}
-                    notificationProvider={notificationProvider}
+                    notificationProvider={useNotificationProvider}
                     resources={[
                         {
                         name: "products",
@@ -137,7 +137,7 @@ export default function ProductList() {
             setCurrent,
             pageCount,
             current,
-            tableQueryResult: { data: tableData },
+            tableQuery: { data: tableData },
         },
     } = useTable({
         columns,

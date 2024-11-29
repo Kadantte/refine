@@ -1,7 +1,7 @@
 import React from "react";
 import { Anchor } from "@mantine/core";
 
-import { EmailFieldProps } from "../types";
+import type { EmailFieldProps } from "../types";
 
 /**
  * This field is used to display email values. It uses the {@link https://mantine.dev/core/text `<Text>` }
@@ -10,9 +10,9 @@ import { EmailFieldProps } from "../types";
  * @see {@link https://refine.dev/docs/api-reference/mantine/components/fields/email} for more details.
  */
 export const EmailField: React.FC<EmailFieldProps> = ({ value, ...rest }) => {
-    return (
-        <Anchor href={`mailto:${value}`} {...rest}>
-            {value}
-        </Anchor>
-    );
+  return (
+    <Anchor href={`mailto:${value}`} {...rest}>
+      {value}
+    </Anchor>
+  );
 };

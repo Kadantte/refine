@@ -10,16 +10,16 @@ import { removeActiveFromFiles } from "@site/src/utils/remove-active-from-files"
 import { TutorialCreateFileButton } from "@site/src/refine-theme/tutorial-create-file-button";
 
 export const Sandpack = ({ children }: { children: React.ReactNode }) => {
-    return (
-        <TutorialSandpack
-            showNavigator
-            dependencies={dependencies}
-            files={initialFiles}
-            finalFiles={finalFiles}
-        >
-            {children}
-        </TutorialSandpack>
-    );
+  return (
+    <TutorialSandpack
+      showNavigator
+      dependencies={dependencies}
+      files={initialFiles}
+      finalFiles={finalFiles}
+    >
+      {children}
+    </TutorialSandpack>
+  );
 };
 
 // updates
@@ -37,7 +37,11 @@ export const ListCategories = () => {
 const AppWithCategories = /* tsx */ `
 import { Refine, Authenticated } from "@refinedev/core";
 import routerProvider, { NavigateToResource } from "@refinedev/react-router-v6";
-import { ThemedLayoutV2, ThemedTitleV2, useNotificationProvider } from "@refinedev/antd";
+import {
+  ThemedLayoutV2,
+  ThemedTitleV2,
+  useNotificationProvider,
+} from "@refinedev/antd";
 
 import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
 
@@ -80,7 +84,7 @@ export default function App(): JSX.Element {
                 name: "categories",
                 list: "/categories",
                 meta: { label: "Categories" },
-              }
+              },
             ]}
           >
             <Routes>
@@ -92,10 +96,7 @@ export default function App(): JSX.Element {
                   >
                     <ThemedLayoutV2
                       Title={(props) => (
-                        <ThemedTitleV2
-                          {...props}
-                          text="Awesome Project"
-                        />
+                        <ThemedTitleV2 {...props} text="Awesome Project" />
                       )}
                     >
                       <Outlet />
@@ -141,8 +142,8 @@ import { AntdInferencer } from "@refinedev/inferencer/antd";
 export const ListCategories = () => {
   return (
     <AntdInferencer
-      // resource="categories" // We're omitting this prop because it's inferred from the route
-      // action="list" // We're omitting this prop because it's inferred from the route
+    // resource="categories" // We're omitting this prop because it's inferred from the route
+    // action="list" // We're omitting this prop because it's inferred from the route
     />
   );
 };
@@ -151,60 +152,57 @@ export const ListCategories = () => {
 // actions
 
 export const CreateListCategoriesTsx = () => {
-    const { sandpack } = useSandpack();
+  const { sandpack } = useSandpack();
 
-    return (
-        <TutorialCreateFileButton
-            name="src/pages/categories/list.tsx"
-            onClick={() => {
-                sandpack.addFile(
-                    "src/pages/categories/list.tsx",
-                    ListCategoriesBase,
-                );
-                sandpack.setActiveFile("/src/pages/categories/list.tsx");
-            }}
-        />
-    );
+  return (
+    <TutorialCreateFileButton
+      name="src/pages/categories/list.tsx"
+      onClick={() => {
+        sandpack.addFile("src/pages/categories/list.tsx", ListCategoriesBase);
+        sandpack.setActiveFile("/src/pages/categories/list.tsx");
+      }}
+    />
+  );
 };
 
 export const AddListCategoriesToApp = () => {
-    const { sandpack } = useSandpack();
+  const { sandpack } = useSandpack();
 
-    return (
-        <TutorialUpdateFileButton
-            onClick={() => {
-                sandpack.updateFile("/src/App.tsx", AppWithCategories);
-                sandpack.setActiveFile("/src/App.tsx");
-            }}
-        />
-    );
+  return (
+    <TutorialUpdateFileButton
+      onClick={() => {
+        sandpack.updateFile("/src/App.tsx", AppWithCategories);
+        sandpack.setActiveFile("/src/App.tsx");
+      }}
+    />
+  );
 };
 
 export const AddInferencerToListCategories = () => {
-    const { sandpack } = useSandpack();
+  const { sandpack } = useSandpack();
 
-    return (
-        <TutorialUpdateFileButton
-            onClick={() => {
-                sandpack.updateFile(
-                    "src/pages/categories/list.tsx",
-                    ListCategoriesWithInferencer,
-                );
-                sandpack.setActiveFile("/src/pages/categories/list.tsx");
-            }}
-        />
-    );
+  return (
+    <TutorialUpdateFileButton
+      onClick={() => {
+        sandpack.updateFile(
+          "src/pages/categories/list.tsx",
+          ListCategoriesWithInferencer,
+        );
+        sandpack.setActiveFile("/src/pages/categories/list.tsx");
+      }}
+    />
+  );
 };
 
 // files
 
 export const finalFiles = {
-    ...removeActiveFromFiles(initialFiles),
-    "src/pages/categories/list.tsx": {
-        code: ListCategoriesWithInferencer,
-        active: true,
-    },
-    "src/App.tsx": {
-        code: AppWithCategories,
-    },
+  ...removeActiveFromFiles(initialFiles),
+  "src/pages/categories/list.tsx": {
+    code: ListCategoriesWithInferencer,
+    active: true,
+  },
+  "src/App.tsx": {
+    code: AppWithCategories,
+  },
 };

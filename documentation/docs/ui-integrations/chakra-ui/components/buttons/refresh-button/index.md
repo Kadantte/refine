@@ -15,11 +15,15 @@ setRefineProps({
 });
 
 const Wrapper = ({ children }) => {
-  return <ChakraUI.ChakraProvider theme={RefineChakra.refineTheme}>{children}</ChakraUI.ChakraProvider>;
+  return (
+    <ChakraUI.ChakraProvider theme={RefineChakra.refineTheme}>
+      {children}
+    </ChakraUI.ChakraProvider>
+  );
 };
 ```
 
-`<RefreshButton>` uses Chakra UI's [`<Button>`](https://chakra-ui.com/docs/components/button/usage) component to update the data shown on the page via the [`useInvalidate`][use-invalidate] hook.
+`<RefreshButton>` uses Chakra UI's [`<Button>`](https://www.chakra-ui.com/docs/components/button#usage) component to update the data shown on the page via the [`useInvalidate`][use-invalidate] hook.
 
 :::simple Good to know
 
@@ -153,7 +157,9 @@ import { Refine } from "@refinedev/core";
 import { RefreshButton } from "@refinedev/chakra-ui";
 
 const MyRefreshComponent = () => {
-  return <RefreshButton colorScheme="black" resource="categories" recordItemId="2" />;
+  return (
+    <RefreshButton colorScheme="black" resource="categories" recordItemId="2" />
+  );
 };
 // visible-block-end
 

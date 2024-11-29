@@ -21,22 +21,25 @@ interface IPost {
 }
 
 const PostList: React.FC = () => {
-  const { tableQueryResult, filters, setFilters } = useTable<IPost, HttpError>();
+  const { tableQuery, filters, setFilters } = useTable<IPost, HttpError>();
 
   // Fetches the posts for the current page
-  const posts = tableQueryResult?.data?.data ?? [];
+  const posts = tableQuery?.data?.data ?? [];
 
   // Gets the current filter values for the fields
   // highlight-start
   const currentFilterValues = useMemo(() => {
     // Filters can be a LogicalFilter or a ConditionalFilter. ConditionalFilter not have field property. So we need to filter them.
     // We use flatMap for better type support.
-    const logicalFilters = filters.flatMap((item) => ("field" in item ? item : []));
+    const logicalFilters = filters.flatMap((item) =>
+      "field" in item ? item : [],
+    );
 
     return {
       title: logicalFilters.find((item) => item.field === "title")?.value || "",
       id: logicalFilters.find((item) => item.field === "id")?.value || "",
-      status: logicalFilters.find((item) => item.field === "status")?.value || "",
+      status:
+        logicalFilters.find((item) => item.field === "status")?.value || "",
     };
   }, [filters]);
   // highlight-end
@@ -60,7 +63,9 @@ const PostList: React.FC = () => {
               {
                 field: "title",
                 operator: "contains",
-                value: !!e.currentTarget.value ? e.currentTarget.value : undefined,
+                value: !!e.currentTarget.value
+                  ? e.currentTarget.value
+                  : undefined,
               },
             ]);
           }}
@@ -73,7 +78,9 @@ const PostList: React.FC = () => {
               {
                 field: "id",
                 operator: "eq",
-                value: !!e.currentTarget.value ? e.currentTarget.value : undefined,
+                value: !!e.currentTarget.value
+                  ? e.currentTarget.value
+                  : undefined,
               },
             ]);
           }}
@@ -87,7 +94,9 @@ const PostList: React.FC = () => {
                 {
                   field: "status",
                   operator: "eq",
-                  value: !!e.currentTarget.value ? e.currentTarget.value : undefined,
+                  value: !!e.currentTarget.value
+                    ? e.currentTarget.value
+                    : undefined,
                 },
               ],
               "replace",
@@ -112,7 +121,7 @@ const PostList: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {tableQueryResult.data?.data.map((post) => (
+          {tableQuery.data?.data.map((post) => (
             <tr key={post.id}>
               <td>{post.id}</td>
               <td>{post.title}</td>

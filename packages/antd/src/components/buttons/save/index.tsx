@@ -1,13 +1,13 @@
 import React from "react";
 import { Button } from "antd";
 import { SaveOutlined } from "@ant-design/icons";
-import { useTranslate } from "@refinedev/core";
+import { useSaveButton } from "@refinedev/core";
 import {
-    RefineButtonClassNames,
-    RefineButtonTestIds,
+  RefineButtonClassNames,
+  RefineButtonTestIds,
 } from "@refinedev/ui-types";
 
-import { SaveButtonProps } from "../types";
+import type { SaveButtonProps } from "../types";
 
 /**
  * `<SaveButton>` uses Ant Design's {@link https://ant.design/components/button/ `<Button>`} component.
@@ -16,21 +16,21 @@ import { SaveButtonProps } from "../types";
  * @see {@link https://refine.dev/docs/api-reference/antd/components/buttons/save-button} for more details.
  */
 export const SaveButton: React.FC<SaveButtonProps> = ({
-    hideText = false,
-    children,
-    ...rest
+  hideText = false,
+  children,
+  ...rest
 }) => {
-    const translate = useTranslate();
+  const { label } = useSaveButton();
 
-    return (
-        <Button
-            type="primary"
-            icon={<SaveOutlined />}
-            data-testid={RefineButtonTestIds.SaveButton}
-            className={RefineButtonClassNames.SaveButton}
-            {...rest}
-        >
-            {!hideText && (children ?? translate("buttons.save", "Save"))}
-        </Button>
-    );
+  return (
+    <Button
+      type="primary"
+      icon={<SaveOutlined />}
+      data-testid={RefineButtonTestIds.SaveButton}
+      className={RefineButtonClassNames.SaveButton}
+      {...rest}
+    >
+      {!hideText && (children ?? label)}
+    </Button>
+  );
 };

@@ -1,22 +1,14 @@
 import React from "react";
+import { useRefreshButton } from "@refinedev/core";
 import {
-    useTranslate,
-    useResource,
-    useInvalidate,
-    queryKeys,
-    pickDataProvider,
-} from "@refinedev/core";
-import {
-    RefineButtonClassNames,
-    RefineButtonTestIds,
+  RefineButtonClassNames,
+  RefineButtonTestIds,
 } from "@refinedev/ui-types";
 import { ActionIcon, Button } from "@mantine/core";
-import { IconRefresh } from "@tabler/icons";
+import { IconRefresh } from "@tabler/icons-react";
 
 import { mapButtonVariantToActionIconVariant } from "@definitions/button";
-import { RefreshButtonProps } from "../types";
-
-import { useQueryClient } from "@tanstack/react-query";
+import type { RefreshButtonProps } from "../types";
 
 /**
  * `<RefreshButton>` uses Mantine {@link https://mantine.dev/core/button `<Button> `} component.
@@ -25,75 +17,57 @@ import { useQueryClient } from "@tanstack/react-query";
  * @see {@link https://refine.dev/docs/api-reference/mantine/components/buttons/refresh-button} for more details.
  */
 export const RefreshButton: React.FC<RefreshButtonProps> = ({
-    resource: resourceNameFromProps,
-    resourceNameOrRouteName: propResourceNameOrRouteName,
-    recordItemId,
-    hideText = false,
-    dataProviderName,
-    svgIconProps,
-    children,
-    onClick,
-    meta: _meta,
-    metaData: _metaData,
-    ...rest
+  resource: resourceNameFromProps,
+  resourceNameOrRouteName: propResourceNameOrRouteName,
+  recordItemId,
+  hideText = false,
+  dataProviderName,
+  svgIconProps,
+  children,
+  onClick,
+  meta: _meta,
+  metaData: _metaData,
+  ...rest
 }) => {
-    const translate = useTranslate();
+  const {
+    onClick: onRefresh,
+    label,
+    loading,
+  } = useRefreshButton({
+    resource: resourceNameFromProps ?? propResourceNameOrRouteName,
+    id: recordItemId,
+    dataProviderName,
+  });
 
-    const queryClient = useQueryClient();
-    const invalidates = useInvalidate();
+  const { variant, styles: _styles, ...commonProps } = rest;
 
-    const { resources, identifier, id } = useResource(
-        resourceNameFromProps ?? propResourceNameOrRouteName,
-    );
-
-    const isInvalidating = !!queryClient.isFetching({
-        queryKey: queryKeys(
-            identifier,
-            pickDataProvider(identifier, dataProviderName, resources),
-        ).detail(recordItemId ?? id),
-    });
-
-    const handleInvalidate = () => {
-        invalidates({
-            id: recordItemId ?? id,
-            invalidates: ["detail"],
-            dataProviderName,
-            resource: identifier,
-        });
-    };
-
-    const { variant, styles: _styles, ...commonProps } = rest;
-
-    return hideText ? (
-        <ActionIcon
-            onClick={(e: React.PointerEvent<HTMLButtonElement>) => {
-                onClick ? onClick(e) : handleInvalidate();
-            }}
-            loading={isInvalidating}
-            data-testid={RefineButtonTestIds.RefreshButton}
-            className={RefineButtonClassNames.RefreshButton}
-            {...(variant
-                ? {
-                      variant: mapButtonVariantToActionIconVariant(variant),
-                  }
-                : { variant: "default" })}
-            {...commonProps}
-        >
-            <IconRefresh size={18} {...svgIconProps} />
-        </ActionIcon>
-    ) : (
-        <Button
-            variant="default"
-            leftIcon={<IconRefresh size={18} {...svgIconProps} />}
-            loading={isInvalidating}
-            onClick={(e: React.PointerEvent<HTMLButtonElement>) => {
-                onClick ? onClick(e) : handleInvalidate();
-            }}
-            data-testid={RefineButtonTestIds.RefreshButton}
-            className={RefineButtonClassNames.RefreshButton}
-            {...rest}
-        >
-            {children ?? translate("buttons.refresh", "Refresh")}
-        </Button>
-    );
+  return hideText ? (
+    <ActionIcon
+      onClick={onClick ? onClick : onRefresh}
+      loading={loading}
+      aria-label={label}
+      data-testid={RefineButtonTestIds.RefreshButton}
+      className={RefineButtonClassNames.RefreshButton}
+      {...(variant
+        ? {
+            variant: mapButtonVariantToActionIconVariant(variant),
+          }
+        : { variant: "default" })}
+      {...commonProps}
+    >
+      <IconRefresh size={18} {...svgIconProps} />
+    </ActionIcon>
+  ) : (
+    <Button
+      variant="default"
+      leftIcon={<IconRefresh size={18} {...svgIconProps} />}
+      loading={loading}
+      onClick={onClick ? onClick : onRefresh}
+      data-testid={RefineButtonTestIds.RefreshButton}
+      className={RefineButtonClassNames.RefreshButton}
+      {...rest}
+    >
+      {children ?? label}
+    </Button>
+  );
 };

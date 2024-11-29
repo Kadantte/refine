@@ -1,10 +1,5 @@
-import {
-  useBack,
-  useOne,
-  useShow,
-  IResourceComponentsProps,
-} from "@refinedev/core";
-import { ICategory, IProduct } from "../../interfaces";
+import { useBack, useOne, useShow } from "@refinedev/core";
+import type { ICategory, IProduct } from "../../interfaces";
 import { Button, Card, CardHeader, CardBody, Image } from "@nextui-org/react";
 
 import { ArrowLongLeftIcon } from "@heroicons/react/24/outline";
@@ -14,10 +9,10 @@ const currencyFormatter = Intl.NumberFormat("en-US", {
   currency: "USD",
 });
 
-export const ProductShow: React.FC<IResourceComponentsProps> = () => {
+export const ProductShow = () => {
   const goBack = useBack();
 
-  const { queryResult } = useShow<IProduct>();
+  const { query: queryResult } = useShow<IProduct>();
   const product = queryResult?.data?.data;
 
   const { data: categoryData } = useOne<ICategory>({
@@ -31,20 +26,20 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
   return (
     <div className="my-3">
       <Card className="rounded-none">
-      <div className="flex items-center px-5">
-        <Button
-          onClick={goBack}
-          className="m-1"
-          color="primary"
-          variant="light"
-          isIconOnly
-          aria-label="Go to products page"
-        >
-          <ArrowLongLeftIcon width={16} />
-        </Button>
+        <div className="flex items-center px-5">
+          <Button
+            onClick={goBack}
+            className="m-1"
+            color="primary"
+            variant="light"
+            isIconOnly
+            aria-label="Go to products page"
+          >
+            <ArrowLongLeftIcon width={16} />
+          </Button>
 
-        <h1 className="text-lg font-bold">Show product</h1>
-      </div>
+          <h1 className="text-lg font-bold">Show product</h1>
+        </div>
         <CardBody>
           <CardHeader className="text-lg font-bold p-5">
             <h2>Product details</h2>

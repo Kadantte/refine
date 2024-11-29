@@ -30,7 +30,7 @@ In the last episode, we explored **Refine**'s auth and data providers in signifi
 
 We mentioned that `dataProvider` methods allow us to communicate with API endpoints and `authProvider` methods help us with authentication and authorization. We are able to access and invoke these methods from consumer components via their corresponding hooks.
 
-In this post, we will be leveraging **Supabase** `dataProvider` methods to implement CRUD operations for a `canvases` resource. We are going to start by adding `canvases` as a resource on which we will be able to perform `create`, `show` and `list` actions. We will first work on a public gallery that lists all canvases and a dashboard page that shows a selection of featured canvases by implementing the the `list` action. We will allow users to perform the canvas `create` action from a modal. Then we will also implement the `show` action for a canvas.
+In this post, we will be leveraging **Supabase** `dataProvider` methods to implement CRUD operations for a `canvases` resource. We are going to start by adding `canvases` as a resource on which we will be able to perform `create`, `show` and `list` actions. We will first work on a public gallery that lists all canvases and a dashboard page that shows a selection of featured canvases by implementing the `list` action. We will allow users to perform the canvas `create` action from a modal. Then we will also implement the `show` action for a canvas.
 
 We will then apply **Supabase** auth provider to allow only logged in users to carry out `create` actions on `canvases` and `pixels`. On the way, we will explore how **Refine** does the heavylifting under the hood for us with [**React Query**](https://react-query-v3.tanstack.com/), and its own set of providers and hooks - making CRUD operations implementation a breeze.
 
@@ -87,7 +87,7 @@ The `auth.users` table is concerned with authentication in our app. It is create
 
 <br />
 
-So, in order to create the `pubic.users` table, go ahead and run this SQL script in the SQL Editor of your **Supabase** project dashboard:
+So, in order to create the `public.users` table, go ahead and run this SQL script in the SQL Editor of your **Supabase** project dashboard:
 
 ```sql
 -- Create a table for public users
@@ -226,7 +226,10 @@ import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
 import { useNotificationProvider } from "@refinedev/antd";
 import "@refinedev/antd/dist/reset.css";
 
-import routerBindings, { DocumentTitleHandler, UnsavedChangesNotifier } from "@refinedev/react-router-v6";
+import routerBindings, {
+  DocumentTitleHandler,
+  UnsavedChangesNotifier,
+} from "@refinedev/react-router-v6";
 import { dataProvider, liveProvider } from "@refinedev/supabase";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import authProvider from "./authProvider";
@@ -425,8 +428,14 @@ function App() {
                 }
               />
               <Route path="/register" element={<AuthPage type="register" />} />
-              <Route path="/forgot-password" element={<AuthPage type="forgotPassword" />} />
-              <Route path="/update-password" element={<AuthPage type="updatePassword" />} />
+              <Route
+                path="/forgot-password"
+                element={<AuthPage type="forgotPassword" />}
+              />
+              <Route
+                path="/update-password"
+                element={<AuthPage type="updatePassword" />}
+              />
             </Route>
 
             <Route
@@ -533,7 +542,7 @@ We will use the **Ant Design** [`<List />`](https://ant.design/components/list#l
 
 **2. `useSimpleList()` Hook**
 
-The `useSimpleList()` is a `@refinedev/antd` hook built on top of the low level [`useList()`](https://refine.dev/docs/api-reference/core/hooks/data/useList/) hook to fetch a resource collection. After fetching data according to the the value of the `resource` property, it prepares it according to the `listProps` of the **Ant Design**'s `<List />` component.
+The `useSimpleList()` is a `@refinedev/antd` hook built on top of the low level [`useList()`](https://refine.dev/docs/api-reference/core/hooks/data/useList/) hook to fetch a resource collection. After fetching data according to the value of the `resource` property, it prepares it according to the `listProps` of the **Ant Design**'s `<List />` component.
 
 In our `<CanvasList />` component, we are passing the `listProps` props to `<List />` in order to show a list of canvases.
 
@@ -691,8 +700,14 @@ const App = () => {
               }
             />
             <Route path="/register" element={<AuthPage type="register" />} />
-            <Route path="/forgot-password" element={<AuthPage type="forgotPassword" />} />
-            <Route path="/update-password" element={<AuthPage type="updatePassword" />} />
+            <Route
+              path="/forgot-password"
+              element={<AuthPage type="forgotPassword" />}
+            />
+            <Route
+              path="/update-password"
+              element={<AuthPage type="updatePassword" />}
+            />
           </Route>
         </Routes>
       </Refine>
@@ -724,11 +739,21 @@ The `<Header />` component looks like this:
 
 ```tsx title="src/components/layout/header/index.tsx"
 import React from "react";
-import { useIsAuthenticated, useLogout, useMenu, useNavigation, useParsed } from "@refinedev/core";
+import {
+  useIsAuthenticated,
+  useLogout,
+  useMenu,
+  useNavigation,
+  useParsed,
+} from "@refinedev/core";
 import { Link } from "react-router-dom";
 import { useModalForm } from "@refinedev/antd";
 
-import { PlusSquareOutlined, LogoutOutlined, LoginOutlined } from "@ant-design/icons";
+import {
+  PlusSquareOutlined,
+  LogoutOutlined,
+  LoginOutlined,
+} from "@ant-design/icons";
 import { Button, Image, Space } from "antd";
 
 import { CreateCanvas } from "../../../components/canvas";
@@ -765,14 +790,27 @@ export const Header: React.FC = () => {
     <div className="container">
       <div className="layout-header">
         <Link to="/">
-          <Image width="120px" src="/pixels-logo.svg" alt="Pixels Logo" preview={false} />
+          <Image
+            width="120px"
+            src="/pixels-logo.svg"
+            alt="Pixels Logo"
+            preview={false}
+          />
         </Link>
         <Space size="large">
-          <Link to="/" className={`nav-button ${selectedKey === "/" ? "active" : ""}`}>
+          <Link
+            to="/"
+            className={`nav-button ${selectedKey === "/" ? "active" : ""}`}
+          >
             <span className="dot-icon" />
             HOME
           </Link>
-          <Link to="/canvases" className={`nav-button ${selectedKey === "/canvases" ? "active" : ""}`}>
+          <Link
+            to="/canvases"
+            className={`nav-button ${
+              selectedKey === "/canvases" ? "active" : ""
+            }`}
+          >
             <span className="dot-icon" />
             NEW
           </Link>
@@ -854,7 +892,10 @@ type CreateCanvasProps = {
   formProps: FormProps;
 };
 
-export const CreateCanvas: React.FC<CreateCanvasProps> = ({ modalProps, formProps }) => {
+export const CreateCanvas: React.FC<CreateCanvasProps> = ({
+  modalProps,
+  formProps,
+}) => {
   const { data: user } = useGetIdentity<User | null>();
 
   const [values, setValues] = useState(() => {
@@ -972,7 +1013,14 @@ The `<CanvasShow />` component looks like this:
 
 ```tsx title="src/pages/canvases/show.tsx"
 import { useState } from "react";
-import { useCreate, useGetIdentity, useNavigation, useShow, useParsed, useIsAuthenticated } from "@refinedev/core";
+import {
+  useCreate,
+  useGetIdentity,
+  useNavigation,
+  useShow,
+  useParsed,
+  useIsAuthenticated,
+} from "@refinedev/core";
 import { useModal } from "@refinedev/antd";
 
 import { LeftOutlined } from "@ant-design/icons";
@@ -1033,7 +1081,11 @@ export const CanvasShow: React.FC = () => {
     <div className="container">
       <div className="paper">
         <div className="paper-header">
-          <Button type="text" onClick={() => list("canvases")} style={{ textTransform: "uppercase" }}>
+          <Button
+            type="text"
+            onClick={() => list("canvases")}
+            style={{ textTransform: "uppercase" }}
+          >
             <LeftOutlined />
             Back
           </Button>
@@ -1200,8 +1252,14 @@ const App = () => {
               }
             />
             <Route path="/register" element={<AuthPage type="register" />} />
-            <Route path="/forgot-password" element={<AuthPage type="forgotPassword" />} />
-            <Route path="/update-password" element={<AuthPage type="updatePassword" />} />
+            <Route
+              path="/forgot-password"
+              element={<AuthPage type="forgotPassword" />}
+            />
+            <Route
+              path="/update-password"
+              element={<AuthPage type="updatePassword" />}
+            />
           </Route>
           {/* highlight-end */}
         </Routes>
@@ -1341,8 +1399,14 @@ function App() {
                 }
               />
               <Route path="/register" element={<AuthPage type="register" />} />
-              <Route path="/forgot-password" element={<AuthPage type="forgotPassword" />} />
-              <Route path="/update-password" element={<AuthPage type="updatePassword" />} />
+              <Route
+                path="/forgot-password"
+                element={<AuthPage type="forgotPassword" />}
+              />
+              <Route
+                path="/update-password"
+                element={<AuthPage type="updatePassword" />}
+              />
             </Route>
 
             <Route

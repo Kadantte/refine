@@ -1,22 +1,13 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Button } from "antd";
 import { EditOutlined } from "@ant-design/icons";
+import { useEditButton } from "@refinedev/core";
 import {
-    useCan,
-    useNavigation,
-    useTranslate,
-    useResource,
-    useRouterContext,
-    useRouterType,
-    useLink,
-    AccessControlContext,
-} from "@refinedev/core";
-import {
-    RefineButtonClassNames,
-    RefineButtonTestIds,
+  RefineButtonClassNames,
+  RefineButtonTestIds,
 } from "@refinedev/ui-types";
 
-import { EditButtonProps } from "../types";
+import type { EditButtonProps } from "../types";
 
 /**
  * `<EditButton>` uses Ant Design's {@link https://ant.design/components/button/ `<Button>`} component.
@@ -26,93 +17,50 @@ import { EditButtonProps } from "../types";
  * @see {@link https://refine.dev/docs/api-reference/antd/components/buttons/edit-button} for more details.
  */
 export const EditButton: React.FC<EditButtonProps> = ({
-    resource: resourceNameFromProps,
-    resourceNameOrRouteName: propResourceNameOrRouteName,
-    recordItemId,
-    hideText = false,
-    accessControl,
-    meta,
-    children,
-    onClick,
-    ...rest
+  resource: resourceNameFromProps,
+  resourceNameOrRouteName: propResourceNameOrRouteName,
+  recordItemId,
+  hideText = false,
+  accessControl,
+  meta,
+  children,
+  onClick,
+  ...rest
 }) => {
-    const accessControlContext = useContext(AccessControlContext);
+  const { to, label, title, hidden, disabled, LinkComponent } = useEditButton({
+    resource: resourceNameFromProps ?? propResourceNameOrRouteName,
+    id: recordItemId,
+    meta,
+    accessControl,
+  });
 
-    const accessControlEnabled =
-        accessControl?.enabled ??
-        accessControlContext.options.buttons.enableAccessControl;
+  if (hidden) return null;
 
-    const hideIfUnauthorized =
-        accessControl?.hideIfUnauthorized ??
-        accessControlContext.options.buttons.hideIfUnauthorized;
-
-    const translate = useTranslate();
-
-    const routerType = useRouterType();
-    const Link = useLink();
-    const { Link: LegacyLink } = useRouterContext();
-
-    const ActiveLink = routerType === "legacy" ? LegacyLink : Link;
-
-    const { editUrl: generateEditUrl } = useNavigation();
-
-    const { id, resource } = useResource(
-        resourceNameFromProps ?? propResourceNameOrRouteName,
-    );
-
-    const { data } = useCan({
-        resource: resource?.name,
-        action: "edit",
-        params: { id: recordItemId ?? id, resource },
-        queryOptions: {
-            enabled: accessControlEnabled,
-        },
-    });
-
-    const createButtonDisabledTitle = () => {
-        if (data?.can) return "";
-        else if (data?.reason) return data.reason;
-        else
-            return translate(
-                "buttons.notAccessTitle",
-                "You don't have permission to access",
-            );
-    };
-
-    const editUrl =
-        resource && (recordItemId ?? id)
-            ? generateEditUrl(resource, recordItemId! ?? id!, meta)
-            : "";
-
-    if (accessControlEnabled && hideIfUnauthorized && !data?.can) {
-        return null;
-    }
-
-    return (
-        <ActiveLink
-            to={editUrl}
-            replace={false}
-            onClick={(e: React.PointerEvent<HTMLButtonElement>) => {
-                if (data?.can === false) {
-                    e.preventDefault();
-                    return;
-                }
-                if (onClick) {
-                    e.preventDefault();
-                    onClick(e);
-                }
-            }}
-        >
-            <Button
-                icon={<EditOutlined />}
-                disabled={data?.can === false}
-                title={createButtonDisabledTitle()}
-                data-testid={RefineButtonTestIds.EditButton}
-                className={RefineButtonClassNames.EditButton}
-                {...rest}
-            >
-                {!hideText && (children ?? translate("buttons.edit", "Edit"))}
-            </Button>
-        </ActiveLink>
-    );
+  return (
+    <LinkComponent
+      to={to}
+      replace={false}
+      onClick={(e: React.PointerEvent<HTMLButtonElement>) => {
+        if (disabled) {
+          e.preventDefault();
+          return;
+        }
+        if (onClick) {
+          e.preventDefault();
+          onClick(e);
+        }
+      }}
+    >
+      <Button
+        icon={<EditOutlined />}
+        disabled={disabled}
+        title={title}
+        data-testid={RefineButtonTestIds.EditButton}
+        className={RefineButtonClassNames.EditButton}
+        {...rest}
+      >
+        {!hideText && (children ?? label)}
+      </Button>
+    </LinkComponent>
+  );
 };

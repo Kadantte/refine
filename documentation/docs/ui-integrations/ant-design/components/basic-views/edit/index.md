@@ -29,11 +29,11 @@ import { Edit, useForm, useSelect } from "@refinedev/antd";
 import { Form, Input, Select } from "antd";
 
 const PostEdit: React.FC = () => {
-  const { formProps, saveButtonProps, queryResult } = useForm<IPost>({
+  const { formProps, saveButtonProps, query } = useForm<IPost>({
     warnWhenUnsavedChanges: true,
   });
 
-  const postData = queryResult?.data?.data;
+  const postData = query?.data?.data;
   const { selectProps: categorySelectProps } = useSelect<ICategory>({
     resource: "categories",
     defaultValue: postData?.category.id,
@@ -444,11 +444,11 @@ import { Edit, useForm, useSelect } from "@refinedev/antd";
 import { Form, Input, Select } from "antd";
 
 const PostEdit: React.FC = () => {
-  const { formProps, saveButtonProps, queryResult } = useForm<IPost>({
+  const { formProps, saveButtonProps, query } = useForm<IPost>({
     warnWhenUnsavedChanges: true,
   });
 
-  const postData = queryResult?.data?.data;
+  const postData = query?.data?.data;
   const { selectProps: categorySelectProps } = useSelect<ICategory>({
     resource: "categories",
     defaultValue: postData?.category.id,
@@ -939,7 +939,9 @@ const PostEdit: React.FC = () => {
         <>
           <Button type="primary">Custom Button</Button>
           <RefreshButton {...refreshButtonProps} meta={{ foo: "bar" }} />
-          {listButtonProps && <ListButton {...listButtonProps} meta={{ foo: "bar" }} />}
+          {listButtonProps && (
+            <ListButton {...listButtonProps} meta={{ foo: "bar" }} />
+          )}
         </>
       )}
       // highlight-end
@@ -1089,7 +1091,9 @@ const PostEdit: React.FC = () => {
         <>
           <Button type="primary">Custom Button</Button>
           <SaveButton {...saveButtonProps} hideText />
-          {deleteButtonProps && <DeleteButton {...deleteButtonProps} hideText />}
+          {deleteButtonProps && (
+            <DeleteButton {...deleteButtonProps} hideText />
+          )}
         </>
       )}
       // highlight-end
@@ -1200,7 +1204,7 @@ const PostEdit: React.FC = () => {
   const {
     formProps,
     saveButtonProps,
-    queryResult,
+    query,
     // highlight-next-line
     autoSaveProps,
   } = useForm<IPost>({
@@ -1212,7 +1216,7 @@ const PostEdit: React.FC = () => {
     // highlight-end
   });
 
-  const postData = queryResult?.data?.data;
+  const postData = query?.data?.data;
   const { selectProps: categorySelectProps } = useSelect<ICategory>({
     resource: "categories",
     defaultValue: postData?.category.id,

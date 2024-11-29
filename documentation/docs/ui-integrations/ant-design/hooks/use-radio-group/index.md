@@ -83,16 +83,33 @@ If you have multiple resources with the same name, you can pass the `identifier`
 ### defaultValue
 
 ```tsx
-const { selectProps } = useRadioGroup({
+const { radioGroupProps } = useRadioGroup({
   resource: "languages",
   // highlight-next-line
   defaultValue: 1,
 });
 ```
 
+### selectedOptionsOrder
+
+`selectedOptionsOrder` allows us to sort `selectedOptions` on `defaultValue`. It can be:
+
+- `"in-place"`: sort `selectedOptions` at the bottom. It is by default.
+- `"selected-first"`: sort `selectedOptions` at the top.
+
+```tsx
+const { radioGroupProps } = useRadioGroup({
+  resource: "languages",
+  // highlight-next-line
+  defaultValue: 1,
+  // highlight-next-line
+  selectedOptionsOrder: "selected-first", // in-place | selected-first
+});
+```
+
 The easiest way to selecting a default value for an radio button field is by passing in `defaultValue`.
 
-### optionLabel and `optionValue`
+### optionLabel and optionValue
 
 ```tsx
 const { radioGroupProps } = useRadioGroup({
@@ -109,13 +126,48 @@ const { radioGroupProps } = useRadioGroup({
 These properties also support nested property access with [Object path](https://lodash.com/docs/4.17.15#get) syntax.
 
 ```tsx
-const { options } = useSelect({
+const { options } = useRadioGroup({
   resource: "categories",
   // highlight-start
   optionLabel: "nested.title",
   optionValue: "nested.id",
   // highlight-end
 });
+```
+
+It's also possible to pass function to these props. These functions will receive `item` argument.
+
+```tsx
+const { options } = useRadioGroup({
+  optionLabel: (item) => `${item.firstName} ${item.lastName}`,
+  optionValue: (item) => item.id,
+});
+```
+
+### searchField
+
+Can be used to specify which field will be searched with value given to `onSearch` function.
+
+```tsx
+const { onSearch } = useRadioGroup({ searchField: "name" });
+
+onSearch("John"); // Searches by `name` field with value John.
+```
+
+By default, it uses `optionLabel`'s value, if `optionLabel` is a string. Uses `title` field otherwise.
+
+```tsx
+// When `optionLabel` is string.
+const { onSearch } = useRadioGroup({ optionLabel: "name" });
+
+onSearch("John"); // Searches by `name` field with value John.
+
+// When `optionLabel` is function.
+const { onSearch } = useRadioGroup({
+  optionLabel: (item) => `${item.id} - ${item.name}`,
+});
+
+onSearch("John"); // Searches by `title` field with value John.
 ```
 
 ### filters
@@ -160,7 +212,7 @@ const { radioGroupProps } = useRadioGroup({
 `fetchSize` is the amount of records to fetch in checkboxes.
 
 ```tsx
-const { selectProps } = useRadioGroup({
+const { radioGroupProps } = useRadioGroup({
   resource: "languages",
   // highlight-next-line
   fetchSize: 20,
@@ -191,7 +243,7 @@ const { radioGroupProps } = useRadioGroup({
 For example, lets say that we have 1000 post records:
 
 ```ts
-const { selectProps } = useSelect({
+const { radioGroupProps } = useRadioGroup({
   resource: "categories",
   // highlight-next-line
   pagination: { current: 3, pageSize: 8 },

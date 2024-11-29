@@ -13,7 +13,7 @@ export default function UsageRemix() {
         "@refinedev/simple-rest": "^4.5.4",
         "@refinedev/react-table": "^5.6.4",
         "@tanstack/react-table": "^8.2.6",
-        "@tabler/icons": "^1.119.0",
+        "@tabler/icons-react": "^3.1.0",
         "@emotion/react": "^11.8.2",
         "@mantine/core": "^5.10.4",
         "@mantine/hooks": "^5.10.4",
@@ -105,7 +105,7 @@ import { Refine } from "@refinedev/core";
 import routerProvider from "@refinedev/remix-router";
 import dataProvider from "@refinedev/simple-rest";
 
-import { RefineThemes, ThemedLayoutV2, notificationProvider } from "@refinedev/mantine";
+import { RefineThemes, ThemedLayoutV2, useNotificationProvider } from "@refinedev/mantine";
 import { NotificationsProvider } from "@mantine/notifications";
 import { MantineProvider, Global } from "@mantine/core";
 
@@ -130,7 +130,7 @@ export default function App() {
                     routerProvider={routerProvider}
                     dataProvider={dataProvider("https://api.fake-rest.refine.dev")}
                     authProvider={authProvider}
-                    notificationProvider={notificationProvider}
+                    notificationProvider={useNotificationProvider}
                     resources={[
                     {
                         name: "products",
@@ -158,7 +158,7 @@ export default function App() {
 const ProtectedTsxCode = /* jsx */ `
 import { ThemedLayoutV2 } from "@refinedev/mantine";
 import { Outlet } from "@remix-run/react";
-import { LoaderArgs, redirect } from "@remix-run/node";
+import { LoaderFunctionArgs, redirect } from "@remix-run/node";
 
 import authProvider from "../auth-provider";
 
@@ -176,7 +176,7 @@ export default function AuthenticatedLayout() {
  * If not, we're redirecting the user to the login page.
  * This is applied for all routes that are nested under this layout (_protected).
  */
-export async function loader({ request }: LoaderArgs) {
+export async function loader({ request }: LoaderFunctionArgs) {
     const { authenticated, redirectTo } = await authProvider.check(request);
 
     if (!authenticated) {
@@ -189,7 +189,7 @@ export async function loader({ request }: LoaderArgs) {
 
 const AuthTsxCode = /* jsx */ `
 import { Outlet } from "@remix-run/react";
-import { LoaderArgs, redirect } from "@remix-run/node";
+import { LoaderFunctionArgs, redirect } from "@remix-run/node";
 
 import { authProvider } from "~/authProvider";
 
@@ -203,7 +203,7 @@ export default function AuthLayout() {
  * Alternatively, we could also use the \`Authenticated\` component inside the \`AuthLayout\` to handle the redirect.
  * But, server-side redirects are more performant.
  */
-export async function loader({ request }: LoaderArgs) {
+export async function loader({ request }: LoaderFunctionArgs) {
     const { authenticated, redirectTo } = await authProvider.check(request);
 
     if (authenticated) {
@@ -294,7 +294,7 @@ export default function ProductList() {
           setCurrent,
           pageCount,
           current,
-          tableQueryResult: { data: tableData },
+          tableQuery: { data: tableData },
       },
   } = useTable({
       columns,

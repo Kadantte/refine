@@ -1,35 +1,40 @@
-import React from "react";
-import { ReactNode } from "react";
+import React, { type PropsWithChildren } from "react";
 
-import {
-    IDataContextProvider,
-    IDataMultipleContextProvider,
-} from "../../interfaces";
+import type { DataProvider, DataProviders, IDataContext } from "./types";
 
-export const defaultDataProvider = () => {
-    return {};
+export const defaultDataProvider: DataProviders = {
+  default: {} as DataProvider,
 };
 
-export const DataContext = React.createContext<
-    Partial<IDataMultipleContextProvider>
->(defaultDataProvider());
+export const DataContext =
+  React.createContext<IDataContext>(defaultDataProvider);
 
-type Props = React.PropsWithChildren<
-    Partial<IDataMultipleContextProvider> | IDataContextProvider
->;
+type Props = PropsWithChildren<{
+  dataProvider?: DataProvider | DataProviders;
+}>;
 
-export const DataContextProvider: React.FC<Props> = ({ children, ...rest }) => {
-    let dataProviders;
-    if (!rest.getList || !rest.getOne) {
-        dataProviders = rest as IDataMultipleContextProvider;
+export const DataContextProvider: React.FC<Props> = ({
+  children,
+  dataProvider,
+}) => {
+  let providerValue = defaultDataProvider;
+
+  if (dataProvider) {
+    if (
+      !("default" in dataProvider) &&
+      ("getList" in dataProvider || "getOne" in dataProvider)
+    ) {
+      providerValue = {
+        default: dataProvider,
+      };
     } else {
-        dataProviders = {
-            default: rest,
-        } as IDataMultipleContextProvider;
+      providerValue = dataProvider;
     }
-    return (
-        <DataContext.Provider value={dataProviders}>
-            {children}
-        </DataContext.Provider>
-    );
+  }
+
+  return (
+    <DataContext.Provider value={providerValue}>
+      {children}
+    </DataContext.Provider>
+  );
 };

@@ -75,20 +75,17 @@ export default App;
 
 const HomePageTsxCode = /* jsx */ `
 import React from "react";
-import { useTranslate, useGetLocale, useSetLocale } from "@refinedev/core";
+import { useTranslation } from "@refinedev/core";
 
 export const HomePage = () => {
-    const translate = useTranslate();
-    const changeLanguage = useSetLocale();
-    const getLocale = useGetLocale();
-
+    const { translate, getLocale, changeLocale } = useTranslation();
 
     return (
         <div>
             <h1>{translate("page.home.title")}</h1>
             <select
                 value={getLocale()}
-                onChange={(e) => changeLanguage(e.target.value)}
+                onChange={(e) => changeLocale(e.target.value)}
             >
                 <option value="en">English</option>
                 <option value="de">German</option>

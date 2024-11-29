@@ -22,7 +22,7 @@ interface IPost {
 
 const PostList: React.FC = () => {
   const {
-    tableQueryResult,
+    tableQuery,
     // highlight-start
     current,
     setCurrent,
@@ -33,7 +33,7 @@ const PostList: React.FC = () => {
   } = useTable<IPost, HttpError>();
 
   // Fetches the posts for the current page
-  const posts = tableQueryResult?.data?.data ?? [];
+  const posts = tableQuery?.data?.data ?? [];
   // highlight-start
   // Checks if there is a next page available
   const hasNext = current < pageCount;
@@ -54,7 +54,7 @@ const PostList: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {tableQueryResult.data?.data.map((post) => (
+          {tableQuery.data?.data.map((post) => (
             <tr key={post.id}>
               <td>{post.id}</td>
               <td>{post.title}</td>
@@ -76,10 +76,16 @@ const PostList: React.FC = () => {
           <button onClick={() => setCurrent(1)} disabled={!hasPrev}>
             First
           </button>
-          <button onClick={() => setCurrent((prev) => prev - 1)} disabled={!hasPrev}>
+          <button
+            onClick={() => setCurrent((prev) => prev - 1)}
+            disabled={!hasPrev}
+          >
             Previous
           </button>
-          <button onClick={() => setCurrent((prev) => prev + 1)} disabled={!hasNext}>
+          <button
+            onClick={() => setCurrent((prev) => prev + 1)}
+            disabled={!hasNext}
+          >
             Next
           </button>
           <button onClick={() => setCurrent(pageCount)} disabled={!hasNext}>

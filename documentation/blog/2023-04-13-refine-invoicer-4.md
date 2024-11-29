@@ -101,11 +101,23 @@ Back in our `App.tsx`, let's quickly add the resource objects and route definiti
 import { Authenticated, GitHubBanner, Refine } from "@refinedev/core";
 import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
 
-import { AuthPage, ErrorComponent, ThemedLayout, useNotificationProvider, ThemedTitle } from "@refinedev/antd";
+import {
+  AuthPage,
+  ErrorComponent,
+  ThemedLayout,
+  useNotificationProvider,
+  ThemedTitle,
+} from "@refinedev/antd";
 import "@refinedev/antd/dist/reset.css";
 import * as Icons from "@ant-design/icons";
 
-const { UserAddOutlined, TeamOutlined, InfoCircleOutlined, SlidersOutlined, FileAddOutlined } = Icons;
+const {
+  UserAddOutlined,
+  TeamOutlined,
+  InfoCircleOutlined,
+  SlidersOutlined,
+  FileAddOutlined,
+} = Icons;
 
 import routerBindings, {
   CatchAllNavigate,
@@ -176,14 +188,19 @@ function App() {
                   <Authenticated fallback={<CatchAllNavigate to="/login" />}>
                     <ThemedLayout
                       Header={Header}
-                      Title={({ collapsed }) => <ThemedTitleV2 collapsed={collapsed} text="Invoicer" />}
+                      Title={({ collapsed }) => (
+                        <ThemedTitleV2 collapsed={collapsed} text="Invoicer" />
+                      )}
                     >
                       <Outlet />
                     </ThemedLayout>
                   </Authenticated>
                 }
               >
-                <Route index element={<NavigateToResource resource="companies" />} />
+                <Route
+                  index
+                  element={<NavigateToResource resource="companies" />}
+                />
                 <Route path="/companies">
                   <Route index element={<CompanyList />} />
                 </Route>
@@ -231,7 +248,9 @@ function App() {
                   <Authenticated>
                     <ThemedLayout
                       Header={Header}
-                      Title={({ collapsed }) => <ThemedTitleV2 collapsed={collapsed} text="Invoicer" />}
+                      Title={({ collapsed }) => (
+                        <ThemedTitleV2 collapsed={collapsed} text="Invoicer" />
+                      )}
                     >
                       <Outlet />
                     </ThemedLayout>
@@ -266,7 +285,13 @@ We only have a `list` route for `missions` so let's have a look at what the `<Mi
 The `<MissionList />` component looks like this:
 
 ```tsx title="src/pages/missions/list.tsx"
-import { List, useTable, TagField, useModalForm, EditButton } from "@refinedev/antd";
+import {
+  List,
+  useTable,
+  TagField,
+  useModalForm,
+  EditButton,
+} from "@refinedev/antd";
 import { Table } from "antd";
 
 import { IMission } from "interfaces";
@@ -301,7 +326,10 @@ export const MissionList: React.FC = () => {
         <Table {...tableProps}>
           <Table.Column dataIndex="id" title="ID" />
           <Table.Column dataIndex="mission" title="Name" />
-          <Table.Column dataIndex="mission_description" title="Mission Description" />
+          <Table.Column
+            dataIndex="mission_description"
+            title="Mission Description"
+          />
           <Table.Column dataIndex="day" title="Day(s)" />
           <Table.Column
             dataIndex="daily_rate"
@@ -311,7 +339,12 @@ export const MissionList: React.FC = () => {
           <Table.Column<IMission>
             title="Total"
             render={(_, record) => {
-              return <TagField value={`${record?.daily_rate * record?.day} $`} color="green" />;
+              return (
+                <TagField
+                  value={`${record?.daily_rate * record?.day} $`}
+                  color="green"
+                />
+              );
             }}
           />
           <Table.Column<IMission>
@@ -319,7 +352,12 @@ export const MissionList: React.FC = () => {
             dataIndex="actions"
             key="actions"
             render={(_value, record) => (
-              <EditButton hideText size="small" recordItemId={record?.id} onClick={() => editShow(record?.id)} />
+              <EditButton
+                hideText
+                size="small"
+                recordItemId={record?.id}
+                onClick={() => editShow(record?.id)}
+              />
             )}
           />
         </Table>
@@ -351,7 +389,10 @@ type CreateMissionProps = {
   formProps: FormProps;
 };
 
-export const CreateMission: React.FC<CreateMissionProps> = ({ modalProps, formProps }) => {
+export const CreateMission: React.FC<CreateMissionProps> = ({
+  modalProps,
+  formProps,
+}) => {
   return (
     <Modal {...modalProps} title="Create Contact">
       <Form {...formProps} layout="vertical">
@@ -393,7 +434,10 @@ type EditMissionProps = {
   formProps: FormProps;
 };
 
-export const EditMission: React.FC<EditMissionProps> = ({ modalProps, formProps }) => {
+export const EditMission: React.FC<EditMissionProps> = ({
+  modalProps,
+  formProps,
+}) => {
   return (
     <Modal {...modalProps} title="Create Contact">
       <Form {...formProps} layout="vertical">
@@ -446,7 +490,15 @@ The `<InvoiceList />` rendered at `/invoices` looks like this:
 ```tsx title="src/pages/invoices/list.tsx"
 import { useState } from "react";
 import { useModal } from "@refinedev/core";
-import { List, useTable, DateField, TagField, EmailField, DeleteButton, EditButton } from "@refinedev/antd";
+import {
+  List,
+  useTable,
+  DateField,
+  TagField,
+  EmailField,
+  DeleteButton,
+  EditButton,
+} from "@refinedev/antd";
 
 // It is recommended to use explicit import as seen below to reduce bundle size.
 // import { IconName } from "@ant-design/icons";
@@ -497,7 +549,9 @@ export const InvoiceList: React.FC = () => {
             title="Missions"
             render={(value) => {
               return value.map((item: IMission) => {
-                return <TagField key={item?.id} color="blue" value={item?.mission} />;
+                return (
+                  <TagField key={item?.id} color="blue" value={item?.mission} />
+                );
               });
             }}
           />
@@ -506,7 +560,11 @@ export const InvoiceList: React.FC = () => {
             title="Discount(%)"
             render={(value) => <TagField color="blue" value={value} />}
           />
-          <Table.Column dataIndex="tax" title="Tax(%)" render={(value) => <TagField color="cyan" value={value} />} />
+          <Table.Column
+            dataIndex="tax"
+            title="Tax(%)"
+            render={(value) => <TagField color="cyan" value={value} />}
+          />
           <Table.Column dataIndex="custom_id" title="Custom Invoice ID" />
 
           <Table.Column
@@ -521,7 +579,11 @@ export const InvoiceList: React.FC = () => {
               return (
                 <Space>
                   <EditButton hideText size="small" recordItemId={record?.id} />
-                  <DeleteButton hideText size="small" recordItemId={record?.id} />
+                  <DeleteButton
+                    hideText
+                    size="small"
+                    recordItemId={record?.id}
+                  />
                 </Space>
               );
             }}
@@ -561,13 +623,12 @@ The `<CreateInvoice />` view looks like this:
 <p>
 
 ```tsx title="src/pages/invoices/create.tsx"
-import { IResourceComponentsProps } from "@refinedev/core";
 import { Create, useForm, useSelect } from "@refinedev/antd";
 import { Form, Input, Select, DatePicker } from "antd";
 
 import { ICompany, IContact, IMission, IInvoice } from "interfaces";
 
-export const CreateInvoice: React.FC<IResourceComponentsProps> = () => {
+export const CreateInvoice = () => {
   const { formProps, saveButtonProps } = useForm<IInvoice>();
 
   const { selectProps: companySelectProps } = useSelect<ICompany>({
@@ -675,13 +736,12 @@ The `<EditInvoice />` page is more or less the same as the `create` view. Its co
 <p>
 
 ```tsx title="src/pages/invoices/edit.tsx"
-import { IResourceComponentsProps } from "@refinedev/core";
 import { useForm, useSelect, Edit } from "@refinedev/antd";
 import { Form, Input, Select } from "antd";
 
 import { IInvoice } from "interfaces";
 
-export const EditInvoice: React.FC<IResourceComponentsProps> = () => {
+export const EditInvoice = () => {
   const { formProps, saveButtonProps, queryResult } = useForm<IInvoice>({
     meta: { populate: ["company", "contact", "missions"] },
   });
@@ -807,7 +867,7 @@ Endowed a due patience, we can see this in action among many others in the `@ref
 
 ```tsx title="node_modules/@refinedev/antd/src/hooks/table/useTable/useTable.ts"
 const {
-  tableQueryResult,
+  tableQuery,
   current,
   setCurrent,
   pageSize,
@@ -900,7 +960,8 @@ The `useList()` hook is also being utilized **for** the `useSelect()` **refine-A
 The source code of `useSelect()` inside `@refinedev/antd` package uses `useSelectCore()` in the following snippet:
 
 ```tsx title="node_modules/@refinedev/antd/src/hooks/field/useSelect/index.ts"
-const { queryResult, defaultValueQueryResult, onSearch, options } = useSelectCore(props);
+const { queryResult, defaultValueQueryResult, onSearch, options } =
+  useSelectCore(props);
 
 return {
   selectProps: {

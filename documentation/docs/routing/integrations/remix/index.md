@@ -4,11 +4,72 @@ title: Remix
 
 Refine provides router bindings and utilities for [Remix](https://remix.run). This package will provide easy integration between Refine and **Remix** for both existing projects and new projects without giving up the benefits of **Remix**.
 
+import { CodeBlock } from "@site/src/theme/CodeBlock/base";
+
 <InstallPackagesCommand args="@refinedev/remix-router"/>
 
-We recommend using `create refine-app` to initialize your Refine projects. It configures the project according to your needs including SSR with Remix!
+You can use one of our remix examples to start your project.
 
-<CreateRefineAppCommand args="-o refine-remix my-refine-remix-app" />
+<Tabs wrapContent={false}>
+  <TabItem value="npm" label="npm" default>
+    <Tabs>
+      <TabItem value="vite" label="Vite Headless">
+        <CodeBlock className="language-bash">npm create refine-app@latest -- --example with-remix-vite-headless my-refine-remix-app</CodeBlock>
+      </TabItem>
+      <TabItem value="antd" label="Ant Design">
+        <CodeBlock className="language-bash">npm create refine-app@latest -- --example with-remix-antd my-refine-remix-app</CodeBlock>
+      </TabItem>
+      <TabItem value="mui" label="MUI">
+        <CodeBlock className="language-bash">npm create refine-app@latest -- --example with-remix-mui my-refine-remix-app</CodeBlock>
+      </TabItem>
+      <TabItem value="auth" label="Ant Design and Auth">
+        <CodeBlock className="language-bash">npm create refine-app@latest -- --example with-remix-auth my-refine-remix-app</CodeBlock>
+      </TabItem>
+      <TabItem value="headless" label="Headless">
+        <CodeBlock className="language-bash">npm create refine-app@latest -- --example with-remix-headless my-refine-remix-app</CodeBlock>
+      </TabItem>
+    </Tabs>
+  </TabItem>
+  <TabItem value="pnpm" label="pnpm">
+    <Tabs>
+      <TabItem value="vite" label="Vite Headless">
+        <CodeBlock className="language-bash">pnpm create refine-app@latest --example with-remix-vite-headless my-refine-remix-app</CodeBlock>
+      </TabItem>
+      <TabItem value="antd" label="Ant Design">
+        <CodeBlock className="language-bash">pnpm create refine-app@latest --example with-remix-antd my-refine-remix-app</CodeBlock>
+      </TabItem>
+      <TabItem value="mui" label="MUI">
+        <CodeBlock className="language-bash">pnpm create refine-app@latest --example with-remix-mui my-refine-remix-app</CodeBlock>
+      </TabItem>
+      <TabItem value="auth" label="Ant Design and Auth">
+        <CodeBlock className="language-bash">pnpm create refine-app@latest --example with-remix-auth my-refine-remix-app</CodeBlock>
+      </TabItem>
+      <TabItem value="headless" label="Headless">
+        <CodeBlock className="language-bash">pnpm create refine-app@latest --example with-remix-headless my-refine-remix-app</CodeBlock>
+      </TabItem>
+    </Tabs>
+  </TabItem>
+  <TabItem value="yarn" label="yarn">
+    <Tabs>
+      <TabItem value="vite" label="Vite Headless">
+        <CodeBlock className="language-bash">yarn create refine-app@latest --example with-remix-vite-headless my-refine-remix-app</CodeBlock>
+      </TabItem>
+      <TabItem value="antd" label="Ant Design">
+        <CodeBlock className="language-bash">yarn create refine-app@latest --example with-remix-antd my-refine-remix-app</CodeBlock>
+      </TabItem>
+      <TabItem value="mui" label="MUI">
+        <CodeBlock className="language-bash">yarn create refine-app@latest --example with-remix-mui my-refine-remix-app</CodeBlock>
+      </TabItem>
+      <TabItem value="auth" label="Ant Design and Auth">
+        <CodeBlock className="language-bash">yarn create refine-app@latest --example with-remix-auth my-refine-remix-app</CodeBlock>
+      </TabItem>
+      <TabItem value="headless" label="Headless">
+        <CodeBlock className="language-bash">yarn create refine-app@latest --example with-remix-headless my-refine-remix-app</CodeBlock>
+      </TabItem>
+    </Tabs>
+    <ReactMarkdown>{"> Only supports yarn@1 version."}</ReactMarkdown>
+  </TabItem>
+</Tabs>
 
 [Refer to the Router Provider documentation for detailed information. &#8594][routerprovider]
 
@@ -50,7 +111,14 @@ module.exports = {
 Let's start with the initialization of the Refine app in the `app/root.tsx` file:
 
 ```tsx title=app/root.tsx
-import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration } from "@remix-run/react";
+import {
+  Links,
+  LiveReload,
+  Meta,
+  Outlet,
+  Scripts,
+  ScrollRestoration,
+} from "@remix-run/react";
 
 import { Refine } from "@refinedev/core";
 import dataProvider from "@refinedev/simple-rest";
@@ -122,7 +190,7 @@ export default function PostList() {
   // `posts` resource will be inferred from the route.
   // Because we've defined `/posts` as the `list` action of the `posts` resource.
   const {
-    tableQueryResult: { data, isLoading },
+    tableQuery: { data, isLoading },
   } = useTable<IPost>();
 
   const getToPath = useGetToPath();
@@ -195,7 +263,7 @@ export default function CategoryList() {
   // `categories` resource will be inferred from the route.
   // Because we've defined `/categories` as the `list` action of the `categories` resource.
   const {
-    tableQueryResult: { data, isLoading },
+    tableQuery: { data, isLoading },
   } = useTable<ICategory>();
 
   const getToPath = useGetToPath();
@@ -456,7 +524,10 @@ export async function login({ username, password }: LoginForm) {
   }
 }
 
-export async function requireUserId(request: Request, redirectTo: string = new URL(request.url).pathname) {
+export async function requireUserId(
+  request: Request,
+  redirectTo: string = new URL(request.url).pathname,
+) {
   try {
     const user = await authProvider.check?.({ request, storage });
     return user;
@@ -511,11 +582,17 @@ const LoginPage: React.FC = () => {
     <>
       <h1>{translate("pages.login.title", "Sign in your account")}</h1>
       <form method="post">
-        <input type="hidden" name="redirectTo" value={searchParams.get("to") ?? undefined} />
+        <input
+          type="hidden"
+          name="redirectTo"
+          value={searchParams.get("to") ?? undefined}
+        />
         <table>
           <tbody>
             <tr>
-              <td>{translate("pages.login.username", undefined, "username")}:</td>
+              <td>
+                {translate("pages.login.username", undefined, "username")}:
+              </td>
               <td>
                 <input
                   name="username"
@@ -530,7 +607,9 @@ const LoginPage: React.FC = () => {
               </td>
             </tr>
             <tr>
-              <td>{translate("pages.login.password", undefined, "password")}:</td>
+              <td>
+                {translate("pages.login.password", undefined, "password")}:
+              </td>
               <td>
                 <input type="password" name="password" required size={20} />
               </td>
@@ -756,7 +835,11 @@ const anyUsefulMeta = params?.resource?.meta?.yourUsefulMeta;
 
 export const accessControlProvider = {
   can: async ({ resource, action, params }) => {
-    if (resourceName === "posts" && anyUsefulMeta === true && action === "edit") {
+    if (
+      resourceName === "posts" &&
+      anyUsefulMeta === true &&
+      action === "edit"
+    ) {
       return {
         can: false,
         reason: "Unauthorized",
@@ -770,7 +853,7 @@ Then, let's create our posts route.
 
 ```tsx title="app/routes/_protected.posts._index.tsx"
 import { useLoaderData } from "@remix-run/react";
-import { json, LoaderArgs } from "@remix-run/node";
+import { json, LoaderFunctionArgs } from "@remix-run/node";
 import dataProvider from "@refinedev/simple-rest";
 
 import { IPost } from "../interfaces";
@@ -785,7 +868,7 @@ const PostList: React.FC = () => {
 
 export default PostList;
 
-export async function loader({ request }: LoaderArgs) {
+export async function loader({ request }: LoaderFunctionArgs) {
   const can = accessControlProvider.can({
     resource: "posts",
     action: "list",
@@ -860,7 +943,7 @@ export default function Posts() {
   const initialPosts = useLoaderData<typeof loader>();
 
   const {
-    tableQueryResult: { data },
+    tableQuery: { data },
   } = useTable<IPost>({
     queryOptions: {
       initialData: initialPosts,

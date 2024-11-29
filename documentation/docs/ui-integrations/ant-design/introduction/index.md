@@ -143,7 +143,9 @@ const App = () => {
   return (
     <ConfigProvider theme={RefineThemes.Green}>
       <AntdApp>
-        <Refine notificationProvider={useNotificationProvider}>{/* ... */}</Refine>
+        <Refine notificationProvider={useNotificationProvider}>
+          {/* ... */}
+        </Refine>
       </AntdApp>
     </ConfigProvider>
   );
@@ -184,7 +186,7 @@ import LayoutRemix from "./previews/layout-remix.tsx";
 </TabItem>
 </Tabs>
 
-[`<ThemedLayoutV2 />`](/docs/ui-integrations/ant-design/components/themed-layout) component consists of a header, sider and a content area. The sider have a navigation menu items for the defined resources of Refine, if an authentication provider is present, it will also have a functional logout buttun. The header contains the app logo and name and also information about the current user if an authentication provider is present.
+[`<ThemedLayoutV2 />`](/docs/ui-integrations/ant-design/components/themed-layout) component consists of a header, sider and a content area. The sider have a navigation menu items for the defined resources of Refine, if an authentication provider is present, it will also have a functional logout button. The header contains the app logo and name and also information about the current user if an authentication provider is present.
 
 Additionally, Refine also provides a [`<Breadcrumb />`](/docs/ui-integrations/ant-design/components/breadcrumb) component that uses the Ant Design's component as a base and provide appropriate breadcrumbs for the current route. This component is used in the basic views provided by Refine's Ant Design package automatically.
 
@@ -307,7 +309,10 @@ export const ProductShow = () => {
 
       <Typography.Title level={5}>Price</Typography.Title>
       {/* highlight-next-line */}
-      <NumberField value={record?.price} options={{ style: "currency", currency: "USD" }} />
+      <NumberField
+        value={record?.price}
+        options={{ style: "currency", currency: "USD" }}
+      />
     </Show>
   );
 };

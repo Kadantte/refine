@@ -1,13 +1,13 @@
 import React from "react";
-import { useTranslate } from "@refinedev/core";
+import { useImportButton } from "@refinedev/core";
 import {
-    RefineButtonClassNames,
-    RefineButtonTestIds,
+  RefineButtonClassNames,
+  RefineButtonTestIds,
 } from "@refinedev/ui-types";
 import { IconButton, Button } from "@chakra-ui/react";
-import { IconFileImport } from "@tabler/icons";
+import { IconFileImport } from "@tabler/icons-react";
 
-import { ImportButtonProps } from "../types";
+import type { ImportButtonProps } from "../types";
 
 /**
  * `<ImportButton>` is compatible with the {@link https://refine.dev/docs/api-reference/core/hooks/import-export/useImport/ `useImport`} core hook.
@@ -16,43 +16,43 @@ import { ImportButtonProps } from "../types";
  * @see {@link https://refine.dev/docs/api-reference/chakra-ui/components/buttons/import-button} for more details.
  */
 export const ImportButton: React.FC<ImportButtonProps> = ({
-    inputProps,
-    hideText = false,
-    loading = false,
-    svgIconProps,
-    children,
-    ...rest
+  inputProps,
+  hideText = false,
+  loading = false,
+  svgIconProps,
+  children,
+  ...rest
 }) => {
-    const translate = useTranslate();
+  const { label } = useImportButton();
 
-    return (
-        <label htmlFor="contained-button-file">
-            <input {...inputProps} id="contained-button-file" multiple hidden />
-            {hideText ? (
-                <IconButton
-                    variant="outline"
-                    as="span"
-                    aria-label={translate("buttons.import", "Import")}
-                    isLoading={loading}
-                    data-testid={RefineButtonTestIds.ImportButton}
-                    className={RefineButtonClassNames.ImportButton}
-                    {...rest}
-                >
-                    <IconFileImport size={20} {...svgIconProps} />
-                </IconButton>
-            ) : (
-                <Button
-                    variant="outline"
-                    as="span"
-                    leftIcon={<IconFileImport size={20} {...svgIconProps} />}
-                    isLoading={loading}
-                    data-testid={RefineButtonTestIds.ImportButton}
-                    className={RefineButtonClassNames.ImportButton}
-                    {...rest}
-                >
-                    {children ?? translate("buttons.import", "Import")}
-                </Button>
-            )}
-        </label>
-    );
+  return (
+    <label htmlFor="contained-button-file">
+      <input {...inputProps} id="contained-button-file" multiple hidden />
+      {hideText ? (
+        <IconButton
+          variant="outline"
+          as="span"
+          aria-label={label}
+          isLoading={loading}
+          data-testid={RefineButtonTestIds.ImportButton}
+          className={RefineButtonClassNames.ImportButton}
+          {...rest}
+        >
+          <IconFileImport size={20} {...svgIconProps} />
+        </IconButton>
+      ) : (
+        <Button
+          variant="outline"
+          as="span"
+          leftIcon={<IconFileImport size={20} {...svgIconProps} />}
+          isLoading={loading}
+          data-testid={RefineButtonTestIds.ImportButton}
+          className={RefineButtonClassNames.ImportButton}
+          {...rest}
+        >
+          {children ?? label}
+        </Button>
+      )}
+    </label>
+  );
 };

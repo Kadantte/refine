@@ -12,7 +12,11 @@ setRefineProps({
 });
 
 const Wrapper = ({ children }) => {
-  return <ChakraUI.ChakraProvider theme={RefineChakra.refineTheme}>{children}</ChakraUI.ChakraProvider>;
+  return (
+    <ChakraUI.ChakraProvider theme={RefineChakra.refineTheme}>
+      {children}
+    </ChakraUI.ChakraProvider>
+  );
 };
 
 const DummyListPage = () => (
@@ -266,7 +270,9 @@ const PostShow: React.FC = () => {
 // visible-block-end
 
 const App = () => {
-  const simpleRestDataProvider = dataProvider("https://api.fake-rest.refine.dev");
+  const simpleRestDataProvider = dataProvider(
+    "https://api.fake-rest.refine.dev",
+  );
 
   const customDataProvider = {
     ...simpleRestDataProvider,
@@ -352,7 +358,15 @@ import dataProvider from "@refinedev/simple-rest";
 // visible-block-start
 import { useModalForm } from "@refinedev/react-hook-form";
 import { Show } from "@refinedev/chakra-ui";
-import { Modal, Button, ModalOverlay, ModalContent, ModalCloseButton, ModalHeader, ModalBody } from "@chakra-ui/react";
+import {
+  Modal,
+  Button,
+  ModalOverlay,
+  ModalContent,
+  ModalCloseButton,
+  ModalHeader,
+  ModalBody,
+} from "@chakra-ui/react";
 
 const PostShow: React.FC = () => {
   const {
@@ -456,7 +470,7 @@ import dataProvider from "@refinedev/simple-rest";
 // visible-block-start
 import { Show } from "@refinedev/chakra-ui";
 /* highlight-next-line */
-import { IconMoodSmile } from "@tabler/icons";
+import { IconMoodSmile } from "@tabler/icons-react";
 
 const PostShow: React.FC = () => {
   return (
@@ -643,7 +657,7 @@ render(
 );
 ```
 
-> For more information, refer to the [`Box` documentation from Chakra UI #8594](https://chakra-ui.com/docs/components/box/usage)
+> For more information, refer to the [`Box` documentation from Chakra UI #8594](https://www.chakra-ui.com/docs/components/box#usage)
 
 ### headerProps
 
@@ -696,7 +710,7 @@ render(
 );
 ```
 
-> For more information, refer to the [`Box` documentation from Chakra UI &#8594](https://chakra-ui.com/docs/components/box/usage)
+> For more information, refer to the [`Box` documentation from Chakra UI &#8594](https://www.chakra-ui.com/docs/components/box#usage)
 
 ### contentProps
 
@@ -750,7 +764,7 @@ render(
 );
 ```
 
-> For more information, refer to the [`Box` documentation from Chakra UI &#8594](https://chakra-ui.com/docs/components/box/usage)
+> For more information, refer to the [`Box` documentation from Chakra UI &#8594](https://www.chakra-ui.com/docs/components/box#usage)
 
 ### headerButtons
 
@@ -826,18 +840,35 @@ import { ShowButton } from "@refinedev/chakra-ui";
 import dataProvider from "@refinedev/simple-rest";
 
 // visible-block-start
-import { Show, ListButton, EditButton, DeleteButton, RefreshButton } from "@refinedev/chakra-ui";
+import {
+  Show,
+  ListButton,
+  EditButton,
+  DeleteButton,
+  RefreshButton,
+} from "@refinedev/chakra-ui";
 import { Button, HStack, Box } from "@chakra-ui/react";
 
 const PostShow: React.FC = () => {
   return (
     <Show
       // highlight-start
-      headerButtons={({ deleteButtonProps, editButtonProps, listButtonProps, refreshButtonProps }) => (
+      headerButtons={({
+        deleteButtonProps,
+        editButtonProps,
+        listButtonProps,
+        refreshButtonProps,
+      }) => (
         <HStack>
-          {listButtonProps && <ListButton {...listButtonProps} meta={{ foo: "bar" }} />}
-          {editButtonProps && <EditButton {...editButtonProps} meta={{ foo: "bar" }} />}
-          {deleteButtonProps && <DeleteButton {...deleteButtonProps} meta={{ foo: "bar" }} />}
+          {listButtonProps && (
+            <ListButton {...listButtonProps} meta={{ foo: "bar" }} />
+          )}
+          {editButtonProps && (
+            <EditButton {...editButtonProps} meta={{ foo: "bar" }} />
+          )}
+          {deleteButtonProps && (
+            <DeleteButton {...deleteButtonProps} meta={{ foo: "bar" }} />
+          )}
           <RefreshButton {...refreshButtonProps} meta={{ foo: "bar" }} />
           <Button colorScheme="red">Custom Button</Button>
         </HStack>
@@ -929,7 +960,7 @@ render(
 );
 ```
 
-> For more information, refer to the [`Box` documentation from Chakra UI &#8594](https://chakra-ui.com/docs/components/box/usage)
+> For more information, refer to the [`Box` documentation from Chakra UI &#8594](https://www.chakra-ui.com/docs/components/box#usage)
 
 ### footerButtons
 
@@ -1043,7 +1074,7 @@ render(
 );
 ```
 
-> For more information, refer to the [`Box` documentation from Chakra UI &#8594](https://chakra-ui.com/docs/components/box/usage)
+> For more information, refer to the [`Box` documentation from Chakra UI &#8594](https://www.chakra-ui.com/docs/components/box#usage)
 
 ## API Reference
 

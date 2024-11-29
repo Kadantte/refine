@@ -281,7 +281,7 @@ body {
 }
 
 .page-container {
-  @apply mx-auto my-2 py-2 px-4 bg-slate-50 border rounded drop-shadow-md;
+  @apply mx-auto my-2 rounded border bg-slate-50 px-4 py-2 drop-shadow-md;
 }
 
 .page-title {
@@ -289,7 +289,7 @@ body {
 }
 
 .page-header {
-  @apply py-4 flex justify-between items-center mb-6;
+  @apply mb-6 flex items-center justify-between py-4;
 }
 ```
 
@@ -433,11 +433,14 @@ import React from "react";
 
 export const Dashboard: React.FC = () => {
   return (
-    <div className="hero min-h-screen bg-base-200">
+    <div className="hero bg-base-200 min-h-screen">
       <div className="hero-content text-center">
         <div className="max-w-md">
           <h1 className="text-5xl font-bold">Hello there...</h1>
-          <p className="py-6">You're here. A deva just as dashing and daisyuing - as yourself refined</p>
+          <p className="py-6">
+            You're here. A deva just as dashing and daisyuing - as yourself
+            refined
+          </p>
           <button className="btn btn-primary">Buckle Up</button>
         </div>
       </div>
@@ -465,7 +468,13 @@ import routerBindings, {
 } from "@refinedev/react-router-v6";
 import dataProvider from "@refinedev/simple-rest";
 //highlight-next-line
-import { BrowserRouter, Navigate, Outlet, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter,
+  Navigate,
+  Outlet,
+  Route,
+  Routes,
+} from "react-router-dom";
 import "./App.css";
 import { Layout } from "./components/layout";
 //highlight-next-line
@@ -546,7 +555,11 @@ Let's now focus on implementing the features of the dashboard. Inside it, we'll 
 import React from "react";
 import { KpiCard } from "./KpiCard";
 import { IChartDatum } from "../../interfaces";
-import { CurrencyDollarIcon, ShoppingCartIcon, UserGroupIcon } from "@heroicons/react/24/outline";
+import {
+  CurrencyDollarIcon,
+  ShoppingCartIcon,
+  UserGroupIcon,
+} from "@heroicons/react/24/outline";
 import { GetListResponse } from "@refinedev/core";
 
 type TStats = {
@@ -557,8 +570,8 @@ type TStats = {
 
 const Stats = ({ dailyRevenue, dailyOrders, newCustomers }: TStats) => {
   return (
-    <div className="w-full mx-auto mb-4 flex flex-col justify-center items-stretch md:flex-row md:justify-between drop-shadow-md">
-      <div className="w-full mx-auto md:flex-1 md:mr-2">
+    <div className="mx-auto mb-4 flex w-full flex-col items-stretch justify-center drop-shadow-md md:flex-row md:justify-between">
+      <div className="mx-auto w-full md:mr-2 md:flex-1">
         <KpiCard
           title="Weekly Revenue"
           data={dailyRevenue}
@@ -570,7 +583,7 @@ const Stats = ({ dailyRevenue, dailyOrders, newCustomers }: TStats) => {
           }}
         />
       </div>
-      <div className="w-full mx-auto md:flex-1">
+      <div className="mx-auto w-full md:flex-1">
         <KpiCard
           title="Weekly Orders"
           data={dailyOrders}
@@ -581,7 +594,7 @@ const Stats = ({ dailyRevenue, dailyOrders, newCustomers }: TStats) => {
           }}
         />
       </div>
-      <div className="w-full mx-auto md:flex-1 md:ml-2">
+      <div className="mx-auto w-full md:ml-2 md:flex-1">
         <KpiCard
           title="New Customers"
           data={newCustomers}
@@ -625,7 +638,13 @@ type TKpiCardProps = {
   formatTotal?: (value: number | string) => typeof value;
 };
 
-export const KpiCard = ({ title, data, icon, colors, formatTotal = (value) => value }: TKpiCardProps) => {
+export const KpiCard = ({
+  title,
+  data,
+  icon,
+  colors,
+  formatTotal = (value) => value,
+}: TKpiCardProps) => {
   const total = data?.data?.total;
   const trend = data?.data?.trend;
   const calc = Math.round((trend / total) * 100);
@@ -633,8 +652,14 @@ export const KpiCard = ({ title, data, icon, colors, formatTotal = (value) => va
   const textColor = total > trend ? "seagreen" : "crimson";
 
   return (
-    <div className="stat my-2 py-4 flex-1 bg-zinc-50 border-l-4 rounded" style={{ borderColor: colors?.stroke }}>
-      <div className="stat-figure text-secondary" style={{ color: colors?.fill }}>
+    <div
+      className="stat my-2 flex-1 rounded border-l-4 bg-zinc-50 py-4"
+      style={{ borderColor: colors?.stroke }}
+    >
+      <div
+        className="stat-figure text-secondary"
+        style={{ color: colors?.fill }}
+      >
         {icon}
       </div>
       <div className="stat-title text-l">{title}</div>
@@ -642,7 +667,7 @@ export const KpiCard = ({ title, data, icon, colors, formatTotal = (value) => va
         {formatTotal(total ?? "...")}
       </div>
       <div className="stat-desc my-2">
-        <span className="mx-1 text-l font-bold" style={{ color: textColor }}>
+        <span className="text-l mx-1 font-bold" style={{ color: textColor }}>
           {percent}
         </span>
         since last week
@@ -705,7 +730,11 @@ export const Dashboard: React.FC = () => {
 
   return (
     <>
-      <Stats dailyRevenue={dailyRevenue} dailyOrders={dailyOrders} newCustomers={newCustomers} />
+      <Stats
+        dailyRevenue={dailyRevenue}
+        dailyOrders={dailyOrders}
+        newCustomers={newCustomers}
+      />
     </>
   );
 };
@@ -750,7 +779,12 @@ type TTabItem = {
 
 export const TabItem = ({ label, isActive, clickHandler }: TTabItem) => {
   return (
-    <a className={`text-l font-bold tab tab-bordered${isActive ? " tab-active" : ""}`} onClick={clickHandler}>
+    <a
+      className={`text-l tab font-bold tab-bordered${
+        isActive ? " tab-active" : ""
+      }`}
+      onClick={clickHandler}
+    >
       {label}
     </a>
   );
@@ -803,7 +837,7 @@ type TTabViewProps = {
 export const TabView = ({ tabs }: TTabViewProps) => {
   const [activeTab, setActiveTab] = useState(0);
   return (
-    <div className="mx-auto py-4 bg-slate-50 border rounded-lg drop-shadow-md">
+    <div className="mx-auto rounded-lg border bg-slate-50 py-4 drop-shadow-md">
       <div className="tabs">
         {tabs?.map((tab: TTab, index: number) => (
           <TabItem
@@ -848,7 +882,15 @@ Create the `<ResponsiveAreaChart />` component with the code below:
 
 ```tsx title="src/components/dashboard/ResponsiveAreaChart.tsx"
 import React from "react";
-import { ResponsiveContainer, AreaChart, CartesianGrid, XAxis, YAxis, Tooltip, Area } from "recharts";
+import {
+  ResponsiveContainer,
+  AreaChart,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Area,
+} from "recharts";
 import { ChartTooltip } from "../../components/dashboard/ChartTooltip";
 import { IChartDatum } from "../../interfaces";
 
@@ -861,7 +903,11 @@ type TResponsiveAreaChartProps = {
   };
 };
 
-export const ResponsiveAreaChart = ({ kpi, data, colors }: TResponsiveAreaChartProps) => {
+export const ResponsiveAreaChart = ({
+  kpi,
+  data,
+  colors,
+}: TResponsiveAreaChartProps) => {
   return (
     <ResponsiveContainer height={400}>
       <AreaChart
@@ -933,7 +979,15 @@ In a similar way, create the `<ResponsiveBarChart />` component with the below c
 
 ```tsx title="src/components/dashboard/ResponsiveBarChart.tsx"
 import React from "react";
-import { ResponsiveContainer, BarChart, CartesianGrid, XAxis, YAxis, Tooltip, Bar } from "recharts";
+import {
+  ResponsiveContainer,
+  BarChart,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Bar,
+} from "recharts";
 import { ChartTooltip } from "../../components/dashboard/ChartTooltip";
 import { IChartDatum } from "../../interfaces";
 
@@ -946,7 +1000,11 @@ type TResponsiveBarChartProps = {
   };
 };
 
-export const ResponsiveBarChart = ({ kpi, data, colors }: TResponsiveBarChartProps) => {
+export const ResponsiveBarChart = ({
+  kpi,
+  data,
+  colors,
+}: TResponsiveBarChartProps) => {
   return (
     <ResponsiveContainer height={400}>
       <BarChart
@@ -1016,7 +1074,14 @@ Let's create the `<ChartTooltip />` component with the following code:
 
 ```tsx title="src/components/dashboard/ChartTooltip.tsx"
 import React from "react";
-export const ChartTooltip = ({ active, payload, label, coordinate, colors, kpi }: any) => {
+export const ChartTooltip = ({
+  active,
+  payload,
+  label,
+  coordinate,
+  colors,
+  kpi,
+}: any) => {
   if (active && payload && payload.length) {
     const dataPoint = payload[0].payload;
 
@@ -1027,7 +1092,7 @@ export const ChartTooltip = ({ active, payload, label, coordinate, colors, kpi }
 
     return (
       <div
-        className="p-1 flex flex-col justify-center items-start border border-black rounded-lg text-zinc-50"
+        className="flex flex-col items-start justify-center rounded-lg border border-black p-1 text-zinc-50"
         style={tooltipStyle}
       >
         <div
@@ -1179,7 +1244,11 @@ export const Dashboard: React.FC = () => {
 
   return (
     <>
-      <Stats dailyRevenue={dailyRevenue} dailyOrders={dailyOrders} newCustomers={newCustomers} />
+      <Stats
+        dailyRevenue={dailyRevenue}
+        dailyOrders={dailyOrders}
+        newCustomers={newCustomers}
+      />
       {/*highlight-next-line*/}
       <TabView tabs={tabs} />
     </>
@@ -1212,7 +1281,11 @@ import React, { useMemo, useRef } from "react";
 import { getDefaultFilter } from "@refinedev/core";
 import { useTable } from "@refinedev/react-table";
 import { ColumnDef, flexRender } from "@tanstack/react-table";
-import { FunnelIcon, BarsArrowDownIcon, BarsArrowUpIcon } from "@heroicons/react/24/outline";
+import {
+  FunnelIcon,
+  BarsArrowDownIcon,
+  BarsArrowUpIcon,
+} from "@heroicons/react/24/outline";
 export const RecentSales = () => {
   const filterForm: any = useRef(null);
 
@@ -1275,7 +1348,8 @@ export const RecentSales = () => {
           };
 
           const status = getValue() as string;
-          const daisyBadgeClasses = () => "badge badge-" + saleStatusStyleMap[status];
+          const daisyBadgeClasses = () =>
+            "badge badge-" + saleStatusStyleMap[status];
 
           return <div className={daisyBadgeClasses()}>{status}</div>;
         },
@@ -1312,14 +1386,14 @@ export const RecentSales = () => {
   });
 
   const header = (
-    <div className="w-full mx-auto">
+    <div className="mx-auto w-full">
       <div className="my-2">
         <h1 className="page-title text-gray-700">Recent Sales</h1>
       </div>
-      <div className="overflow-x-auto bg-slate-50 border rounded-t-lg">
-        <div className="flex justify-between items-center m-4">
+      <div className="overflow-x-auto rounded-t-lg border bg-slate-50">
+        <div className="m-4 flex items-center justify-between">
           <button
-            className="btn btn-outline btn-primary btn-sm normal-case font-light"
+            className="btn btn-outline btn-primary btn-sm font-light normal-case"
             onClick={() => {
               setCurrent(1);
               setFilters([], "replace");
@@ -1329,7 +1403,7 @@ export const RecentSales = () => {
             <FunnelIcon className="h-4 w-4" />
             Clear
           </button>
-          <div className="flex justify-end items-center">
+          <div className="flex items-center justify-end">
             <form ref={filterForm}>
               <input
                 className="input input-bordered input-sm"
@@ -1355,10 +1429,10 @@ export const RecentSales = () => {
   );
 
   return (
-    <div className="w-full mx-auto my-8 drop-shadow-md">
+    <div className="mx-auto my-8 w-full drop-shadow-md">
       {header}
-      <div className="p-4 overflow-x-auto bg-slate-50 border rounded-b-lg">
-        <table className="table table-zebra border-t">
+      <div className="overflow-x-auto rounded-b-lg border bg-slate-50 p-4">
+        <table className="table-zebra table border-t">
           <thead className="bg-slate-200">
             {getHeaderGroups()?.map((headerGroup) => (
               <tr key={headerGroup?.id}>
@@ -1368,8 +1442,12 @@ export const RecentSales = () => {
                     key={header?.id}
                     onClick={header?.column?.getToggleSortingHandler()}
                   >
-                    <div className="flex justify-start items-center">
-                      {!header?.isPlaceholder && flexRender(header?.column?.columnDef?.header, header?.getContext())}
+                    <div className="flex items-center justify-start">
+                      {!header?.isPlaceholder &&
+                        flexRender(
+                          header?.column?.columnDef?.header,
+                          header?.getContext(),
+                        )}
                       {{
                         asc: <BarsArrowUpIcon className="h-4 w-4" />,
                         desc: <BarsArrowDownIcon className="h-4 w-4" />,
@@ -1384,7 +1462,12 @@ export const RecentSales = () => {
             {getRowModel()?.rows?.map((row) => (
               <tr key={row?.id}>
                 {row?.getVisibleCells()?.map((cell) => (
-                  <td key={cell?.id}>{flexRender(cell?.column?.columnDef?.cell, cell?.getContext())}</td>
+                  <td key={cell?.id}>
+                    {flexRender(
+                      cell?.column?.columnDef?.cell,
+                      cell?.getContext(),
+                    )}
+                  </td>
                 ))}
               </tr>
             ))}
@@ -1513,7 +1596,11 @@ export const Dashboard: React.FC = () => {
 
   return (
     <>
-      <Stats dailyRevenue={dailyRevenue} dailyOrders={dailyOrders} newCustomers={newCustomers} />
+      <Stats
+        dailyRevenue={dailyRevenue}
+        dailyOrders={dailyOrders}
+        newCustomers={newCustomers}
+      />
       <TabView tabs={tabs} />
       {/*highlight-next-line*/}
       <RecentSales />
@@ -1586,12 +1673,23 @@ import routerBindings, {
   UnsavedChangesNotifier,
 } from "@refinedev/react-router-v6";
 import dataProvider from "@refinedev/simple-rest";
-import { BrowserRouter, Navigate, Outlet, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter,
+  Navigate,
+  Outlet,
+  Route,
+  Routes,
+} from "react-router-dom";
 import "./App.css";
 import { Layout } from "./components/layout";
 import { Dashboard } from "./pages/dashboard";
 //highlight-next-line
-import { ProductList, ProductCreate, ProductEdit, ProductShow } from "./pages/products";
+import {
+  ProductList,
+  ProductCreate,
+  ProductEdit,
+  ProductShow,
+} from "./pages/products";
 
 function App() {
   return (
@@ -1677,10 +1775,9 @@ Now when we navigate along the `/products` paths, we can see some clumsy looking
 To begin with, the scaffolded `<ProductList />` component looks like this:
 
 ```tsx title="src/pages/products/list.tsx"
-import { IResourceComponentsProps } from "@refinedev/core";
 import { HeadlessInferencer } from "@refinedev/inferencer/headless";
 
-export const ProductList: React.FC<IResourceComponentsProps> = () => {
+export const ProductList = () => {
   return <HeadlessInferencer />;
 };
 ```
@@ -1695,11 +1792,11 @@ We'll grab the generated code from the page modal by clicking on the `Show the a
 
 ```tsx
 import React from "react";
-import { IResourceComponentsProps, useNavigation } from "@refinedev/core";
+import { useNavigation } from "@refinedev/core";
 import { useTable } from "@refinedev/react-table";
 import { ColumnDef, flexRender } from "@tanstack/react-table";
 
-export const ProductList: React.FC<IResourceComponentsProps> = () => {
+export const ProductList = () => {
   const columns = React.useMemo<ColumnDef<any>[]>(
     () => [
       {
@@ -1803,7 +1900,7 @@ export const ProductList: React.FC<IResourceComponentsProps> = () => {
     getRowModel,
     setOptions,
     refineCore: {
-      tableQueryResult: { data: tableData },
+      tableQuery: { data: tableData },
     },
     getState,
     setPageIndex,
@@ -1844,7 +1941,11 @@ export const ProductList: React.FC<IResourceComponentsProps> = () => {
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
                   <th key={header.id}>
-                    {!header.isPlaceholder && flexRender(header.column.columnDef.header, header.getContext())}
+                    {!header.isPlaceholder &&
+                      flexRender(
+                        header.column.columnDef.header,
+                        header.getContext(),
+                      )}
                   </th>
                 ))}
               </tr>
@@ -1854,7 +1955,9 @@ export const ProductList: React.FC<IResourceComponentsProps> = () => {
             {getRowModel().rows.map((row) => (
               <tr key={row.id}>
                 {row.getVisibleCells().map((cell) => (
-                  <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
+                  <td key={cell.id}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </td>
                 ))}
               </tr>
             ))}
@@ -1862,7 +1965,10 @@ export const ProductList: React.FC<IResourceComponentsProps> = () => {
         </table>
       </div>
       <div style={{ marginTop: "12px" }}>
-        <button onClick={() => setPageIndex(0)} disabled={!getCanPreviousPage()}>
+        <button
+          onClick={() => setPageIndex(0)}
+          disabled={!getCanPreviousPage()}
+        >
           {"<<"}
         </button>
         <button onClick={() => previousPage()} disabled={!getCanPreviousPage()}>
@@ -1871,7 +1977,10 @@ export const ProductList: React.FC<IResourceComponentsProps> = () => {
         <button onClick={() => nextPage()} disabled={!getCanNextPage()}>
           {">"}
         </button>
-        <button onClick={() => setPageIndex(getPageCount() - 1)} disabled={!getCanNextPage()}>
+        <button
+          onClick={() => setPageIndex(getPageCount() - 1)}
+          disabled={!getCanNextPage()}
+        >
           {">>"}
         </button>
         <span>
@@ -1924,7 +2033,7 @@ So, we'll build on top of it and make necessary logic, markup and style modifica
 
 ```tsx title="src/pages/products/list.tsx
 import React, { useRef } from "react";
-import { IResourceComponentsProps, getDefaultFilter, useDelete, useNavigation } from "@refinedev/core";
+import { getDefaultFilter, useDelete, useNavigation } from "@refinedev/core";
 import { useTable } from "@refinedev/react-table";
 import { ColumnDef, flexRender } from "@tanstack/react-table";
 import { PlusIcon } from "@heroicons/react/20/solid";
@@ -1937,7 +2046,7 @@ import {
   BarsArrowUpIcon,
 } from "@heroicons/react/24/outline";
 
-export const ProductList: React.FC<IResourceComponentsProps> = () => {
+export const ProductList = () => {
   const filterForm: any = useRef(null);
 
   const { mutate: deleteProduct } = useDelete();
@@ -1978,7 +2087,7 @@ export const ProductList: React.FC<IResourceComponentsProps> = () => {
         enableSorting: false,
         cell: function render({ getValue }) {
           return (
-            <div className="flex justify-around items-center">
+            <div className="flex items-center justify-around">
               <button
                 className="btn btn-xs btn-circle btn-ghost m-1"
                 onClick={() => {
@@ -2004,7 +2113,7 @@ export const ProductList: React.FC<IResourceComponentsProps> = () => {
                   });
                 }}
               >
-                <TrashIcon className="h-4 w-4 text-error" />
+                <TrashIcon className="text-error h-4 w-4" />
               </button>
             </div>
           );
@@ -2037,17 +2146,17 @@ export const ProductList: React.FC<IResourceComponentsProps> = () => {
       <div className="page-header">
         <h1 className="page-title">Products</h1>
         <button
-          className="btn btn-sm btn-primary normal-case font-normal text-zinc-50"
+          className="btn btn-sm btn-primary font-normal normal-case text-zinc-50"
           onClick={() => create("products")}
         >
           <PlusIcon className="h-5 w-5" />
           Create
         </button>
       </div>
-      <div className="overflow-x-auto bg-slate-50 border">
-        <div className="flex justify-between items-center m-4">
+      <div className="overflow-x-auto border bg-slate-50">
+        <div className="m-4 flex items-center justify-between">
           <button
-            className="btn btn-outline btn-primary btn-sm normal-case font-light"
+            className="btn btn-outline btn-primary btn-sm font-light normal-case"
             onClick={() => {
               setCurrent(1);
               setFilters([], "replace");
@@ -2057,7 +2166,7 @@ export const ProductList: React.FC<IResourceComponentsProps> = () => {
             <FunnelIcon className="h-4 w-4" />
             Clear
           </button>
-          <div className="flex justify-end items-center">
+          <div className="flex items-center justify-end">
             <form ref={filterForm}>
               <input
                 className="input input-bordered input-sm"
@@ -2078,7 +2187,7 @@ export const ProductList: React.FC<IResourceComponentsProps> = () => {
             </form>
           </div>
         </div>
-        <table className="table table-zebra border-t">
+        <table className="table-zebra table border-t">
           <thead className="bg-slate-200">
             {getHeaderGroups()?.map((headerGroup) => (
               <tr key={headerGroup?.id}>
@@ -2088,8 +2197,12 @@ export const ProductList: React.FC<IResourceComponentsProps> = () => {
                     key={header?.id}
                     onClick={header?.column?.getToggleSortingHandler()}
                   >
-                    <div className="flex justify-start items-center">
-                      {!header?.isPlaceholder && flexRender(header?.column?.columnDef?.header, header?.getContext())}
+                    <div className="flex items-center justify-start">
+                      {!header?.isPlaceholder &&
+                        flexRender(
+                          header?.column?.columnDef?.header,
+                          header?.getContext(),
+                        )}
                       {{
                         asc: <BarsArrowUpIcon className="h-4 w-4" />,
                         desc: <BarsArrowDownIcon className="h-4 w-4" />,
@@ -2104,14 +2217,19 @@ export const ProductList: React.FC<IResourceComponentsProps> = () => {
             {getRowModel()?.rows?.map((row) => (
               <tr key={row?.id}>
                 {row?.getVisibleCells()?.map((cell) => (
-                  <td key={cell?.id}>{flexRender(cell?.column?.columnDef?.cell, cell?.getContext())}</td>
+                  <td key={cell?.id}>
+                    {flexRender(
+                      cell?.column?.columnDef?.cell,
+                      cell?.getContext(),
+                    )}
+                  </td>
                 ))}
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-      <div className="flex justify-center items-center mt-3">
+      <div className="mt-3 flex items-center justify-center">
         <div className="join">
           <button
             className="join-item btn btn-sm btn-ghost"
@@ -2127,19 +2245,28 @@ export const ProductList: React.FC<IResourceComponentsProps> = () => {
           >
             {"<"}
           </button>
-          {Array.from({ length: getPageCount() }, (_, index) => index + 1)?.map((pageNumber) => {
-            const btnActive = pageNumber - 1 == getState()?.pagination?.pageIndex ? " btn-active" : "";
-            return (
-              <button
-                key={pageNumber}
-                className={"join-item btn btn-sm" + btnActive}
-                onClick={() => setPageIndex(pageNumber - 1)}
-              >
-                {pageNumber}
-              </button>
-            );
-          })}
-          <button className="join-item btn btn-sm btn-ghost" onClick={() => nextPage()} disabled={!getCanNextPage()}>
+          {Array.from({ length: getPageCount() }, (_, index) => index + 1)?.map(
+            (pageNumber) => {
+              const btnActive =
+                pageNumber - 1 == getState()?.pagination?.pageIndex
+                  ? " btn-active"
+                  : "";
+              return (
+                <button
+                  key={pageNumber}
+                  className={"join-item btn btn-sm" + btnActive}
+                  onClick={() => setPageIndex(pageNumber - 1)}
+                >
+                  {pageNumber}
+                </button>
+              );
+            },
+          )}
+          <button
+            className="join-item btn btn-sm btn-ghost"
+            onClick={() => nextPage()}
+            disabled={!getCanNextPage()}
+          >
             {">"}
           </button>
           <button
@@ -2151,14 +2278,14 @@ export const ProductList: React.FC<IResourceComponentsProps> = () => {
           </button>
         </div>
         <select
-          className="mx-2 p-1 border rounded"
+          className="mx-2 rounded border p-1"
           value={getState()?.pagination?.pageSize}
           onChange={(e) => {
             setPageSize(Number(e.target.value));
           }}
         >
           {[10, 25, 50].map((pageSize) => (
-            <option className="border rounded" key={pageSize} value={pageSize}>
+            <option className="rounded border" key={pageSize} value={pageSize}>
               {pageSize}
             </option>
           ))}
@@ -2289,11 +2416,11 @@ The modified `<ProductCreate />` component looks like below, so replace the code
 
 ```tsx title="src/pages/products/create.tsx"
 import React from "react";
-import { useNavigation, IResourceComponentsProps, useSelect } from "@refinedev/core";
+import { useNavigation, useSelect } from "@refinedev/core";
 import { useForm } from "@refinedev/react-hook-form";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 
-export const ProductCreate: React.FC<IResourceComponentsProps> = () => {
+export const ProductCreate = () => {
   const { list } = useNavigation();
 
   const {
@@ -2309,10 +2436,10 @@ export const ProductCreate: React.FC<IResourceComponentsProps> = () => {
 
   return (
     <div className="page-container">
-      <div className="flex justify-start items-center">
+      <div className="flex items-center justify-start">
         <div>
           <button
-            className="mr-2 btn btn-primary btn-sm btn-ghost"
+            className="btn btn-primary btn-sm btn-ghost mr-2"
             onClick={() => {
               list("products");
             }}
@@ -2332,7 +2459,9 @@ export const ProductCreate: React.FC<IResourceComponentsProps> = () => {
               required: "This field is required",
             })}
           />
-          <span style={{ color: "red" }}>{(errors as any)?.name?.message as string}</span>
+          <span style={{ color: "red" }}>
+            {(errors as any)?.name?.message as string}
+          </span>
         </div>
         <div className="form-control my-4">
           <label className="m-1">Price</label>
@@ -2344,7 +2473,9 @@ export const ProductCreate: React.FC<IResourceComponentsProps> = () => {
               valueAsNumber: true,
             })}
           />
-          <span style={{ color: "red" }}>{(errors as any)?.price?.message as string}</span>
+          <span style={{ color: "red" }}>
+            {(errors as any)?.price?.message as string}
+          </span>
         </div>
         <div className="form-control my-4">
           <label className="m-1" htmlFor="category">
@@ -2363,7 +2494,9 @@ export const ProductCreate: React.FC<IResourceComponentsProps> = () => {
               </option>
             ))}
           </select>
-          <span style={{ color: "red" }}>{(errors as any)?.category?.id?.message as string}</span>
+          <span style={{ color: "red" }}>
+            {(errors as any)?.category?.id?.message as string}
+          </span>
         </div>
         <div className="form-control my-4">
           <label className="m-1">Description</label>
@@ -2375,11 +2508,13 @@ export const ProductCreate: React.FC<IResourceComponentsProps> = () => {
               required: "This field is required",
             })}
           />
-          <span style={{ color: "red" }}>{(errors as any)?.description?.message as string}</span>
+          <span style={{ color: "red" }}>
+            {(errors as any)?.description?.message as string}
+          </span>
         </div>
-        <div className="flex justify-end items-center my-6">
+        <div className="my-6 flex items-center justify-end">
           <input
-            className="btn btn-primary btn-sm normal-case text-xl text-zinc-50 font-normal"
+            className="btn btn-primary btn-sm text-xl font-normal normal-case text-zinc-50"
             type="submit"
             value="Save"
           />
@@ -2439,11 +2574,11 @@ The product edit page will have the same form functionality as the create page. 
 
 ```tsx title="src/pages/products/edit.tsx"
 import React from "react";
-import { useNavigation, IResourceComponentsProps, useSelect } from "@refinedev/core";
+import { useNavigation, useSelect } from "@refinedev/core";
 import { useForm } from "@refinedev/react-hook-form";
 import { ArrowLeftIcon, ArrowPathIcon } from "@heroicons/react/24/outline";
 
-export const ProductEdit: React.FC<IResourceComponentsProps> = () => {
+export const ProductEdit = () => {
   const { list } = useNavigation();
 
   const {
@@ -2467,10 +2602,10 @@ export const ProductEdit: React.FC<IResourceComponentsProps> = () => {
 
   return (
     <div className="page-container">
-      <div className="flex justify-between items-center">
-        <div className="flex justify-start items-center">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center justify-start">
           <button
-            className="mr-2 btn btn-primary btn-sm btn-ghost"
+            className="btn btn-primary btn-sm btn-ghost mr-2"
             onClick={() => {
               list("products");
             }}
@@ -2481,7 +2616,7 @@ export const ProductEdit: React.FC<IResourceComponentsProps> = () => {
         </div>
         <div>
           <button
-            className="flex justify-center items-center btn btn-sm btn-primary btn-outline normal-case font-normal"
+            className="btn btn-sm btn-primary btn-outline flex items-center justify-center font-normal normal-case"
             onClick={() => queryResult?.refetch()}
           >
             <ArrowPathIcon className="h-5 w-5" />
@@ -2499,7 +2634,9 @@ export const ProductEdit: React.FC<IResourceComponentsProps> = () => {
               required: "This field is required",
             })}
           />
-          <span style={{ color: "red" }}>{(errors as any)?.name?.message as string}</span>
+          <span style={{ color: "red" }}>
+            {(errors as any)?.name?.message as string}
+          </span>
         </div>
         <div className="form-control my-4">
           <label className="label">Price</label>
@@ -2511,7 +2648,9 @@ export const ProductEdit: React.FC<IResourceComponentsProps> = () => {
               valueAsNumber: true,
             })}
           />
-          <span style={{ color: "red" }}>{(errors as any)?.price?.message as string}</span>
+          <span style={{ color: "red" }}>
+            {(errors as any)?.price?.message as string}
+          </span>
         </div>
         <div className="form-control my-4">
           <label className="label">Category</label>
@@ -2528,7 +2667,9 @@ export const ProductEdit: React.FC<IResourceComponentsProps> = () => {
               </option>
             ))}
           </select>
-          <span style={{ color: "red" }}>{(errors as any)?.category?.id?.message as string}</span>
+          <span style={{ color: "red" }}>
+            {(errors as any)?.category?.id?.message as string}
+          </span>
         </div>
         <div className="form-control my-4">
           <label className="label">Description</label>
@@ -2539,11 +2680,13 @@ export const ProductEdit: React.FC<IResourceComponentsProps> = () => {
               required: "This field is required",
             })}
           />
-          <span style={{ color: "red" }}>{(errors as any)?.description?.message as string}</span>
+          <span style={{ color: "red" }}>
+            {(errors as any)?.description?.message as string}
+          </span>
         </div>
-        <div className="flex justify-end items-center">
+        <div className="flex items-center justify-end">
           <input
-            className="btn btn-primary btn-sm normal-case text-xl text-zinc-50 font-normal"
+            className="btn btn-primary btn-sm text-xl font-normal normal-case text-zinc-50"
             type="submit"
             value="Save"
           />
@@ -2556,7 +2699,7 @@ export const ProductEdit: React.FC<IResourceComponentsProps> = () => {
 
 </details>
 
-In the final version of `<ProductEdit />` component, we are implementing the same form field control, state management, submission and error handling functionalities as the `<ProductCreate />` component implemnted above. We're doing them with the `onFinish` object, `register()` and `handleSubmit()` methods. We are accessing the errors with the `formState.errors` object. We are also using more or less the same daisyUI classes for buttons and form fields.
+In the final version of `<ProductEdit />` component, we are implementing the same form field control, state management, submission and error handling functionalities as the `<ProductCreate />` component implemented above. We're doing them with the `onFinish` object, `register()` and `handleSubmit()` methods. We are accessing the errors with the `formState.errors` object. We are also using more or less the same daisyUI classes for buttons and form fields.
 
 Additionally, we are setting the current option of the `<select />` dropdown with `setValue()` method destructured from `useForm()` hook.
 
@@ -2578,11 +2721,11 @@ The `<ProductShow />` component is more straight forward and the final adopted v
 
 ```tsx title="src/pages/products/show.tsx"
 import React from "react";
-import { useShow, useNavigation, IResourceComponentsProps } from "@refinedev/core";
+import { useShow, useNavigation } from "@refinedev/core";
 import { ArrowLeftIcon, PencilSquareIcon } from "@heroicons/react/24/outline";
 import { IProduct } from "../../interfaces";
 
-export const ProductShow: React.FC<IResourceComponentsProps> = () => {
+export const ProductShow = () => {
   const { edit, list } = useNavigation();
   const {
     queryResult: { data },
@@ -2594,15 +2737,18 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
   return (
     <div className="page-container">
       <div className="page-header">
-        <div className="flex justify-start items-center">
-          <button className="mr-2 btn btn-primary btn-sm btn-ghost" onClick={() => list("products")}>
+        <div className="flex items-center justify-start">
+          <button
+            className="btn btn-primary btn-sm btn-ghost mr-2"
+            onClick={() => list("products")}
+          >
             <ArrowLeftIcon className="h-5 w-5" />
           </button>
           <h1 className="page-title">Product Details</h1>
         </div>
-        <div className="flex justify-between items-center">
+        <div className="flex items-center justify-between">
           <button
-            className="flex justify-center items-center btn btn-primary btn-sm text-zinc-50 normal-case font-normal"
+            className="btn btn-primary btn-sm flex items-center justify-center font-normal normal-case text-zinc-50"
             onClick={() => edit("products", id ?? "")}
           >
             <PencilSquareIcon className="h-5 w-5" />
@@ -2612,8 +2758,10 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
       </div>
       <div className="card">
         <div className="card-body">
-          <div className="text-xl font-bold">{record?.name ?? "Loading..."}</div>
-          <div className="divider p-0 m-0"></div>
+          <div className="text-xl font-bold">
+            {record?.name ?? "Loading..."}
+          </div>
+          <div className="divider m-0 p-0"></div>
           <div className="mb-2">
             <h5 className="mb-1 font-bold">Price</h5>
             <div>{record?.price ? `$ ${record?.price}` : "Loading..."}</div>
@@ -2677,13 +2825,29 @@ import routerBindings, {
   UnsavedChangesNotifier,
 } from "@refinedev/react-router-v6";
 import dataProvider from "@refinedev/simple-rest";
-import { BrowserRouter, Navigate, Outlet, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter,
+  Navigate,
+  Outlet,
+  Route,
+  Routes,
+} from "react-router-dom";
 import "./App.css";
 import { Layout } from "./components/layout";
 import { Dashboard } from "./pages/dashboard";
-import { ProductList, ProductCreate, ProductEdit, ProductShow } from "./pages/products";
+import {
+  ProductList,
+  ProductCreate,
+  ProductEdit,
+  ProductShow,
+} from "./pages/products";
 //highlight-next-line
-import { CategoryList, CategoryCreate, CategoryEdit, CategoryShow } from "./pages/categories";
+import {
+  CategoryList,
+  CategoryCreate,
+  CategoryEdit,
+  CategoryShow,
+} from "./pages/categories";
 
 function App() {
   return (
@@ -2779,7 +2943,7 @@ For the final version of `<CategoryList />`, adopt the following code.
 
 ```tsx title="src/pages/categories/list.tsx"
 import React, { useRef } from "react";
-import { IResourceComponentsProps, getDefaultFilter, useDelete, useNavigation } from "@refinedev/core";
+import { getDefaultFilter, useDelete, useNavigation } from "@refinedev/core";
 import { useTable } from "@refinedev/react-table";
 import { ColumnDef, flexRender } from "@tanstack/react-table";
 import { PlusIcon } from "@heroicons/react/20/solid";
@@ -2793,7 +2957,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { ICategory } from "../../interfaces";
 
-export const CategoryList: React.FC<IResourceComponentsProps> = () => {
+export const CategoryList = () => {
   const filterForm: any = useRef(null);
 
   const { mutate: deleteCategory } = useDelete<ICategory>();
@@ -2809,7 +2973,11 @@ export const CategoryList: React.FC<IResourceComponentsProps> = () => {
         accessorKey: "title",
         header: "Name",
         cell: function render({ getValue }) {
-          return <div className="w-24 md:w-60 lg:w-96 text-center">{getValue() as string}</div>;
+          return (
+            <div className="w-24 text-center md:w-60 lg:w-96">
+              {getValue() as string}
+            </div>
+          );
         },
       },
       {
@@ -2819,7 +2987,7 @@ export const CategoryList: React.FC<IResourceComponentsProps> = () => {
         enableSorting: false,
         cell: function render({ getValue }) {
           return (
-            <div className="flex justify-around items-center">
+            <div className="flex items-center justify-around">
               <button
                 className="btn btn-xs btn-circle btn-ghost m-1"
                 onClick={() => {
@@ -2845,7 +3013,7 @@ export const CategoryList: React.FC<IResourceComponentsProps> = () => {
                   });
                 }}
               >
-                <TrashIcon className="h-4 w-4 text-error" />
+                <TrashIcon className="text-error h-4 w-4" />
               </button>
             </div>
           );
@@ -2878,17 +3046,17 @@ export const CategoryList: React.FC<IResourceComponentsProps> = () => {
       <div className="page-header">
         <h1 className="page-title">Categories</h1>
         <button
-          className="btn btn-sm btn-primary normal-case font-normal text-zinc-50"
+          className="btn btn-sm btn-primary font-normal normal-case text-zinc-50"
           onClick={() => create("categories")}
         >
           <PlusIcon className="h-5 w-5" />
           Create
         </button>
       </div>
-      <div className="overflow-x-auto bg-slate-50 border">
-        <div className="flex justify-between items-center m-4">
+      <div className="overflow-x-auto border bg-slate-50">
+        <div className="m-4 flex items-center justify-between">
           <button
-            className="btn btn-outline btn-primary btn-sm normal-case font-light"
+            className="btn btn-outline btn-primary btn-sm font-light normal-case"
             onClick={() => {
               setCurrent(1);
               setFilters([], "replace");
@@ -2898,7 +3066,7 @@ export const CategoryList: React.FC<IResourceComponentsProps> = () => {
             <FunnelIcon className="h-4 w-4" />
             Clear
           </button>
-          <div className="flex justify-end items-center">
+          <div className="flex items-center justify-end">
             <form ref={filterForm}>
               <input
                 className="input input-bordered input-sm"
@@ -2920,7 +3088,7 @@ export const CategoryList: React.FC<IResourceComponentsProps> = () => {
           </div>
         </div>
       </div>
-      <table className="table table-zebra border-t">
+      <table className="table-zebra table border-t">
         <thead className="bg-slate-200">
           {getHeaderGroups()?.map((headerGroup) => (
             <tr key={headerGroup?.id}>
@@ -2930,8 +3098,12 @@ export const CategoryList: React.FC<IResourceComponentsProps> = () => {
                   key={header?.id}
                   onClick={header?.column?.getToggleSortingHandler()}
                 >
-                  <div className="flex justify-center items-center">
-                    {!header?.isPlaceholder && flexRender(header?.column?.columnDef?.header, header?.getContext())}
+                  <div className="flex items-center justify-center">
+                    {!header?.isPlaceholder &&
+                      flexRender(
+                        header?.column?.columnDef?.header,
+                        header?.getContext(),
+                      )}
                     {{
                       asc: <BarsArrowUpIcon className="h-4 w-4" />,
                       desc: <BarsArrowDownIcon className="h-4 w-4" />,
@@ -2947,8 +3119,11 @@ export const CategoryList: React.FC<IResourceComponentsProps> = () => {
             <tr key={row?.id}>
               {row?.getVisibleCells()?.map((cell) => (
                 <td className="text-center" key={cell?.id}>
-                  <div className="flex justify-center items-center">
-                    {flexRender(cell?.column?.columnDef?.cell, cell?.getContext())}
+                  <div className="flex items-center justify-center">
+                    {flexRender(
+                      cell?.column?.columnDef?.cell,
+                      cell?.getContext(),
+                    )}
                   </div>
                 </td>
               ))}
@@ -2956,7 +3131,7 @@ export const CategoryList: React.FC<IResourceComponentsProps> = () => {
           ))}
         </tbody>
       </table>
-      <div className="flex justify-center items-center mt-3">
+      <div className="mt-3 flex items-center justify-center">
         <div className="join">
           <button
             className="join-item btn btn-sm btn-ghost"
@@ -2972,19 +3147,28 @@ export const CategoryList: React.FC<IResourceComponentsProps> = () => {
           >
             {"<"}
           </button>
-          {Array.from({ length: getPageCount() }, (_, index) => index + 1)?.map((pageNumber) => {
-            const btnActive = pageNumber - 1 == getState()?.pagination?.pageIndex ? " btn-active" : "";
-            return (
-              <button
-                key={pageNumber}
-                className={"join-item btn btn-sm" + btnActive}
-                onClick={() => setPageIndex(pageNumber - 1)}
-              >
-                {pageNumber}
-              </button>
-            );
-          })}
-          <button className="join-item btn btn-sm btn-ghost" onClick={() => nextPage()} disabled={!getCanNextPage()}>
+          {Array.from({ length: getPageCount() }, (_, index) => index + 1)?.map(
+            (pageNumber) => {
+              const btnActive =
+                pageNumber - 1 == getState()?.pagination?.pageIndex
+                  ? " btn-active"
+                  : "";
+              return (
+                <button
+                  key={pageNumber}
+                  className={"join-item btn btn-sm" + btnActive}
+                  onClick={() => setPageIndex(pageNumber - 1)}
+                >
+                  {pageNumber}
+                </button>
+              );
+            },
+          )}
+          <button
+            className="join-item btn btn-sm btn-ghost"
+            onClick={() => nextPage()}
+            disabled={!getCanNextPage()}
+          >
             {">"}
           </button>
           <button
@@ -2996,14 +3180,14 @@ export const CategoryList: React.FC<IResourceComponentsProps> = () => {
           </button>
         </div>
         <select
-          className="mx-2 p-1 border rounded"
+          className="mx-2 rounded border p-1"
           value={getState()?.pagination?.pageSize}
           onChange={(e) => {
             setPageSize(Number(e.target.value));
           }}
         >
           {[10, 25, 50].map((pageSize) => (
-            <option className="border rounded" key={pageSize} value={pageSize}>
+            <option className="rounded border" key={pageSize} value={pageSize}>
               {pageSize}
             </option>
           ))}
@@ -3026,11 +3210,11 @@ For the final version of the `<CategoryCreate />` component, adopt this code:
 
 ```tsx title="src/pages/categories/create.tsx"
 import React from "react";
-import { useNavigation, IResourceComponentsProps } from "@refinedev/core";
+import { useNavigation } from "@refinedev/core";
 import { useForm } from "@refinedev/react-hook-form";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 
-export const CategoryCreate: React.FC<IResourceComponentsProps> = () => {
+export const CategoryCreate = () => {
   const { list } = useNavigation();
 
   const {
@@ -3042,10 +3226,10 @@ export const CategoryCreate: React.FC<IResourceComponentsProps> = () => {
 
   return (
     <div className="page-container">
-      <div className="flex justify-start items-center">
+      <div className="flex items-center justify-start">
         <div>
           <button
-            className="mr-2 btn btn-primary btn-sm btn-ghost"
+            className="btn btn-primary btn-sm btn-ghost mr-2"
             onClick={() => {
               list("categories");
             }}
@@ -3065,10 +3249,12 @@ export const CategoryCreate: React.FC<IResourceComponentsProps> = () => {
               required: "This field is required",
             })}
           />
-          <span style={{ color: "red" }}>{(errors as any)?.title?.message as string}</span>
-          <div className="flex justify-end items-center my-6">
+          <span style={{ color: "red" }}>
+            {(errors as any)?.title?.message as string}
+          </span>
+          <div className="my-6 flex items-center justify-end">
             <input
-              className="btn btn-primary btn-sm normal-case text-xl text-zinc-50 font-normal"
+              className="btn btn-primary btn-sm text-xl font-normal normal-case text-zinc-50"
               type="submit"
               value="Save"
             />
@@ -3092,11 +3278,11 @@ For the final version of the `<CategoryEdit />` component, adopt this code:
 
 ```tsx title="src/pages/categories/edit.tsx"
 import React from "react";
-import { useNavigation, IResourceComponentsProps } from "@refinedev/core";
+import { useNavigation } from "@refinedev/core";
 import { useForm } from "@refinedev/react-hook-form";
 import { ArrowLeftIcon, ArrowPathIcon } from "@heroicons/react/24/outline";
 
-export const CategoryEdit: React.FC<IResourceComponentsProps> = () => {
+export const CategoryEdit = () => {
   const { list } = useNavigation();
 
   const {
@@ -3108,10 +3294,10 @@ export const CategoryEdit: React.FC<IResourceComponentsProps> = () => {
 
   return (
     <div className="page-container">
-      <div className="flex justify-between items-center">
-        <div className="flex justify-start items-center">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center justify-start">
           <button
-            className="mr-2 btn btn-primary btn-sm btn-ghost"
+            className="btn btn-primary btn-sm btn-ghost mr-2"
             onClick={() => {
               list("categories");
             }}
@@ -3122,7 +3308,7 @@ export const CategoryEdit: React.FC<IResourceComponentsProps> = () => {
         </div>
         <div>
           <button
-            className="flex justify-center items-center btn btn-sm btn-primary btn-outline normal-case font-normal"
+            className="btn btn-sm btn-primary btn-outline flex items-center justify-center font-normal normal-case"
             onClick={() => queryResult?.refetch()}
           >
             <ArrowPathIcon className="h-5 w-5" />
@@ -3140,11 +3326,13 @@ export const CategoryEdit: React.FC<IResourceComponentsProps> = () => {
               required: "This field is required",
             })}
           />
-          <span style={{ color: "red" }}>{(errors as any)?.title?.message as string}</span>
+          <span style={{ color: "red" }}>
+            {(errors as any)?.title?.message as string}
+          </span>
         </div>
-        <div className="flex justify-end items-center">
+        <div className="flex items-center justify-end">
           <input
-            className="btn btn-primary btn-sm normal-case text-xl text-zinc-50 font-normal"
+            className="btn btn-primary btn-sm text-xl font-normal normal-case text-zinc-50"
             type="submit"
             value="Save"
           />
@@ -3167,11 +3355,11 @@ For the final version of the `<CategoryShow />` page, adopt this code:
 
 ```tsx title="src/pages/categories/show.tsx"
 import React from "react";
-import { useShow, useNavigation, IResourceComponentsProps } from "@refinedev/core";
+import { useShow, useNavigation } from "@refinedev/core";
 import { ArrowLeftIcon, PencilSquareIcon } from "@heroicons/react/24/outline";
 import { ICategory } from "../../interfaces";
 
-export const CategoryShow: React.FC<IResourceComponentsProps> = () => {
+export const CategoryShow = () => {
   const { edit, list } = useNavigation();
   const {
     queryResult: { data },
@@ -3182,15 +3370,18 @@ export const CategoryShow: React.FC<IResourceComponentsProps> = () => {
   return (
     <div className="page-container">
       <div className="page-header">
-        <div className="flex justify-between items-center">
-          <button className="mr-2 btn btn-primary btn-sm btn-ghost" onClick={() => list("categories")}>
+        <div className="flex items-center justify-between">
+          <button
+            className="btn btn-primary btn-sm btn-ghost mr-2"
+            onClick={() => list("categories")}
+          >
             <ArrowLeftIcon className="h-5 w-5" />
           </button>
           <h1 className="page-title">Category Details</h1>
         </div>
-        <div className="flex justify-start items-center">
+        <div className="flex items-center justify-start">
           <button
-            className="flex justify-center items-center btn btn-primary btn-sm text-zinc-50 normal-case font-normal"
+            className="btn btn-primary btn-sm flex items-center justify-center font-normal normal-case text-zinc-50"
             onClick={() => edit("categories", record?.id ?? "")}
           >
             <PencilSquareIcon className="h-5 w-5" />
@@ -3262,7 +3453,7 @@ export const Layout: React.FC<PropsWithChildren> = ({ children }) => {
   return (
     <div>
       <Menu />
-      <div className="p-4 bg-zinc-100">
+      <div className="bg-zinc-100 p-4">
         <Breadcrumb />
         <div>{children}</div>
       </div>
@@ -3281,13 +3472,32 @@ Notice it renders the `<Menu />` and `<Breadcrumb />` components. We'll update t
 import { ErrorComponent, GitHubBanner, Refine } from "@refinedev/core";
 import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
 
-import routerBindings, { DocumentTitleHandler, UnsavedChangesNotifier } from "@refinedev/react-router-v6";
+import routerBindings, {
+  DocumentTitleHandler,
+  UnsavedChangesNotifier,
+} from "@refinedev/react-router-v6";
 import dataProvider from "@refinedev/simple-rest";
-import { BrowserRouter, Navigate, Outlet, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter,
+  Navigate,
+  Outlet,
+  Route,
+  Routes,
+} from "react-router-dom";
 import "./App.css";
 import { Layout } from "./components/layout";
-import { ProductCreate, ProductEdit, ProductList, ProductShow } from "./pages/products";
-import { CategoryCreate, CategoryEdit, CategoryList, CategoryShow } from "./pages/categories";
+import {
+  ProductCreate,
+  ProductEdit,
+  ProductList,
+  ProductShow,
+} from "./pages/products";
+import {
+  CategoryCreate,
+  CategoryEdit,
+  CategoryList,
+  CategoryShow,
+} from "./pages/categories";
 import { Dashboard } from "./pages/dashboard";
 //highlight-next-line
 import { HomeIcon, ShoppingCartIcon, TagIcon } from "@heroicons/react/20/solid";
@@ -3399,12 +3609,15 @@ export const Menu = () => {
   const { menuItems } = useMenu();
 
   return (
-    <nav className="sticky top-0 z-50 menu mx-0 bg-white">
-      <ul className="mx-0 flex justify-start items-center">
+    <nav className="menu sticky top-0 z-50 mx-0 bg-white">
+      <ul className="mx-0 flex items-center justify-start">
         {menuItems.map((item) => (
-          <li key={item?.key} className="mx-0 flex justify-start items-center">
+          <li key={item?.key} className="mx-0 flex items-center justify-start">
             <div className="text-gray-600">
-              <NavLink className="text-lg flex items-center" to={item?.route ?? "/"}>
+              <NavLink
+                className="flex items-center text-lg"
+                to={item?.route ?? "/"}
+              >
                 <span className="mr-2">{item?.icon}</span>
                 {item?.label}
               </NavLink>
@@ -3439,7 +3652,7 @@ export const Breadcrumb = () => {
   if (breadcrumbs.length == 1) return null;
 
   return (
-    <div className="text-sm breadcrumbs">
+    <div className="breadcrumbs text-sm">
       <ul className="my-2">
         {breadcrumbs?.map((breadcrumb) => {
           return (

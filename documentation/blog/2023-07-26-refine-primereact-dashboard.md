@@ -152,7 +152,10 @@ Previously, we mentioned that the scaffolded project includes auto-generated CRU
     ```tsx title="src/App.tsx"
     import { ErrorComponent, Refine } from "@refinedev/core";
     import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
-    import routerBindings, { DocumentTitleHandler, UnsavedChangesNotifier } from "@refinedev/react-router-v6";
+    import routerBindings, {
+      DocumentTitleHandler,
+      UnsavedChangesNotifier,
+    } from "@refinedev/react-router-v6";
     import dataProvider from "@refinedev/simple-rest";
     import { BrowserRouter, Route, Routes } from "react-router-dom";
 
@@ -217,7 +220,7 @@ import { Button } from "primereact/Button";
 
 export const Dashboard = () => {
   return (
-    <div className="flex justify-content-center">
+    <div className="justify-content-center flex">
       <Button label="Hello PrimeReact!" icon="pi pi-prime" />
     </div>
   );
@@ -321,21 +324,28 @@ type KpiCardProps = {
   formatTotal?: (value: number) => number | string;
 };
 
-export const KpiCard = ({ title, color, total, trend, icon, formatTotal = (value) => value }: KpiCardProps) => {
+export const KpiCard = ({
+  title,
+  color,
+  total,
+  trend,
+  icon,
+  formatTotal = (value) => value,
+}: KpiCardProps) => {
   const renderTrend = () => {
     const calc = Math.round((trend / total) * 100);
 
     if (total < trend) {
       return (
         <div className="text-green-500">
-          <span className="font-medium mr-2">+{calc}%</span>
+          <span className="mr-2 font-medium">+{calc}%</span>
         </div>
       );
     }
 
     return (
       <div className="text-pink-500">
-        <span className="font-medium mr-2">-{calc}%</span>
+        <span className="mr-2 font-medium">-{calc}%</span>
       </div>
     );
   };
@@ -344,12 +354,17 @@ export const KpiCard = ({ title, color, total, trend, icon, formatTotal = (value
     <Card
       className={`shadow-1 border-left-3 border-${color}`}
       title={
-        <div className="flex justify-content-between">
+        <div className="justify-content-between flex">
           <div>
-            <span className="block font-bold text-xl mb-3">{title}</span>
-            <div className="text-900 font-medium text-2xl">{formatTotal(total)}</div>
+            <span className="mb-3 block text-xl font-bold">{title}</span>
+            <div className="text-900 text-2xl font-medium">
+              {formatTotal(total)}
+            </div>
           </div>
-          <div className="flex align-items-center justify-content-center" style={{ width: "2.5rem", height: "2.5rem" }}>
+          <div
+            className="align-items-center justify-content-center flex"
+            style={{ width: "2.5rem", height: "2.5rem" }}
+          >
             <i className={`pi ${icon} text-${color} text-2xl`} />
           </div>
         </div>
@@ -648,13 +663,28 @@ export const ChartView = ({ revenue, orders, customers }: ChartViewProps) => {
     <Card className="shadow-1">
       <TabView>
         <TabPanel header="Daily Revenue">
-          <Chart type="line" data={revenuelineData} options={commonLineOptions} style={{ height: "400px" }} />
+          <Chart
+            type="line"
+            data={revenuelineData}
+            options={commonLineOptions}
+            style={{ height: "400px" }}
+          />
         </TabPanel>
         <TabPanel header="Daily Orders">
-          <Chart type="bar" data={orderBarData} options={commonLineOptions} style={{ height: "400px" }} />
+          <Chart
+            type="bar"
+            data={orderBarData}
+            options={commonLineOptions}
+            style={{ height: "400px" }}
+          />
         </TabPanel>
         <TabPanel header="New Customers">
-          <Chart type="line" data={newCustomersLineData} options={commonLineOptions} style={{ height: "400px" }} />
+          <Chart
+            type="line"
+            data={newCustomersLineData}
+            options={commonLineOptions}
+            style={{ height: "400px" }}
+          />
         </TabPanel>
       </TabView>
     </Card>
@@ -767,7 +797,7 @@ import { IOrder, IOrderStatus } from "../../../interfaces";
 
 export const RecentSales = () => {
   const {
-    tableQueryResult,
+    tableQuery,
     pageCount,
     current,
     pageSize,
@@ -784,7 +814,7 @@ export const RecentSales = () => {
     },
   });
 
-  const orders = tableQueryResult?.data?.data;
+  const orders = tableQuery?.data?.data;
 
   const formatCurrency = (value: number) => {
     return value.toLocaleString("en-US", {
@@ -824,7 +854,12 @@ export const RecentSales = () => {
   };
 
   const statusBodyTemplate = (rowData: IOrder) => {
-    return <Tag value={rowData.status.text} severity={getSeverity(rowData.status.text)} />;
+    return (
+      <Tag
+        value={rowData.status.text}
+        severity={getSeverity(rowData.status.text)}
+      />
+    );
   };
 
   const dateBodyTemplate = (rowData: IOrder) => {
@@ -832,7 +867,7 @@ export const RecentSales = () => {
   };
 
   const header = (
-    <div className="flex justify-content-between">
+    <div className="justify-content-between flex">
       <Button
         type="button"
         icon="pi pi-filter-slash"
@@ -888,15 +923,34 @@ export const RecentSales = () => {
         }}
         sortField={sorters[0]?.field}
         sortOrder={sorters[0]?.order === "asc" ? 1 : -1}
-        loading={tableQueryResult?.isLoading}
+        loading={tableQuery?.isLoading}
         header={header}
       >
         <Column field="id" header="Id" sortable style={{ minWidth: "2rem" }} />
-        <Column field="amount" header="Amount" body={amountBodyTemplate} sortable />
-        <Column field="user.fullName" header="Ordered By" style={{ minWidth: "10rem" }} sortable />
+        <Column
+          field="amount"
+          header="Amount"
+          body={amountBodyTemplate}
+          sortable
+        />
+        <Column
+          field="user.fullName"
+          header="Ordered By"
+          style={{ minWidth: "10rem" }}
+          sortable
+        />
         <Column field="user.gender" header="Gender" sortable />
-        <Column field="user.gsm" header="Tel" align="center" style={{ minWidth: "12rem" }} />
-        <Column field="address.text" header="Delivery Address" style={{ minWidth: "16rem" }} />
+        <Column
+          field="user.gsm"
+          header="Tel"
+          align="center"
+          style={{ minWidth: "12rem" }}
+        />
+        <Column
+          field="address.text"
+          header="Delivery Address"
+          style={{ minWidth: "16rem" }}
+        />
         <Column
           field="status.text"
           header="Delivery Status"
@@ -965,7 +1019,10 @@ Now that we have the dashboard, let's create the product CRUD pages. Before that
 ```tsx title="src/App.tsx"
 import { ErrorComponent, Refine } from "@refinedev/core";
 import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
-import routerBindings, { DocumentTitleHandler, UnsavedChangesNotifier } from "@refinedev/react-router-v6";
+import routerBindings, {
+  DocumentTitleHandler,
+  UnsavedChangesNotifier,
+} from "@refinedev/react-router-v6";
 import dataProvider from "@refinedev/simple-rest";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
@@ -1043,7 +1100,13 @@ Let's create a `<ProductList />` component in `src/pages/products/list.tsx` dire
 <summary>Show ProductList component</summary>
 
 ```tsx title="src/pages/products/list.tsx"
-import { useTable, getDefaultFilter, useNavigation, useDelete, useMany } from "@refinedev/core";
+import {
+  useTable,
+  getDefaultFilter,
+  useNavigation,
+  useDelete,
+  useMany,
+} from "@refinedev/core";
 
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
@@ -1063,7 +1126,7 @@ const formatCurrency = (value: number) => {
 
 export const ProductList = () => {
   const {
-    tableQueryResult,
+    tableQuery,
     pageCount,
     current,
     pageSize,
@@ -1077,7 +1140,7 @@ export const ProductList = () => {
   const { edit, show, create } = useNavigation();
   const { mutate: deleteProduct } = useDelete();
 
-  const products = tableQueryResult?.data?.data;
+  const products = tableQuery?.data?.data;
 
   const { data: categoryData } = useMany<ICategory>({
     resource: "categories",
@@ -1107,7 +1170,9 @@ export const ProductList = () => {
   };
 
   const categoryBodyTemplate = (rowData: IProduct) => {
-    const category = categoryData?.data?.find((item) => item.id === rowData.category?.id);
+    const category = categoryData?.data?.find(
+      (item) => item.id === rowData.category?.id,
+    );
 
     return category?.title ?? "Loading...";
   };
@@ -1115,15 +1180,33 @@ export const ProductList = () => {
   const actionBodyTemplate = (rowData: IProduct) => {
     return (
       <>
-        <Button icon="pi pi-pencil" rounded text severity="secondary" onClick={() => edit("products", rowData.id)} />
-        <Button icon="pi pi-eye" rounded text severity="secondary" onClick={() => show("products", rowData.id)} />
-        <Button icon="pi pi-trash" rounded text severity="danger" onClick={() => confirmDeleteProduct(rowData.id)} />
+        <Button
+          icon="pi pi-pencil"
+          rounded
+          text
+          severity="secondary"
+          onClick={() => edit("products", rowData.id)}
+        />
+        <Button
+          icon="pi pi-eye"
+          rounded
+          text
+          severity="secondary"
+          onClick={() => show("products", rowData.id)}
+        />
+        <Button
+          icon="pi pi-trash"
+          rounded
+          text
+          severity="danger"
+          onClick={() => confirmDeleteProduct(rowData.id)}
+        />
       </>
     );
   };
 
   const header = (
-    <div className="flex justify-content-between">
+    <div className="justify-content-between flex">
       <Button
         type="button"
         icon="pi pi-filter-slash"
@@ -1158,9 +1241,13 @@ export const ProductList = () => {
     <Card
       className="shadow-1"
       title={
-        <div className="flex justify-content-between align-items-center">
+        <div className="justify-content-between align-items-center flex">
           <span className="p-card-title">Products</span>
-          <Button icon="pi pi-plus" label="Create" onClick={() => create("products")} />
+          <Button
+            icon="pi pi-plus"
+            label="Create"
+            onClick={() => create("products")}
+          />
         </div>
       }
     >
@@ -1188,15 +1275,34 @@ export const ProductList = () => {
         }}
         sortField={sorters[0]?.field}
         sortOrder={sorters[0]?.order === "asc" ? 1 : -1}
-        loading={tableQueryResult?.isLoading}
+        loading={tableQuery?.isLoading}
         header={header}
       >
         <Column field="id" header="Id" sortable style={{ minWidth: "1rem" }} />
-        <Column field="name" header="Name" style={{ minWidth: "12rem" }} sortable />
-        <Column field="price" header="Price" body={amountBodyTemplate} sortable />
+        <Column
+          field="name"
+          header="Name"
+          style={{ minWidth: "12rem" }}
+          sortable
+        />
+        <Column
+          field="price"
+          header="Price"
+          body={amountBodyTemplate}
+          sortable
+        />
         <Column header="Category" body={categoryBodyTemplate} />
-        <Column field="description" header="Description" style={{ minWidth: "24rem" }} />
-        <Column body={actionBodyTemplate} header="Actions" align="center" style={{ minWidth: "10rem" }} />
+        <Column
+          field="description"
+          header="Description"
+          style={{ minWidth: "24rem" }}
+        />
+        <Column
+          body={actionBodyTemplate}
+          header="Actions"
+          align="center"
+          style={{ minWidth: "10rem" }}
+        />
       </DataTable>
     </Card>
   );
@@ -1226,7 +1332,10 @@ Next, import the `<ProductList />` component in `src/App.tsx` and add a route fo
 ```tsx title="src/App.tsx"
 import { ErrorComponent, Refine } from "@refinedev/core";
 import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
-import routerBindings, { DocumentTitleHandler, UnsavedChangesNotifier } from "@refinedev/react-router-v6";
+import routerBindings, {
+  DocumentTitleHandler,
+  UnsavedChangesNotifier,
+} from "@refinedev/react-router-v6";
 import dataProvider from "@refinedev/simple-rest";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 //highlight-next-line
@@ -1365,8 +1474,14 @@ export const ProductCreate = () => {
     <Card
       className="shadow-1"
       title={
-        <div className="flex align-items-center">
-          <Button onClick={goBack} icon="pi pi-arrow-left" className="mr-1" text severity="secondary" />
+        <div className="align-items-center flex">
+          <Button
+            onClick={goBack}
+            icon="pi pi-arrow-left"
+            className="mr-1"
+            text
+            severity="secondary"
+          />
           <span>Create Product</span>
         </div>
       }
@@ -1439,7 +1554,9 @@ export const ProductCreate = () => {
                   })}
                 />
                 <small className="p-error">&nbsp;</small>
-                <small className="p-error">{errors.category?.id?.message}</small>
+                <small className="p-error">
+                  {errors.category?.id?.message}
+                </small>
               </div>
             )}
           />
@@ -1464,7 +1581,7 @@ export const ProductCreate = () => {
             )}
           />
         </div>
-        <div className="flex justify-content-end">
+        <div className="justify-content-end flex">
           <Button label="Save" type="submit" loading={formLoading} />
         </div>
       </form>
@@ -1596,12 +1713,23 @@ export const ProductEdit = () => {
     <Card
       className="shadow-1"
       title={
-        <div className="flex justify-content-between align-items-center">
-          <div className="flex align-items-center">
-            <Button onClick={goBack} icon="pi pi-arrow-left" className="mr-1" text severity="secondary" />
+        <div className="justify-content-between align-items-center flex">
+          <div className="align-items-center flex">
+            <Button
+              onClick={goBack}
+              icon="pi pi-arrow-left"
+              className="mr-1"
+              text
+              severity="secondary"
+            />
             <span>Edit Product</span>
           </div>
-          <Button label="Refresh" icon="pi pi-refresh" outlined onClick={() => queryResult?.refetch()} />
+          <Button
+            label="Refresh"
+            icon="pi pi-refresh"
+            outlined
+            onClick={() => queryResult?.refetch()}
+          />
         </div>
       }
     >
@@ -1673,7 +1801,9 @@ export const ProductEdit = () => {
                   })}
                 />
                 <small className="p-error">&nbsp;</small>
-                <small className="p-error">{errors.category?.id?.message}</small>
+                <small className="p-error">
+                  {errors.category?.id?.message}
+                </small>
               </div>
             )}
           />
@@ -1698,7 +1828,7 @@ export const ProductEdit = () => {
             )}
           />
         </div>
-        <div className="flex justify-content-end">
+        <div className="justify-content-end flex">
           <Button label="Save" type="submit" loading={formLoading} />
         </div>
       </form>
@@ -1811,8 +1941,14 @@ export const ProductShow = () => {
     <Card
       className="shadow-1"
       title={
-        <div className="flex align-items-center">
-          <Button onClick={goBack} icon="pi pi-arrow-left" className="mr-1" text severity="secondary" />
+        <div className="align-items-center flex">
+          <Button
+            onClick={goBack}
+            icon="pi pi-arrow-left"
+            className="mr-1"
+            text
+            severity="secondary"
+          />
           <span>Product Details</span>
         </div>
       }
@@ -1915,13 +2051,21 @@ Let's start by defining the "category" resource in `src/App.tsx` file as follows
 ```tsx title="src/App.tsx"
 import { ErrorComponent, Refine } from "@refinedev/core";
 import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
-import routerBindings, { DocumentTitleHandler, UnsavedChangesNotifier } from "@refinedev/react-router-v6";
+import routerBindings, {
+  DocumentTitleHandler,
+  UnsavedChangesNotifier,
+} from "@refinedev/react-router-v6";
 import dataProvider from "@refinedev/simple-rest";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ConfirmDialog } from "primereact/confirmdialog";
 
 import { Dashboard } from "./pages/dashboard";
-import { ProductList, ProductCreate, ProductEdit, ProductShow } from "./pages/products";
+import {
+  ProductList,
+  ProductCreate,
+  ProductEdit,
+  ProductShow,
+} from "./pages/products";
 
 import "primereact/resources/themes/saga-blue/theme.css";
 import "primereact/resources/primereact.css";
@@ -2002,7 +2146,12 @@ First, let's create a `list.tsx` file in `src/pages/categories` directory with t
 <summary>Show CategoryList component</summary>
 
 ```tsx title="src/pages/categories/list.tsx"
-import { useTable, getDefaultFilter, useNavigation, useDelete } from "@refinedev/core";
+import {
+  useTable,
+  getDefaultFilter,
+  useNavigation,
+  useDelete,
+} from "@refinedev/core";
 
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
@@ -2015,7 +2164,7 @@ import { ICategory } from "../../interfaces";
 
 export const CategoryList = () => {
   const {
-    tableQueryResult,
+    tableQuery,
     pageCount,
     current,
     pageSize,
@@ -2033,7 +2182,7 @@ export const CategoryList = () => {
   const { edit, show, create } = useNavigation();
   const { mutate: deleteProduct } = useDelete();
 
-  const categories = tableQueryResult?.data?.data;
+  const categories = tableQuery?.data?.data;
 
   const confirmDeleteProduct = (id: number) => {
     confirmDialog({
@@ -2053,15 +2202,33 @@ export const CategoryList = () => {
   const actionBodyTemplate = (rowData: ICategory) => {
     return (
       <>
-        <Button icon="pi pi-pencil" rounded text severity="secondary" onClick={() => edit("categories", rowData.id)} />
-        <Button icon="pi pi-eye" rounded text severity="secondary" onClick={() => show("categories", rowData.id)} />
-        <Button icon="pi pi-trash" rounded text severity="danger" onClick={() => confirmDeleteProduct(rowData.id)} />
+        <Button
+          icon="pi pi-pencil"
+          rounded
+          text
+          severity="secondary"
+          onClick={() => edit("categories", rowData.id)}
+        />
+        <Button
+          icon="pi pi-eye"
+          rounded
+          text
+          severity="secondary"
+          onClick={() => show("categories", rowData.id)}
+        />
+        <Button
+          icon="pi pi-trash"
+          rounded
+          text
+          severity="danger"
+          onClick={() => confirmDeleteProduct(rowData.id)}
+        />
       </>
     );
   };
 
   const header = (
-    <div className="flex justify-content-between">
+    <div className="justify-content-between flex">
       <Button
         type="button"
         icon="pi pi-filter-slash"
@@ -2096,9 +2263,13 @@ export const CategoryList = () => {
     <Card
       className="shadow-1"
       title={
-        <div className="flex justify-content-between align-items-center">
+        <div className="justify-content-between align-items-center flex">
           <span className="p-card-title">Categories</span>
-          <Button icon="pi pi-plus" label="Create" onClick={() => create("categories")} />
+          <Button
+            icon="pi pi-plus"
+            label="Create"
+            onClick={() => create("categories")}
+          />
         </div>
       }
     >
@@ -2126,11 +2297,21 @@ export const CategoryList = () => {
         }}
         sortField={sorters[0]?.field}
         sortOrder={sorters[0]?.order === "asc" ? 1 : -1}
-        loading={tableQueryResult?.isLoading}
+        loading={tableQuery?.isLoading}
         header={header}
       >
-        <Column field="id" header="Id" sortable style={{ minWidth: "1rem", width: "10rem" }} />
-        <Column field="title" header="Name" style={{ minWidth: "12rem" }} sortable />
+        <Column
+          field="id"
+          header="Id"
+          sortable
+          style={{ minWidth: "1rem", width: "10rem" }}
+        />
+        <Column
+          field="title"
+          header="Name"
+          style={{ minWidth: "12rem" }}
+          sortable
+        />
         <Column
           body={actionBodyTemplate}
           header="Actions"
@@ -2189,8 +2370,14 @@ export const CategoryCreate = () => {
     <Card
       className="shadow-1"
       title={
-        <div className="flex align-items-center">
-          <Button onClick={goBack} icon="pi pi-arrow-left" className="mr-1" text severity="secondary" />
+        <div className="align-items-center flex">
+          <Button
+            onClick={goBack}
+            icon="pi pi-arrow-left"
+            className="mr-1"
+            text
+            severity="secondary"
+          />
           <span>Create Category</span>
         </div>
       }
@@ -2217,7 +2404,7 @@ export const CategoryCreate = () => {
             )}
           />
         </div>
-        <div className="flex justify-content-end">
+        <div className="justify-content-end flex">
           <Button label="Save" type="submit" loading={formLoading} />
         </div>
       </form>
@@ -2272,12 +2459,23 @@ export const CategoryEdit = () => {
     <Card
       className="shadow-1"
       title={
-        <div className="flex justify-content-between align-items-center">
-          <div className="flex align-items-center">
-            <Button onClick={goBack} icon="pi pi-arrow-left" className="mr-1" text severity="secondary" />
+        <div className="justify-content-between align-items-center flex">
+          <div className="align-items-center flex">
+            <Button
+              onClick={goBack}
+              icon="pi pi-arrow-left"
+              className="mr-1"
+              text
+              severity="secondary"
+            />
             <span>Edit Category</span>
           </div>
-          <Button label="Refresh" icon="pi pi-refresh" outlined onClick={() => queryResult?.refetch()} />
+          <Button
+            label="Refresh"
+            icon="pi pi-refresh"
+            outlined
+            onClick={() => queryResult?.refetch()}
+          />
         </div>
       }
     >
@@ -2303,7 +2501,7 @@ export const CategoryEdit = () => {
             )}
           />
         </div>
-        <div className="flex justify-content-end">
+        <div className="justify-content-end flex">
           <Button label="Save" type="submit" loading={formLoading} />
         </div>
       </form>
@@ -2338,8 +2536,14 @@ export const CategoryShow = () => {
     <Card
       className="shadow-1"
       title={
-        <div className="flex align-items-center">
-          <Button onClick={goBack} icon="pi pi-arrow-left" className="mr-1" text severity="secondary" />
+        <div className="align-items-center flex">
+          <Button
+            onClick={goBack}
+            icon="pi pi-arrow-left"
+            className="mr-1"
+            text
+            severity="secondary"
+          />
           <span>Category Details</span>
         </div>
       }
@@ -2373,15 +2577,28 @@ Next, import the category CRUD pages in `src/App.tsx` and add routes for renderi
 ```tsx title="src/App.tsx"
 import { ErrorComponent, Refine } from "@refinedev/core";
 import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
-import routerBindings, { DocumentTitleHandler, UnsavedChangesNotifier } from "@refinedev/react-router-v6";
+import routerBindings, {
+  DocumentTitleHandler,
+  UnsavedChangesNotifier,
+} from "@refinedev/react-router-v6";
 import dataProvider from "@refinedev/simple-rest";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ConfirmDialog } from "primereact/confirmdialog";
 
 import { Dashboard } from "./pages/dashboard";
-import { ProductList, ProductCreate, ProductEdit, ProductShow } from "./pages/products";
+import {
+  ProductList,
+  ProductCreate,
+  ProductEdit,
+  ProductShow,
+} from "./pages/products";
 //highlight-start
-import { CategoryList, CategoryCreate, CategoryEdit, CategoryShow } from "./pages/categories";
+import {
+  CategoryList,
+  CategoryCreate,
+  CategoryEdit,
+  CategoryShow,
+} from "./pages/categories";
 //highlight-end
 
 import "primereact/resources/themes/saga-blue/theme.css";
@@ -2484,15 +2701,28 @@ Additionally, we'll add `meta` property to the resources to render icons in the 
 ```tsx title="src/App.tsx"
 import { ErrorComponent, Refine } from "@refinedev/core";
 import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
-import routerBindings, { DocumentTitleHandler, UnsavedChangesNotifier } from "@refinedev/react-router-v6";
+import routerBindings, {
+  DocumentTitleHandler,
+  UnsavedChangesNotifier,
+} from "@refinedev/react-router-v6";
 import dataProvider from "@refinedev/simple-rest";
 //highlight-next-line
 import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 import { ConfirmDialog } from "primereact/confirmdialog";
 
 import { Dashboard } from "./pages/dashboard";
-import { ProductList, ProductCreate, ProductEdit, ProductShow } from "./pages/products";
-import { CategoryList, CategoryCreate, CategoryEdit, CategoryShow } from "./pages/categories";
+import {
+  ProductList,
+  ProductCreate,
+  ProductEdit,
+  ProductShow,
+} from "./pages/products";
+import {
+  CategoryList,
+  CategoryCreate,
+  CategoryEdit,
+  CategoryShow,
+} from "./pages/categories";
 
 //highlight-next-line
 import { Layout } from "./components/layout";
@@ -2608,7 +2838,7 @@ import { Breadcrumb } from "../breadcrumb";
 
 export const Layout: React.FC<PropsWithChildren> = ({ children }) => {
   return (
-    <div className="min-h-screen surface-ground">
+    <div className="surface-ground min-h-screen">
       <Menu />
       <div className="p-3">
         <Breadcrumb />
@@ -2642,7 +2872,9 @@ export const Menu = () => {
         <div onClick={options.onClick}>
           <Link to={menuItem.route ?? "/"} className={options.className}>
             {item.icon}
-            <span className={classNames("ml-2", options.labelClassName)}>{item.label}</span>
+            <span className={classNames("ml-2", options.labelClassName)}>
+              {item.label}
+            </span>
           </Link>
         </div>
       );
@@ -2650,7 +2882,7 @@ export const Menu = () => {
   }));
 
   return (
-    <div className="sticky top-0 z-5">
+    <div className="z-5 sticky top-0">
       <TabMenu model={items} />
     </div>
   );
@@ -2683,9 +2915,14 @@ export const Breadcrumb = () => {
     icon: breadcrumb.icon,
     template: (item, options) => {
       return breadcrumb.href ? (
-        <Link to={breadcrumb.href} className={classNames("text-color", options.className)}>
+        <Link
+          to={breadcrumb.href}
+          className={classNames("text-color", options.className)}
+        >
           {item.icon}
-          <span className={classNames("ml-2 ", options.labelClassName)}>{item.label}</span>
+          <span className={classNames("ml-2 ", options.labelClassName)}>
+            {item.label}
+          </span>
         </Link>
       ) : (
         <span className={options.className}>
@@ -2695,7 +2932,9 @@ export const Breadcrumb = () => {
     },
   }));
 
-  return <BreadCrumb className="surface-ground pl-0 border-none" model={items} />;
+  return (
+    <BreadCrumb className="surface-ground border-none pl-0" model={items} />
+  );
 };
 ```
 

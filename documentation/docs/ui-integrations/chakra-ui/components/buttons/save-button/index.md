@@ -15,11 +15,15 @@ setRefineProps({
 });
 
 const Wrapper = ({ children }) => {
-  return <ChakraUI.ChakraProvider theme={RefineChakra.refineTheme}>{children}</ChakraUI.ChakraProvider>;
+  return (
+    <ChakraUI.ChakraProvider theme={RefineChakra.refineTheme}>
+      {children}
+    </ChakraUI.ChakraProvider>
+  );
 };
 ```
 
-`<SaveButton>` uses Chakra UI's [`<Button>`](https://chakra-ui.com/docs/components/button/usage) component. It uses it for presantation purposes only. Some of the hooks that Refine has adds features to this button.
+`<SaveButton>` uses Chakra UI's [`<Button>`](https://www.chakra-ui.com/docs/components/button#usage) component. It uses it for presantation purposes only. Some of the hooks that Refine has adds features to this button.
 
 :::simple Good to know
 
@@ -38,13 +42,19 @@ import { EditButton } from "@refinedev/chakra-ui";
 
 // visible-block-start
 import { Edit } from "@refinedev/chakra-ui";
-import { FormControl, FormErrorMessage, FormLabel, Input, Select } from "@chakra-ui/react";
+import {
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  Input,
+  Select,
+} from "@chakra-ui/react";
 import { useSelect } from "@refinedev/core";
 import { useForm } from "@refinedev/react-hook-form";
 
 const PostEdit: React.FC = () => {
   const {
-    refineCore: { formLoading, queryResult },
+    refineCore: { formLoading, query },
     // highlight-next-line
     saveButtonProps,
     register,
@@ -54,8 +64,8 @@ const PostEdit: React.FC = () => {
 
   const { options } = useSelect({
     resource: "categories",
-    defaultValue: queryResult?.data?.data.category.id,
-    queryOptions: { enabled: !!queryResult?.data?.data.category.id },
+    defaultValue: query?.data?.data.category.id,
+    queryOptions: { enabled: !!query?.data?.data.category.id },
   });
 
   useEffect(() => {
@@ -67,7 +77,11 @@ const PostEdit: React.FC = () => {
     <Edit isLoading={formLoading} saveButtonProps={saveButtonProps}>
       <FormControl mb="3" isInvalid={!!errors?.title}>
         <FormLabel>Title</FormLabel>
-        <Input id="title" type="text" {...register("title", { required: "Title is required" })} />
+        <Input
+          id="title"
+          type="text"
+          {...register("title", { required: "Title is required" })}
+        />
         <FormErrorMessage>{`${errors.title?.message}`}</FormErrorMessage>
       </FormControl>
       <FormControl mb="3" isInvalid={!!errors?.status}>

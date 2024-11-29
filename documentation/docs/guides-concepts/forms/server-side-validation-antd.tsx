@@ -122,8 +122,8 @@ import { Create, useForm } from "@refinedev/antd";
 const { Title } = Typography;
 const { TextArea } = Input;
 
-export const ProductCreate: React.FC<IResourceComponentsProps> = () => {
-  const { formProps, saveButtonProps } = useForm({ redirect: "show" });
+export const ProductCreate = () => {
+  const { formProps, saveButtonProps } = useForm({ refineCoreProps: { redirect: "show" }});
 
   return (
     <Create saveButtonProps={saveButtonProps}>

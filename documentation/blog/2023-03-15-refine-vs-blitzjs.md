@@ -34,7 +34,7 @@ The Refine framework was created in 2021 and has witnessed rapid growth and attr
 
 ### Blitz
 
-Blitz is is a full-stack web framework built on top of NextJS, which means it preserves many of the core features like server-side rendering, static site generation, and automatic code splitting.
+Blitz is a full-stack web framework built on top of NextJS, which means it preserves many of the core features like server-side rendering, static site generation, and automatic code splitting.
 
 Furthermore, it is the NextJS toolkit that provides the necessary pieces to create feature-rich applications, adding features like authentication, a type-safe API layer, and many more.
 
@@ -106,7 +106,9 @@ import { useNotificationProvider } from "@refinedev/antd";
 import "@refinedev/antd/dist/reset.css";
 
 import { useAuth0 } from "@auth0/auth0-react";
-import routerBindings, { UnsavedChangesNotifier } from "@refinedev/react-router-v6";
+import routerBindings, {
+  UnsavedChangesNotifier,
+} from "@refinedev/react-router-v6";
 import dataProvider from "@refinedev/simple-rest";
 import axios from "axios";
 import { BrowserRouter } from "react-router-dom";
@@ -460,10 +462,10 @@ Navigate back to your project file tree and you will notice that a new folder `p
 Open up the `list.tsx` file and you will notice Refine has even designed the `Inferencer` component that will automatically help you to design the views for resources based on the data structure:
 
 ```typescript
-import { IResourceComponentsProps, GetListResponse } from "@pankod/refine-core";
+import { GetListResponse } from "@pankod/refine-core";
 import { AntdInferencer } from "@pankod/refine-inferencer/antd";
 
-export const ProductsList: React.FC<IResourceComponentsProps<GetListResponse<{}>>> = () => {
+export const ProductsList = () => {
   return <AntdInferencer />;
 };
 ```

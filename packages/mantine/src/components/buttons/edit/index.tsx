@@ -1,23 +1,14 @@
-import React, { useContext } from "react";
+import React from "react";
+import { useEditButton } from "@refinedev/core";
 import {
-    useCan,
-    useNavigation,
-    useTranslate,
-    useResource,
-    useRouterContext,
-    useRouterType,
-    useLink,
-    AccessControlContext,
-} from "@refinedev/core";
-import {
-    RefineButtonClassNames,
-    RefineButtonTestIds,
+  RefineButtonClassNames,
+  RefineButtonTestIds,
 } from "@refinedev/ui-types";
 import { ActionIcon, Anchor, Button } from "@mantine/core";
-import { IconPencil } from "@tabler/icons";
+import { IconPencil } from "@tabler/icons-react";
 
 import { mapButtonVariantToActionIconVariant } from "@definitions/button";
-import { EditButtonProps } from "../types";
+import type { EditButtonProps } from "../types";
 
 /**
  * `<EditButton>` uses Mantine {@link https://mantine.dev/core/button `<Button> component`}.
@@ -27,115 +18,73 @@ import { EditButtonProps } from "../types";
  * @see {@link https://refine.dev/docs/api-reference/mantine/components/buttons/edit-button} for more details.
  */
 export const EditButton: React.FC<EditButtonProps> = ({
-    resource: resourceNameFromProps,
-    resourceNameOrRouteName,
-    recordItemId,
-    hideText = false,
-    accessControl,
-    svgIconProps,
-    meta,
-    children,
-    onClick,
-    ...rest
+  resource: resourceNameFromProps,
+  resourceNameOrRouteName,
+  recordItemId,
+  hideText = false,
+  accessControl,
+  svgIconProps,
+  meta,
+  children,
+  onClick,
+  ...rest
 }) => {
-    const accessControlContext = useContext(AccessControlContext);
+  const { to, label, title, disabled, hidden, LinkComponent } = useEditButton({
+    resource: resourceNameFromProps ?? resourceNameOrRouteName,
+    id: recordItemId,
+    accessControl,
+    meta,
+  });
 
-    const accessControlEnabled =
-        accessControl?.enabled ??
-        accessControlContext.options.buttons.enableAccessControl;
+  if (hidden) return null;
 
-    const hideIfUnauthorized =
-        accessControl?.hideIfUnauthorized ??
-        accessControlContext.options.buttons.hideIfUnauthorized;
-    const translate = useTranslate();
+  const { variant, styles, ...commonProps } = rest;
 
-    const routerType = useRouterType();
-    const Link = useLink();
-    const { Link: LegacyLink } = useRouterContext();
-
-    const ActiveLink = routerType === "legacy" ? LegacyLink : Link;
-
-    const { editUrl: generateEditUrl } = useNavigation();
-
-    const { id, resource } = useResource(
-        resourceNameFromProps ?? resourceNameOrRouteName,
-    );
-
-    const { data } = useCan({
-        resource: resource?.name,
-        action: "edit",
-        params: { id: recordItemId ?? id, resource },
-        queryOptions: {
-            enabled: accessControlEnabled,
-        },
-    });
-
-    const disabledTitle = () => {
-        if (data?.can) return "";
-        else if (data?.reason) return data.reason;
-        else
-            return translate(
-                "buttons.notAccessTitle",
-                "You don't have permission to access",
-            );
-    };
-
-    const editUrl =
-        resource && (recordItemId ?? id)
-            ? generateEditUrl(resource, recordItemId! ?? id!, meta)
-            : "";
-
-    const { variant, styles, ...commonProps } = rest;
-
-    if (accessControlEnabled && hideIfUnauthorized && !data?.can) {
-        return null;
-    }
-
-    return (
-        <Anchor
-            component={ActiveLink as any}
-            to={editUrl}
-            replace={false}
-            onClick={(e: React.PointerEvent<HTMLButtonElement>) => {
-                if (data?.can === false) {
-                    e.preventDefault();
-                    return;
-                }
-                if (onClick) {
-                    e.preventDefault();
-                    onClick(e);
-                }
-            }}
+  return (
+    <Anchor
+      component={LinkComponent as any}
+      to={to}
+      replace={false}
+      onClick={(e: React.PointerEvent<HTMLButtonElement>) => {
+        if (disabled) {
+          e.preventDefault();
+          return;
+        }
+        if (onClick) {
+          e.preventDefault();
+          onClick(e);
+        }
+      }}
+    >
+      {hideText ? (
+        <ActionIcon
+          title={title}
+          disabled={disabled}
+          aria-label={label}
+          data-testid={RefineButtonTestIds.EditButton}
+          className={RefineButtonClassNames.EditButton}
+          {...(variant
+            ? {
+                variant: mapButtonVariantToActionIconVariant(variant),
+              }
+            : { variant: "default" })}
+          {...commonProps}
         >
-            {hideText ? (
-                <ActionIcon
-                    title={disabledTitle()}
-                    disabled={data?.can === false}
-                    data-testid={RefineButtonTestIds.EditButton}
-                    className={RefineButtonClassNames.EditButton}
-                    {...(variant
-                        ? {
-                              variant:
-                                  mapButtonVariantToActionIconVariant(variant),
-                          }
-                        : { variant: "default" })}
-                    {...commonProps}
-                >
-                    <IconPencil size={18} {...svgIconProps} />
-                </ActionIcon>
-            ) : (
-                <Button
-                    variant="default"
-                    disabled={data?.can === false}
-                    leftIcon={<IconPencil size={18} {...svgIconProps} />}
-                    title={disabledTitle()}
-                    data-testid={RefineButtonTestIds.EditButton}
-                    className={RefineButtonClassNames.EditButton}
-                    {...rest}
-                >
-                    {children ?? translate("buttons.edit", "Edit")}
-                </Button>
-            )}
-        </Anchor>
-    );
+          <IconPencil size={18} {...svgIconProps} />
+        </ActionIcon>
+      ) : (
+        <Button
+          variant="default"
+          disabled={disabled}
+          leftIcon={<IconPencil size={18} {...svgIconProps} />}
+          title={title}
+          data-testid={RefineButtonTestIds.EditButton}
+          className={RefineButtonClassNames.EditButton}
+          {...rest}
+        >
+          {children ?? label}
+        </Button>
+      )}
+    </Anchor>
+  );
 };

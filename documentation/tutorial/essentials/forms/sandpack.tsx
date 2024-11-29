@@ -9,16 +9,16 @@ import { finalFiles as initialFiles } from "../data-fetching/listing-data/sandpa
 import { removeActiveFromFiles } from "@site/src/utils/remove-active-from-files";
 
 export const Sandpack = ({ children }: { children: React.ReactNode }) => {
-    return (
-        <TutorialSandpack
-            showFiles={true}
-            dependencies={dependencies}
-            files={files}
-            finalFiles={finalFiles}
-        >
-            {children}
-        </TutorialSandpack>
-    );
+  return (
+    <TutorialSandpack
+      showFiles={true}
+      dependencies={dependencies}
+      files={files}
+      finalFiles={finalFiles}
+    >
+      {children}
+    </TutorialSandpack>
+  );
 };
 
 // updates
@@ -35,7 +35,7 @@ body {
     -webkit-tap-highlight-color: transparent;
     -webkit-touch-callout: none;
 }
-  
+
 h1 {
   font-size: 1.5rem;
 }
@@ -165,7 +165,7 @@ const CreateProductFormWithFieldsTsxCode = /* tsx */ `
 import { useForm } from "@refinedev/core";
 
 export const CreateProduct = () => {
-  const { onFinish, mutationResult } = useForm({ action: "create", resource: "products" });
+  const { onFinish, mutation } = useForm({ action: "create", resource: "products" });
 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -192,7 +192,7 @@ export const CreateProduct = () => {
       <label htmlFor="category">Category ID</label>
       <input type="number" id="category" name="category" />
 
-      {mutationResult.isSuccess && <span>successfully submitted!</span>}
+      {mutation.isSuccess && <span>successfully submitted!</span>}
       <button type="submit">Submit</button>
     </form>
   );
@@ -203,7 +203,7 @@ const CreateProductFormWithPriceUpdateTsxCode = /* tsx */ `
 import { useForm } from "@refinedev/core";
 
 export const CreateProduct = () => {
-  const { onFinish, mutationResult } = useForm({ action: "create", resource: "products" });
+  const { onFinish, mutation } = useForm({ action: "create", resource: "products" });
 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -234,7 +234,7 @@ export const CreateProduct = () => {
       <label htmlFor="category">Category ID</label>
       <input type="number" id="category" name="category" />
 
-      {mutationResult.isSuccess && <span>successfully submitted!</span>}
+      {mutation.isSuccess && <span>successfully submitted!</span>}
       <button type="submit">Submit</button>
     </form>
   );
@@ -245,7 +245,7 @@ const CreateProductFormWithCategoryRelationTsxCode = /* tsx */ `
 import { useForm, useSelect } from "@refinedev/core";
 
 export const CreateProduct = () => {
-  const { onFinish, mutationResult } = useForm({
+  const { onFinish, mutation } = useForm({
     action: "create",
     resource: "products",
   });
@@ -291,7 +291,7 @@ export const CreateProduct = () => {
         ))}
       </select>
 
-      {mutationResult.isSuccess && <span>successfully submitted!</span>}
+      {mutation.isSuccess && <span>successfully submitted!</span>}
       <button type="submit">Submit</button>
     </form>
   );
@@ -324,13 +324,13 @@ const RefactorEditProductTsxWithFormCode = /* tsx */ `
 import { useForm, useSelect } from "@refinedev/core";
 
 export const EditProduct = () => {
-  const { onFinish, mutationResult, queryResult } = useForm({
+  const { onFinish, mutation, query } = useForm({
     action: "edit",
     resource: "products",
     id: "123"
   });
 
-  const record = queryResult.data?.data;
+  const record = query.data?.data;
 
   const { options } = useSelect({
     resource: "categories",
@@ -388,7 +388,7 @@ export const EditProduct = () => {
         ))}
       </select>
 
-      {mutationResult.isSuccess && <span>successfully submitted!</span>}
+      {mutation.isSuccess && <span>successfully submitted!</span>}
       <button type="submit">Submit</button>
     </form>
   );
@@ -398,156 +398,153 @@ export const EditProduct = () => {
 // actions
 
 export const AddCreateMethod = () => {
-    const { sandpack } = useSandpack();
+  const { sandpack } = useSandpack();
 
-    return (
-        <TutorialUpdateFileButton
-            onClick={() => {
-                sandpack.updateFile(
-                    "/src/providers/data-provider.ts",
-                    DataProviderWithCreateMethodTsCode,
-                );
-                sandpack.setActiveFile("/src/providers/data-provider.ts");
-            }}
-        />
-    );
+  return (
+    <TutorialUpdateFileButton
+      onClick={() => {
+        sandpack.updateFile(
+          "/src/providers/data-provider.ts",
+          DataProviderWithCreateMethodTsCode,
+        );
+        sandpack.setActiveFile("/src/providers/data-provider.ts");
+      }}
+    />
+  );
 };
 
 export const CreateCreateProductFile = () => {
-    const { sandpack } = useSandpack();
+  const { sandpack } = useSandpack();
 
-    return (
-        <TutorialCreateFileButton
-            name="src/pages/products/create.tsx"
-            onClick={() => {
-                sandpack.addFile({
-                    "src/pages/products/create.tsx": {
-                        code: BaseCreateProductFormTsxCode,
-                    },
-                });
-                sandpack.openFile("/src/pages/products/create.tsx");
-                sandpack.setActiveFile("/src/pages/products/create.tsx");
-            }}
-        />
-    );
+  return (
+    <TutorialCreateFileButton
+      name="src/pages/products/create.tsx"
+      onClick={() => {
+        sandpack.addFile({
+          "src/pages/products/create.tsx": {
+            code: BaseCreateProductFormTsxCode,
+          },
+        });
+        sandpack.openFile("/src/pages/products/create.tsx");
+        sandpack.setActiveFile("/src/pages/products/create.tsx");
+      }}
+    />
+  );
 };
 
 export const AddCreateProductToAppTsx = () => {
-    const { sandpack } = useSandpack();
+  const { sandpack } = useSandpack();
 
-    return (
-        <TutorialUpdateFileButton
-            onClick={() => {
-                sandpack.updateFile(
-                    "/src/App.tsx",
-                    AppTsxWithCreateProductCode,
-                );
-                sandpack.setActiveFile("/src/App.tsx");
-            }}
-        />
-    );
+  return (
+    <TutorialUpdateFileButton
+      onClick={() => {
+        sandpack.updateFile("/src/App.tsx", AppTsxWithCreateProductCode);
+        sandpack.setActiveFile("/src/App.tsx");
+      }}
+    />
+  );
 };
 
 export const AddUseFormToCreateProduct = () => {
-    const { sandpack } = useSandpack();
+  const { sandpack } = useSandpack();
 
-    return (
-        <TutorialUpdateFileButton
-            onClick={() => {
-                sandpack.updateFile(
-                    "src/pages/products/create.tsx",
-                    CreateProductFormWithFieldsTsxCode,
-                );
-                sandpack.setActiveFile("/src/pages/products/create.tsx");
-            }}
-        />
-    );
+  return (
+    <TutorialUpdateFileButton
+      onClick={() => {
+        sandpack.updateFile(
+          "src/pages/products/create.tsx",
+          CreateProductFormWithFieldsTsxCode,
+        );
+        sandpack.setActiveFile("/src/pages/products/create.tsx");
+      }}
+    />
+  );
 };
 
 export const AddPriceUpdateToCreateProduct = () => {
-    const { sandpack } = useSandpack();
+  const { sandpack } = useSandpack();
 
-    return (
-        <TutorialUpdateFileButton
-            onClick={() => {
-                sandpack.updateFile(
-                    "src/pages/products/create.tsx",
-                    CreateProductFormWithPriceUpdateTsxCode,
-                );
-                sandpack.setActiveFile("/src/pages/products/create.tsx");
-            }}
-        />
-    );
+  return (
+    <TutorialUpdateFileButton
+      onClick={() => {
+        sandpack.updateFile(
+          "src/pages/products/create.tsx",
+          CreateProductFormWithPriceUpdateTsxCode,
+        );
+        sandpack.setActiveFile("/src/pages/products/create.tsx");
+      }}
+    />
+  );
 };
 
 export const AddCategoryRelationToCreateProduct = () => {
-    const { sandpack } = useSandpack();
+  const { sandpack } = useSandpack();
 
-    return (
-        <TutorialUpdateFileButton
-            onClick={() => {
-                sandpack.updateFile(
-                    "src/pages/products/create.tsx",
-                    CreateProductFormWithCategoryRelationTsxCode,
-                );
-                sandpack.setActiveFile("/src/pages/products/create.tsx");
-            }}
-        />
-    );
+  return (
+    <TutorialUpdateFileButton
+      onClick={() => {
+        sandpack.updateFile(
+          "src/pages/products/create.tsx",
+          CreateProductFormWithCategoryRelationTsxCode,
+        );
+        sandpack.setActiveFile("/src/pages/products/create.tsx");
+      }}
+    />
+  );
 };
 
 export const MountEditProductInAppTsx = () => {
-    const { sandpack } = useSandpack();
+  const { sandpack } = useSandpack();
 
-    return (
-        <TutorialUpdateFileButton
-            onClick={() => {
-                sandpack.updateFile("/src/App.tsx", AppTsxWithEditProductCode);
-                sandpack.setActiveFile("/src/App.tsx");
-            }}
-        />
-    );
+  return (
+    <TutorialUpdateFileButton
+      onClick={() => {
+        sandpack.updateFile("/src/App.tsx", AppTsxWithEditProductCode);
+        sandpack.setActiveFile("/src/App.tsx");
+      }}
+    />
+  );
 };
 
 export const RefactorToUseFormInEditProduct = () => {
-    const { sandpack } = useSandpack();
+  const { sandpack } = useSandpack();
 
-    return (
-        <TutorialUpdateFileButton
-            onClick={() => {
-                sandpack.updateFile(
-                    "src/pages/products/edit.tsx",
-                    RefactorEditProductTsxWithFormCode,
-                );
-                sandpack.setActiveFile("/src/pages/products/edit.tsx");
-            }}
-        />
-    );
+  return (
+    <TutorialUpdateFileButton
+      onClick={() => {
+        sandpack.updateFile(
+          "src/pages/products/edit.tsx",
+          RefactorEditProductTsxWithFormCode,
+        );
+        sandpack.setActiveFile("/src/pages/products/edit.tsx");
+      }}
+    />
+  );
 };
 
 // files
 
 export const files = {
-    ...initialFiles,
-    "styles.css": {
-        code: StylesCssCode,
-        hidden: true,
-    },
+  ...initialFiles,
+  "styles.css": {
+    code: StylesCssCode,
+    hidden: true,
+  },
 };
 
 export const finalFiles = {
-    ...removeActiveFromFiles(files),
-    "src/App.tsx": {
-        code: AppTsxWithEditProductCode,
-    },
-    "src/providers/data-provider.ts": {
-        code: DataProviderWithCreateMethodTsCode,
-    },
-    "src/pages/products/edit.tsx": {
-        code: RefactorEditProductTsxWithFormCode,
-        active: true,
-    },
-    "src/pages/products/create.tsx": {
-        code: CreateProductFormWithCategoryRelationTsxCode,
-    },
+  ...removeActiveFromFiles(files),
+  "src/App.tsx": {
+    code: AppTsxWithEditProductCode,
+  },
+  "src/providers/data-provider.ts": {
+    code: DataProviderWithCreateMethodTsCode,
+  },
+  "src/pages/products/edit.tsx": {
+    code: RefactorEditProductTsxWithFormCode,
+    active: true,
+  },
+  "src/pages/products/create.tsx": {
+    code: CreateProductFormWithCategoryRelationTsxCode,
+  },
 };

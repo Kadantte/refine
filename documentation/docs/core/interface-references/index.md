@@ -46,6 +46,8 @@ type CrudOperators =
   | "gte" // Greater than or equal to
   | "in" // Included in an array
   | "nin" // Not included in an array
+  | "ina" // Column contains every element in an array
+  | "nina" // Column doesn't contain every element in an array
   | "contains" // Contains
   | "ncontains" // Doesn't contain
   | "containss" // Contains, case sensitive
@@ -150,15 +152,27 @@ type UseImportInputPropsType = {
 ### SuccessErrorNotification
 
 ```tsx
-type SuccessErrorNotification<TData = unknown, TError = unknown, TVariables = unknown> = {
+type SuccessErrorNotification<
+  TData = unknown,
+  TError = unknown,
+  TVariables = unknown,
+> = {
   successNotification?:
     | OpenNotificationParams
     | false
-    | ((data?: TData, values?: TVariables, resource?: string) => OpenNotificationParams | false);
+    | ((
+        data?: TData,
+        values?: TVariables,
+        resource?: string,
+      ) => OpenNotificationParams | false);
   errorNotification?:
     | OpenNotificationParams
     | false
-    | ((error?: TError, values?: TVariables, resource?: string) => OpenNotificationParams | false);
+    | ((
+        error?: TError,
+        values?: TVariables,
+        resource?: string,
+      ) => OpenNotificationParams | false);
 };
 ```
 
@@ -193,6 +207,9 @@ import type { DocumentNode } from "graphql";
 type GraphQLQueryOptions = {
   gqlQuery?: DocumentNode;
   gqlMutation?: DocumentNode;
+  gqlVariables?: {
+    [key: string]: any;
+  };
 };
 ```
 
@@ -254,6 +271,58 @@ type CanResponse = {
   can: boolean;
   reason?: string;
   [key: string]: unknown;
+};
+```
+
+### DataProvider
+
+```tsx
+type DataProvider {
+    getList: <TData extends BaseRecord = BaseRecord>(
+        params: GetListParams,
+    ) => Promise<GetListResponse<TData>>;
+
+    getMany?: <TData extends BaseRecord = BaseRecord>(
+        params: GetManyParams,
+    ) => Promise<GetManyResponse<TData>>;
+
+    getOne: <TData extends BaseRecord = BaseRecord>(
+        params: GetOneParams,
+    ) => Promise<GetOneResponse<TData>>;
+
+    create: <TData extends BaseRecord = BaseRecord, TVariables = {}>(
+        params: CreateParams<TVariables>,
+    ) => Promise<CreateResponse<TData>>;
+
+    createMany?: <TData extends BaseRecord = BaseRecord, TVariables = {}>(
+        params: CreateManyParams<TVariables>,
+    ) => Promise<CreateManyResponse<TData>>;
+
+    update: <TData extends BaseRecord = BaseRecord, TVariables = {}>(
+        params: UpdateParams<TVariables>,
+    ) => Promise<UpdateResponse<TData>>;
+
+    updateMany?: <TData extends BaseRecord = BaseRecord, TVariables = {}>(
+        params: UpdateManyParams<TVariables>,
+    ) => Promise<UpdateManyResponse<TData>>;
+
+    deleteOne: <TData extends BaseRecord = BaseRecord, TVariables = {}>(
+        params: DeleteOneParams<TVariables>,
+    ) => Promise<DeleteOneResponse<TData>>;
+
+    deleteMany?: <TData extends BaseRecord = BaseRecord, TVariables = {}>(
+        params: DeleteManyParams<TVariables>,
+    ) => Promise<DeleteManyResponse<TData>>;
+
+    getApiUrl: () => string;
+
+    custom?: <
+        TData extends BaseRecord = BaseRecord,
+        TQuery = unknown,
+        TPayload = unknown,
+    >(
+        params: CustomParams<TQuery, TPayload>,
+    ) => Promise<CustomResponse<TData>>;
 };
 ```
 

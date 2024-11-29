@@ -1,29 +1,29 @@
-import dataProvider from "./dataProvider";
+import dataProvider from "./dataProvider/index.js";
 
-export * from "./dataProvider";
-export * from "./interfaces";
-export * from "./liveProvider";
+export * from "./dataProvider/index.js";
+export * from "./interfaces.js";
+export * from "./liveProvider/index.js";
 export * as qqlQueryBuilder from "gql-query-builder";
 export type {
-    BatchRequestDocument,
-    BatchRequestsExtendedOptions,
-    BatchRequestsOptions,
-    ClientError,
-    GraphQLWebSocketClient,
-    RawRequestExtendedOptions,
-    RawRequestOptions,
-    RequestDocument,
-    RequestExtendedOptions,
-    RequestOptions,
-    Variables,
+  BatchRequestDocument,
+  BatchRequestsExtendedOptions,
+  BatchRequestsOptions,
+  ClientError,
+  GraphQLWebSocketClient,
+  RawRequestExtendedOptions,
+  RawRequestOptions,
+  RequestDocument,
+  RequestExtendedOptions,
+  RequestOptions,
+  Variables,
 } from "graphql-request";
 export {
-    batchRequests,
-    gql,
-    GraphQLClient,
-    rawRequest,
-    request,
-    resolveRequestDocument,
+  batchRequests,
+  gql,
+  GraphQLClient,
+  rawRequest,
+  request,
+  resolveRequestDocument,
 } from "graphql-request";
 export * as graphqlWS from "graphql-ws";
 

@@ -92,11 +92,11 @@ export default function App() {
 
 const ListTsxCode = `
 import { List, ShowButton, useTable } from "@refinedev/antd";
-import { BaseRecord, IResourceComponentsProps } from "@refinedev/core";
+import { BaseRecord } from "@refinedev/core";
 import { Space, Table } from "antd";
 import React from "react";
 
-export const ProductList: React.FC<IResourceComponentsProps> = () => {
+export const ProductList = () => {
   const { tableProps } = useTable();
 
   return (
@@ -122,15 +122,15 @@ export const ProductList: React.FC<IResourceComponentsProps> = () => {
 
 const ShowTsxCode = `
 import { MarkdownField, NumberField, Show, TextField } from "@refinedev/antd";
-import { IResourceComponentsProps, useShow } from "@refinedev/core";
+import { useShow } from "@refinedev/core";
 import { Typography } from "antd";
 import React from "react";
 
 const { Title } = Typography;
 
-export const ProductShow: React.FC<IResourceComponentsProps> = () => {
-  const { queryResult } = useShow();
-  const { data, isLoading } = queryResult;
+export const ProductShow = () => {
+  const { query } = useShow();
+  const { data, isLoading } = query;
 
   const record = data?.data;
 

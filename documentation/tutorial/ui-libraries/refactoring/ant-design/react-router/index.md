@@ -324,19 +324,21 @@ import { useForm, useSelect, SaveButton } from "@refinedev/antd";
 import { Form, Input, Select, InputNumber } from "antd";
 
 export const EditProduct = () => {
-    // highlight-start
-  const { formProps, saveButtonProps, queryResult } = useForm({
-    redirect: "show",
+  // highlight-start
+  const { formProps, saveButtonProps, query } = useForm({
+    refineCoreProps: {
+      redirect: "show",
+    },
   });
-    // highlight-end
+  // highlight-end
 
   const { selectProps } = useSelect({
     resource: "categories",
-    defaultValue: queryResult?.data?.data?.category?.id,
+    defaultValue: query?.data?.data?.category?.id,
   });
 
   return (
-    { /* highlight-start */}
+    // highlight-start
     <Form {...formProps} layout="vertical">
       <Form.Item label="Name" name="name">
         <Input />
@@ -356,7 +358,7 @@ export const EditProduct = () => {
       {/* SaveButton renders a submit button to submit our form */}
       <SaveButton {...saveButtonProps} />
     </Form>
-    { /* highlight-end */}
+    // highlight-end
   );
 };
 ```
@@ -377,18 +379,20 @@ import { useForm, useSelect, SaveButton } from "@refinedev/antd";
 import { Form, Input, Select, InputNumber } from "antd";
 
 export const CreateProduct = () => {
-    // highlight-start
+  // highlight-start
   const { formProps, saveButtonProps } = useForm({
-    redirect: "edit",
+    refineCoreProps: {
+      redirect: "edit",
+    },
   });
-    // highlight-end
+  // highlight-end
 
   const { selectProps } = useSelect({
     resource: "categories",
   });
 
   return (
-    { /* highlight-start */}
+    // highlight-start
     <Form {...formProps} layout="vertical">
       <Form.Item label="Name" name="name">
         <Input />
@@ -407,7 +411,7 @@ export const CreateProduct = () => {
       </Form.Item>
       <SaveButton {...saveButtonProps} />
     </Form>
-    { /* highlight-end */}
+    // highlight-end
   );
 };
 ```
@@ -444,7 +448,7 @@ import { Typography } from "antd";
 
 export const ShowProduct = () => {
   const {
-    queryResult: { data, isLoading },
+    query: { data, isLoading },
   } = useShow();
 
   const { data: categoryData, isLoading: categoryIsLoading } = useOne({

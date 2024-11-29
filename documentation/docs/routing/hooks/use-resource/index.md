@@ -42,11 +42,15 @@ The `resource` object.
 
 Resource name of the `resource` object.
 
-### id
+### ~~id~~ <PropTag deprecated />
+
+> Use [`useResourceParams`](/docs/routing/hooks/use-resource-params) instead.
 
 `id` parameter of the current route.
 
-### action
+### ~~action~~ <PropTag deprecated />
+
+> Use [`useResourceParams`](/docs/routing/hooks/use-resource-params) instead.
 
 `action` from the current route if there is a match.
 
@@ -84,10 +88,22 @@ Identifier value for the current resource, this can either be the `identifier` p
 
 ```ts
 interface IResourceComponents {
-  list?: string | React.ComponentType<any> | { component: React.ComponentType<any>; path: string };
-  create?: string | React.ComponentType<any> | { component: React.ComponentType<any>; path: string };
-  edit?: string | React.ComponentType<any> | { component: React.ComponentType<any>; path: string };
-  show?: string | React.ComponentType<any> | { component: React.ComponentType<any>; path: string };
+  list?:
+    | string
+    | React.ComponentType<any>
+    | { component: React.ComponentType<any>; path: string };
+  create?:
+    | string
+    | React.ComponentType<any>
+    | { component: React.ComponentType<any>; path: string };
+  edit?:
+    | string
+    | React.ComponentType<any>
+    | { component: React.ComponentType<any>; path: string };
+  show?:
+    | string
+    | React.ComponentType<any>
+    | { component: React.ComponentType<any>; path: string };
 }
 
 interface IResourceItem extends IResourceComponents {

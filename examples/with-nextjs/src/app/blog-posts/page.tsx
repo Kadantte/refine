@@ -9,7 +9,7 @@ import {
   ShowButton,
   useTable,
 } from "@refinedev/antd";
-import { BaseRecord, useMany } from "@refinedev/core";
+import { type BaseRecord, useMany } from "@refinedev/core";
 import { Space, Table } from "antd";
 
 export default function BlogPostList() {
@@ -38,7 +38,7 @@ export default function BlogPostList() {
           title={"Content"}
           render={(value: any) => {
             if (!value) return "-";
-            return <MarkdownField value={value.slice(0, 80) + "..."} />;
+            return <MarkdownField value={`${value.slice(0, 80)}...`} />;
           }}
         />
         <Table.Column

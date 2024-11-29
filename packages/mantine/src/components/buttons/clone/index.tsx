@@ -1,23 +1,14 @@
-import React, { useContext } from "react";
+import React from "react";
+import { useCloneButton } from "@refinedev/core";
 import {
-    useCan,
-    useNavigation,
-    useTranslate,
-    useResource,
-    useRouterContext,
-    useRouterType,
-    useLink,
-    AccessControlContext,
-} from "@refinedev/core";
-import {
-    RefineButtonClassNames,
-    RefineButtonTestIds,
+  RefineButtonClassNames,
+  RefineButtonTestIds,
 } from "@refinedev/ui-types";
 import { ActionIcon, Anchor, Button } from "@mantine/core";
-import { IconSquarePlus } from "@tabler/icons";
+import { IconSquarePlus } from "@tabler/icons-react";
 
 import { mapButtonVariantToActionIconVariant } from "@definitions/button";
-import { CloneButtonProps } from "../types";
+import type { CloneButtonProps } from "../types";
 
 /**
  * `<CloneButton>` uses Mantine {@link https://mantine.dev/core/button `<Button> component`}.
@@ -28,115 +19,73 @@ import { CloneButtonProps } from "../types";
  *
  */
 export const CloneButton: React.FC<CloneButtonProps> = ({
-    resource: resourceNameFromProps,
-    resourceNameOrRouteName,
-    recordItemId,
-    hideText = false,
-    accessControl,
-    svgIconProps,
-    meta,
-    children,
-    onClick,
-    ...rest
+  resource: resourceNameFromProps,
+  resourceNameOrRouteName,
+  recordItemId,
+  hideText = false,
+  accessControl,
+  svgIconProps,
+  meta,
+  children,
+  onClick,
+  ...rest
 }) => {
-    const accessControlContext = useContext(AccessControlContext);
+  const { to, label, title, hidden, disabled, LinkComponent } = useCloneButton({
+    resource: resourceNameFromProps ?? resourceNameOrRouteName,
+    id: recordItemId,
+    accessControl,
+    meta,
+  });
 
-    const accessControlEnabled =
-        accessControl?.enabled ??
-        accessControlContext.options.buttons.enableAccessControl;
+  if (hidden) return null;
 
-    const hideIfUnauthorized =
-        accessControl?.hideIfUnauthorized ??
-        accessControlContext.options.buttons.hideIfUnauthorized;
+  const { variant, styles, ...commonProps } = rest;
 
-    const { cloneUrl: generateCloneUrl } = useNavigation();
-    const routerType = useRouterType();
-    const Link = useLink();
-    const { Link: LegacyLink } = useRouterContext();
-
-    const ActiveLink = routerType === "legacy" ? LegacyLink : Link;
-
-    const translate = useTranslate();
-
-    const { id, resource } = useResource(
-        resourceNameFromProps ?? resourceNameOrRouteName,
-    );
-
-    const { data } = useCan({
-        resource: resource?.name,
-        action: "create",
-        params: { id: recordItemId ?? id, resource },
-        queryOptions: {
-            enabled: accessControlEnabled,
-        },
-    });
-
-    const disabledTitle = () => {
-        if (data?.can) return "";
-        else if (data?.reason) return data.reason;
-        else
-            return translate(
-                "buttons.notAccessTitle",
-                "You don't have permission to access",
-            );
-    };
-
-    const cloneUrl =
-        resource && (recordItemId || id)
-            ? generateCloneUrl(resource, recordItemId! ?? id!, meta)
-            : "";
-
-    const { variant, styles, ...commonProps } = rest;
-
-    if (accessControlEnabled && hideIfUnauthorized && !data?.can) {
-        return null;
-    }
-
-    return (
-        <Anchor
-            component={ActiveLink as any}
-            to={cloneUrl}
-            replace={false}
-            onClick={(e: React.PointerEvent<HTMLButtonElement>) => {
-                if (data?.can === false) {
-                    e.preventDefault();
-                    return;
-                }
-                if (onClick) {
-                    e.preventDefault();
-                    onClick(e);
-                }
-            }}
+  return (
+    <Anchor
+      component={LinkComponent as any}
+      to={to}
+      replace={false}
+      onClick={(e: React.PointerEvent<HTMLButtonElement>) => {
+        if (disabled) {
+          e.preventDefault();
+          return;
+        }
+        if (onClick) {
+          e.preventDefault();
+          onClick(e);
+        }
+      }}
+    >
+      {hideText ? (
+        <ActionIcon
+          disabled={disabled}
+          title={title}
+          aria-label={label}
+          {...(variant
+            ? {
+                variant: mapButtonVariantToActionIconVariant(variant),
+              }
+            : { variant: "default" })}
+          data-testid={RefineButtonTestIds.CloneButton}
+          className={RefineButtonClassNames.CloneButton}
+          {...commonProps}
         >
-            {hideText ? (
-                <ActionIcon
-                    disabled={data?.can === false}
-                    title={disabledTitle()}
-                    {...(variant
-                        ? {
-                              variant:
-                                  mapButtonVariantToActionIconVariant(variant),
-                          }
-                        : { variant: "default" })}
-                    data-testid={RefineButtonTestIds.CloneButton}
-                    className={RefineButtonClassNames.CloneButton}
-                    {...commonProps}
-                >
-                    <IconSquarePlus size={18} {...svgIconProps} />
-                </ActionIcon>
-            ) : (
-                <Button
-                    disabled={data?.can === false}
-                    variant="default"
-                    leftIcon={<IconSquarePlus size={18} {...svgIconProps} />}
-                    title={disabledTitle()}
-                    data-testid={RefineButtonTestIds.CloneButton}
-                    className={RefineButtonClassNames.CloneButton}
-                    {...rest}
-                >
-                    {children ?? translate("buttons.clone", "Clone")}
-                </Button>
-            )}
-        </Anchor>
-    );
+          <IconSquarePlus size={18} {...svgIconProps} />
+        </ActionIcon>
+      ) : (
+        <Button
+          disabled={disabled}
+          variant="default"
+          leftIcon={<IconSquarePlus size={18} {...svgIconProps} />}
+          title={title}
+          data-testid={RefineButtonTestIds.CloneButton}
+          className={RefineButtonClassNames.CloneButton}
+          {...rest}
+        >
+          {children ?? label}
+        </Button>
+      )}
+    </Anchor>
+  );
 };

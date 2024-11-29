@@ -15,11 +15,15 @@ setRefineProps({
 });
 
 const Wrapper = ({ children }) => {
-  return <ChakraUI.ChakraProvider theme={RefineChakra.refineTheme}>{children}</ChakraUI.ChakraProvider>;
+  return (
+    <ChakraUI.ChakraProvider theme={RefineChakra.refineTheme}>
+      {children}
+    </ChakraUI.ChakraProvider>
+  );
 };
 ```
 
-`<ListButton>` is using Chakra UI's [`<Button>`](https://chakra-ui.com/docs/components/button/usage) component. It uses the `list` method from [`useNavigation`](/docs/routing/hooks/use-navigation) under the hood. It can be useful when redirecting the app to the list page route of resource.
+`<ListButton>` is using Chakra UI's [`<Button>`](https://www.chakra-ui.com/docs/components/button#usage) component. It uses the `list` method from [`useNavigation`](/docs/routing/hooks/use-navigation) under the hood. It can be useful when redirecting the app to the list page route of resource.
 
 :::simple Good to know
 
@@ -131,7 +135,11 @@ const ListPage = () => {
       </RefineChakra.Text>
       <RefineChakra.Code>{JSON.stringify(params)}</RefineChakra.Code>
 
-      <RefineChakra.Button size="sm" onClick={() => list("posts")} colorScheme="green">
+      <RefineChakra.Button
+        size="sm"
+        onClick={() => list("posts")}
+        colorScheme="green"
+      >
         Go back
       </RefineChakra.Button>
     </RefineChakra.VStack>
@@ -225,7 +233,9 @@ The `accessControl` prop can be used to skip the access control check with its `
 import { ListButton } from "@refinedev/chakra-ui";
 
 export const MyListComponent = () => {
-  return <ListButton accessControl={{ enabled: true, hideIfUnauthorized: true }} />;
+  return (
+    <ListButton accessControl={{ enabled: true, hideIfUnauthorized: true }} />
+  );
 };
 ```
 

@@ -168,7 +168,11 @@ export const liveProvider = (client: Ably.Realtime): LiveProvider => {
             params?.ids !== undefined &&
             message.data?.payload?.ids !== undefined
           ) {
-            if (params.ids.filter((value) => message.data.payload.ids!.includes(value)).length > 0) {
+            if (
+              params.ids.filter((value) =>
+                message.data.payload.ids!.includes(value),
+              ).length > 0
+            ) {
               callback(message.data as LiveEvent);
             }
           } else {
@@ -211,7 +215,10 @@ This method is used to unsubscribe from a channel. The values returned from the 
 ```ts title="liveProvider.ts"
 export const liveProvider = (client: Ably.Realtime): LiveProvider => {
   return {
-    unsubscribe: (payload: { channelInstance: Types.RealtimeChannelPromise; listener: () => void }) => {
+    unsubscribe: (payload: {
+      channelInstance: Types.RealtimeChannelPromise;
+      listener: () => void;
+    }) => {
       const { channelInstance, listener } = payload;
       channelInstance.unsubscribe(listener);
     },
@@ -229,7 +236,7 @@ If you don't handle unsubscription, it could lead to memory leaks.
 
 This method is used to publish an event on client side. Beware that publishing events on client side is not recommended and the best practice is to publish events from server side. You can refer [Publish Events from API](#publish-events-from-api) to see which events must be published from the server.
 
-This `publish` is used in [realated hooks](#publish-events-from-hooks). When `publish` is used, subscribers to these events are notified. You can also publish your custom events using [`usePublish`](/docs/realtime/hooks/use-publish).
+This `publish` is used in [related hooks](#publish-events-from-hooks). When `publish` is used, subscribers to these events are notified. You can also publish your custom events using [`usePublish`](/docs/realtime/hooks/use-publish).
 
 ```ts title="liveProvider.ts"
 export const liveProvider = (client: Ably.Realtime): LiveProvider => {
@@ -320,7 +327,11 @@ Thus, we will be able to create subscription queries using the parameters of the
 import { LiveProvider } from "@refinedev/core";
 import { Client } from "graphql-ws";
 
-import { generateUseListSubscription, generateUseManySubscription, generateUseOneSubscription } from "../utils";
+import {
+  generateUseListSubscription,
+  generateUseManySubscription,
+  generateUseOneSubscription,
+} from "../utils";
 
 const subscriptions = {
   useList: generateUseListSubscription,
@@ -331,18 +342,32 @@ const subscriptions = {
 export const liveProvider = (client: Client): LiveProvider => {
   return {
     subscribe: ({ callback, params, meta }) => {
-      const { resource, pagination, sorters, filters, subscriptionType, id, ids } = params ?? {};
+      const {
+        resource,
+        pagination,
+        sorters,
+        filters,
+        subscriptionType,
+        id,
+        ids,
+      } = params ?? {};
 
       if (!meta) {
-        throw new Error("[useSubscription]: `meta` is required in `params` for graphql subscriptions");
+        throw new Error(
+          "[useSubscription]: `meta` is required in `params` for graphql subscriptions",
+        );
       }
 
       if (!subscriptionType) {
-        throw new Error("[useSubscription]: `subscriptionType` is required in `params` for graphql subscriptions");
+        throw new Error(
+          "[useSubscription]: `subscriptionType` is required in `params` for graphql subscriptions",
+        );
       }
 
       if (!resource) {
-        throw new Error("[useSubscription]: `resource` is required in `params` for graphql subscriptions");
+        throw new Error(
+          "[useSubscription]: `resource` is required in `params` for graphql subscriptions",
+        );
       }
 
       const generateSubscription = subscriptions[subscriptionType];
@@ -456,6 +481,10 @@ const gqlWebSocketClient = createClient({
 });
 
 const App: React.FC = () => {
-  return <Refine liveProvider={liveProvider(gqlWebSocketClient)}>{/* ... */} </Refine>;
+  return (
+    <Refine liveProvider={liveProvider(gqlWebSocketClient)}>
+      {/* ... */}{" "}
+    </Refine>
+  );
 };
 ```

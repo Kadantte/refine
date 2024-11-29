@@ -1,14 +1,14 @@
 import React from "react";
-import { useTranslate } from "@refinedev/core";
+import { useImportButton } from "@refinedev/core";
 import {
-    RefineButtonClassNames,
-    RefineButtonTestIds,
+  RefineButtonClassNames,
+  RefineButtonTestIds,
 } from "@refinedev/ui-types";
 
 import LoadingButton from "@mui/lab/LoadingButton";
 import ImportExportOutlined from "@mui/icons-material/ImportExportOutlined";
 
-import { ImportButtonProps } from "../types";
+import type { ImportButtonProps } from "../types";
 
 /**
  * `<ImportButton>` is compatible with the {@link https://refine.dev/docs/api-reference/core/hooks/import-export/useImport/ `useImport`} core hook.
@@ -17,38 +17,36 @@ import { ImportButtonProps } from "../types";
  * @see {@link https://refine.dev/docs/api-reference/mui/components/buttons/import-button} for more details.
  */
 export const ImportButton: React.FC<ImportButtonProps> = ({
-    inputProps,
-    hideText = false,
-    loading = false,
-    svgIconProps,
-    children,
-    ...rest
+  inputProps,
+  hideText = false,
+  loading = false,
+  svgIconProps,
+  children,
+  ...rest
 }) => {
-    const translate = useTranslate();
+  const { label } = useImportButton();
 
-    const { sx, ...restProps } = rest;
+  const { sx, ...restProps } = rest;
 
-    return (
-        <label htmlFor="contained-button-file">
-            <input {...inputProps} id="contained-button-file" multiple hidden />
-            <LoadingButton
-                component="span"
-                startIcon={
-                    !hideText && <ImportExportOutlined {...svgIconProps} />
-                }
-                loadingPosition={hideText ? "center" : "start"}
-                loading={loading}
-                sx={{ minWidth: 0, ...sx }}
-                data-testid={RefineButtonTestIds.ImportButton}
-                className={RefineButtonClassNames.ImportButton}
-                {...restProps}
-            >
-                {hideText ? (
-                    <ImportExportOutlined fontSize="small" {...svgIconProps} />
-                ) : (
-                    children ?? translate("buttons.import", "Import")
-                )}
-            </LoadingButton>
-        </label>
-    );
+  return (
+    <label htmlFor="contained-button-file">
+      <input {...inputProps} id="contained-button-file" multiple hidden />
+      <LoadingButton
+        component="span"
+        startIcon={!hideText && <ImportExportOutlined {...svgIconProps} />}
+        loadingPosition={hideText ? "center" : "start"}
+        loading={loading}
+        sx={{ minWidth: 0, ...sx }}
+        data-testid={RefineButtonTestIds.ImportButton}
+        className={RefineButtonClassNames.ImportButton}
+        {...restProps}
+      >
+        {hideText ? (
+          <ImportExportOutlined fontSize="small" {...svgIconProps} />
+        ) : (
+          children ?? label
+        )}
+      </LoadingButton>
+    </label>
+  );
 };

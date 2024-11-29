@@ -241,7 +241,10 @@ import { GitHubBanner, Refine, WelcomePage } from "@refinedev/core";
 import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
 
 import dataProvider from "@refinedev/airtable";
-import routerBindings, { DocumentTitleHandler, UnsavedChangesNotifier } from "@refinedev/react-router-v6";
+import routerBindings, {
+  DocumentTitleHandler,
+  UnsavedChangesNotifier,
+} from "@refinedev/react-router-v6";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 
@@ -326,12 +329,16 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
   const { push } = useNavigation();
 
   return (
-    <div className="py-4 pr-4 flex min-h-screen flex-col border md:flex-row">
+    <div className="flex min-h-screen flex-col border py-4 pr-4 md:flex-row">
       <div className="mb-2 border-b py-2 md:w-2/12">
         <div className="container mx-auto">
           <div className="flex flex-col items-center gap-2">
             <Link to="/">
-              <img className="w-32" src="https://refine.dev/img/refine_logo.png" alt="Logo" />
+              <img
+                className="w-32"
+                src="https://refine.dev/img/refine_logo.png"
+                alt="Logo"
+              />
             </Link>
 
             <ul>
@@ -554,9 +561,12 @@ export const PostList: React.FC = () => {
                 <th
                   key={header.id}
                   colSpan={header.colSpan}
-                  className="py-3 px-6 text-left text-xs font-medium uppercase tracking-wider text-gray-700 "
+                  className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-700 "
                 >
-                  {flexRender(header.column.columnDef.header, header.getContext())}
+                  {flexRender(
+                    header.column.columnDef.header,
+                    header.getContext(),
+                  )}
                 </th>
               ))}
             </tr>
@@ -568,8 +578,14 @@ export const PostList: React.FC = () => {
               <tr key={row.id} className="transition hover:bg-gray-100">
                 {row.getVisibleCells().map((cell) => {
                   return (
-                    <td key={cell.id} className="whitespace-nowrap py-2 px-6 text-sm font-medium text-gray-900">
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    <td
+                      key={cell.id}
+                      className="whitespace-nowrap px-6 py-2 text-sm font-medium text-gray-900"
+                    >
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext(),
+                      )}
                     </td>
                   );
                 })}
@@ -624,7 +640,12 @@ import { ColumnDef, flexRender } from "@tanstack/react-table";
 //highlight-next-line
 import { ICategory, IPost } from "../../interfaces/post";
 //highlight-start
-import { useNavigation, useDelete, useMany, GetManyResponse } from "@refinedev/core";
+import {
+  useNavigation,
+  useDelete,
+  useMany,
+  GetManyResponse,
+} from "@refinedev/core";
 //highlight-end
 
 import "./App.css";
@@ -645,7 +666,9 @@ export const PostList: React.FC = () => {
             categoriesData: GetManyResponse<ICategory>;
           };
           const singleValue: string[] | any = getValue();
-          const category = meta.categoriesData?.data?.find((item) => item.id === singleValue[0]);
+          const category = meta.categoriesData?.data?.find(
+            (item) => item.id === singleValue[0],
+          );
           return category?.name ?? "Loading...";
         },
       },
@@ -661,7 +684,7 @@ export const PostList: React.FC = () => {
     getRowModel,
     setOptions,
     refineCore: {
-      tableQueryResult: { data: tableData },
+      tableQuery: { data: tableData },
     },
   } = useTable<IPost>({ columns });
 
@@ -703,9 +726,12 @@ export const PostList: React.FC = () => {
                 <th
                   key={idx}
                   colSpan={header.colSpan}
-                  className="py-3 px-6 text-left text-xs font-medium uppercase tracking-wider text-gray-700 "
+                  className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-700 "
                 >
-                  {flexRender(header.column.columnDef.header, header.getContext())}
+                  {flexRender(
+                    header.column.columnDef.header,
+                    header.getContext(),
+                  )}
                 </th>
               ))}
             </tr>
@@ -717,8 +743,14 @@ export const PostList: React.FC = () => {
               <tr key={idx} className="transition hover:bg-gray-100">
                 {row.getVisibleCells().map((cell, idx) => {
                   return (
-                    <td key={idx} className="whitespace-nowrap py-2 px-6 text-sm font-medium text-gray-900">
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    <td
+                      key={idx}
+                      className="whitespace-nowrap px-6 py-2 text-sm font-medium text-gray-900"
+                    >
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext(),
+                      )}
                     </td>
                   );
                 })}
@@ -822,7 +854,10 @@ export const PostShow: React.FC = () => {
       <div className="mb-6">
         <label className="mb-2 block text-sm font-medium">Category</label>
         <input
-          value={options?.find((curr) => curr?.value === record?.category[0])?.label || record?.category}
+          value={
+            options?.find((curr) => curr?.value === record?.category[0])
+              ?.label || record?.category
+          }
           disabled
           className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm"
         />
@@ -1217,7 +1252,9 @@ export const PostEdit: React.FC = () => {
             <option value={""} disabled>
               Please select
             </option>
-            <option value="Information Technology">Information Technology</option>
+            <option value="Information Technology">
+              Information Technology
+            </option>
             <option value="Fun">Fun</option>
             <option value="Drama">Drama</option>
           </select>
@@ -1400,7 +1437,12 @@ import React from "react";
 import { useTable } from "@refinedev/react-table";
 import { ColumnDef, flexRender } from "@tanstack/react-table";
 import { ICategory, IPost } from "../../interfaces/post";
-import { useNavigation, useDelete, GetManyResponse, useMany } from "@refinedev/core";
+import {
+  useNavigation,
+  useDelete,
+  GetManyResponse,
+  useMany,
+} from "@refinedev/core";
 
 export const PostList: React.FC = () => {
   const { show, edit, create } = useNavigation();
@@ -1427,7 +1469,9 @@ export const PostList: React.FC = () => {
             categoriesData: GetManyResponse<ICategory>;
           };
           const singleValue: string[] | any = getValue();
-          const category = meta.categoriesData?.data?.find((item) => item.id === singleValue[0]);
+          const category = meta.categoriesData?.data?.find(
+            (item) => item.id === singleValue[0],
+          );
           return category?.name ?? "Loading...";
         },
       },
@@ -1482,7 +1526,7 @@ export const PostList: React.FC = () => {
     getRowModel,
     setOptions,
     refineCore: {
-      tableQueryResult: { data: tableData },
+      tableQuery: { data: tableData },
     },
     getState,
     setPageIndex,
@@ -1534,7 +1578,10 @@ export const PostList: React.FC = () => {
                   colSpan={header.colSpan}
                   className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-700 "
                 >
-                  {flexRender(header.column.columnDef.header, header.getContext())}
+                  {flexRender(
+                    header.column.columnDef.header,
+                    header.getContext(),
+                  )}
                 </th>
               ))}
             </tr>
@@ -1546,8 +1593,14 @@ export const PostList: React.FC = () => {
               <tr key={idx} className="transition hover:bg-gray-100">
                 {row.getVisibleCells().map((cell, idx) => {
                   return (
-                    <td key={idx} className="whitespace-nowrap px-6 py-2 text-sm font-medium text-gray-900">
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    <td
+                      key={idx}
+                      className="whitespace-nowrap px-6 py-2 text-sm font-medium text-gray-900"
+                    >
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext(),
+                      )}
                     </td>
                   );
                 })}

@@ -1,5 +1,5 @@
 import React from "react";
-import { LayoutProps } from "@refinedev/core";
+import type { LayoutProps } from "@refinedev/core";
 import styled from "styled-components";
 
 import { Header } from "../header";
@@ -11,12 +11,12 @@ const Wrapper = styled.div`
 `;
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
-    return (
-        <>
-            <Header />
-            <Wrapper>{children}</Wrapper>
-        </>
-    );
+  return (
+    <>
+      <Header />
+      <Wrapper>{children}</Wrapper>
+    </>
+  );
 };
 
 export default Layout;

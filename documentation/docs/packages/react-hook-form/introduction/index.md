@@ -10,7 +10,7 @@ This package exports following hooks to manage your forms:
 
 - [`useForm`][use-form-react-hook-form]
 - [`useModalForm`](/docs/packages/list-of-packages)
-- [`useStepsFrom`](/docs/packages/list-of-packages)
+- [`useStepsForm`](/docs/packages/list-of-packages)
 
 ## Installation
 
@@ -32,14 +32,16 @@ import { useForm } from "@refinedev/react-hook-form";
 
 export const PostEdit = () => {
   const {
-    refineCore: { onFinish, formLoading, queryResult },
+    refineCore: { onFinish, formLoading, query },
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<IPost, HttpError>({
-    resource: "posts",
-    action: "edit",
-    id: 1,
+    refineCoreProps: {
+      resource: "posts",
+      action: "edit",
+      id: 1,
+    },
   });
 
   return (
@@ -58,7 +60,11 @@ export const PostEdit = () => {
       <br />
 
       <label>Content: </label>
-      <textarea {...register("content", { required: true })} rows={10} cols={50} />
+      <textarea
+        {...register("content", { required: true })}
+        rows={10}
+        cols={50}
+      />
       {errors.content && <span>This field is required</span>}
       <br />
 
@@ -98,14 +104,20 @@ export const PostEdit: React.FC = () => {
     control,
     formState: { errors },
   } = useForm<IPost, HttpError>({
-    resource: "posts",
-    action: "edit",
-    id: 1,
+    refineCoreProps: {
+      resource: "posts",
+      action: "edit",
+      id: 1,
+    },
   });
 
   return (
     <Edit saveButtonProps={saveButtonProps}>
-      <Box component="form" sx={{ display: "flex", flexDirection: "column" }} autoComplete="off">
+      <Box
+        component="form"
+        sx={{ display: "flex", flexDirection: "column" }}
+        autoComplete="off"
+      >
         <TextField
           id="title"
           {...register("title", {
@@ -184,7 +196,14 @@ export interface IPost {
 import { HttpError } from "@refinedev/core";
 import { useForm } from "@refinedev/react-hook-form";
 import { Edit } from "@refinedev/chakra-ui";
-import { FormControl, FormErrorMessage, FormLabel, Input, Select, Textarea } from "@chakra-ui/react";
+import {
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  Input,
+  Select,
+  Textarea,
+} from "@chakra-ui/react";
 
 export const PostEdit = () => {
   const {
@@ -204,7 +223,11 @@ export const PostEdit = () => {
     <Edit isLoading={formLoading} saveButtonProps={saveButtonProps}>
       <FormControl mb="3" isInvalid={!!errors?.title}>
         <FormLabel>Title</FormLabel>
-        <Input id="title" type="text" {...register("title", { required: "Title is required" })} />
+        <Input
+          id="title"
+          type="text"
+          {...register("title", { required: "Title is required" })}
+        />
         <FormErrorMessage>{`${errors.title?.message}`}</FormErrorMessage>
       </FormControl>
 

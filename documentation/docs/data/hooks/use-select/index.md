@@ -78,6 +78,41 @@ const { options } = useSelect({
 });
 ```
 
+It's also possible to pass function to these props. These functions will receive `item` argument.
+
+```tsx
+const { options } = useSelect({
+  optionLabel: (item) => `${item.firstName} ${item.lastName}`,
+  optionValue: (item) => item.id,
+});
+```
+
+### searchField
+
+Can be used to specify which field will be searched with value given to `onSearch` function.
+
+```tsx
+const { onSearch } = useSelect({ searchField: "name" });
+
+onSearch("John"); // Searches by `name` field with value John.
+```
+
+By default, it uses `optionLabel`'s value, if `optionLabel` is a string. Uses `title` field otherwise.
+
+```tsx
+// When `optionLabel` is string.
+const { onSearch } = useSelect({ optionLabel: "name" });
+
+onSearch("John"); // Searches by `name` field with value John.
+
+// When `optionLabel` is function.
+const { onSearch } = useSelect({
+  optionLabel: (item) => `${item.id} - ${item.name}`,
+});
+
+onSearch("John"); // Searches by `title` field with value John.
+```
+
 ### sorters
 
 It allows to show the options in the desired order. `sorters` will be passed to the `getList` method from the `dataProvider` as parameter via the `useList` hook. It is used to send sort query parameters to the API.
@@ -122,6 +157,20 @@ Allows to make options selected by default. Adds extra options to `<select>` com
 ```tsx
 useSelect({
   defaultValue: 1, // or [1, 2]
+});
+```
+
+### selectedOptionsOrder
+
+`selectedOptionsOrder` allows us to sort `selectedOptions` on `defaultValue`. It can be:
+
+- `"in-place"`: sort `selectedOptions` at the bottom. It is by default.
+- `"selected-first"`: sort `selectedOptions` at the top.
+
+```tsx
+useSelect({
+  defaultValue: 1, // or [1, 2]
+  selectedOptionsOrder: "selected-first", // in-place | selected-first
 });
 ```
 
@@ -413,14 +462,14 @@ useSelect({
 
 ### Can I create the options manually?
 
-Sometimes it may not be enough to create `optionLabel` and `optionValue` options. In this case we create options with `queryResult`.
+Sometimes it may not be enough to create `optionLabel` and `optionValue` options. In this case we create options with `query`.
 
 ```tsx
-const { queryResult } = useSelect({
+const { query } = useSelect({
   resource: "categories",
 });
 
-const options = queryResult.data?.data.map((item) => ({
+const options = query.data?.data.map((item) => ({
   label: item.name,
   value: item.id,
 }));
@@ -452,13 +501,13 @@ return (
 
 ### Return values
 
-| Property                | Description                                    | Type                                                                                                         |
-| ----------------------- | ---------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
-| options                 | It returns possible options                    | `{ label: string; value: string }`                                                                           |
-| queryResult             | Result of the query of a record                | [`QueryObserverResult<{ data: TData; error: TError }>`](https://react-query.tanstack.com/reference/useQuery) |
-| defaultValueQueryResult | Result of the query of a `defaultValue` record | [`QueryObserverResult<{ data: TData; error: TError }>`](https://react-query.tanstack.com/reference/useQuery) |
-| onSearch                | A function to set the search value             | `onSearch: (value: string) => void`                                                                          |
-| overtime                | Overtime loading props                         | `{ elapsedTime?: number }`                                                                                   |
+| Property          | Description                                    | Type                                                                                                         |
+| ----------------- | ---------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| options           | It returns possible options                    | `{ label: string; value: string }`                                                                           |
+| query             | Result of the query of a record                | [`QueryObserverResult<{ data: TData; error: TError }>`](https://react-query.tanstack.com/reference/useQuery) |
+| defaultValueQuery | Result of the query of a `defaultValue` record | [`QueryObserverResult<{ data: TData; error: TError }>`](https://react-query.tanstack.com/reference/useQuery) |
+| onSearch          | A function to set the search value             | `onSearch: (value: string) => void`                                                                          |
+| overtime          | Overtime loading props                         | `{ elapsedTime?: number }`                                                                                   |
 
 ## Example
 

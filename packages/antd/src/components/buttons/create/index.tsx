@@ -1,22 +1,13 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Button } from "antd";
 import { PlusSquareOutlined } from "@ant-design/icons";
+import { useCreateButton } from "@refinedev/core";
 import {
-    useNavigation,
-    useTranslate,
-    useCan,
-    useResource,
-    useRouterContext,
-    useRouterType,
-    useLink,
-    AccessControlContext,
-} from "@refinedev/core";
-import {
-    RefineButtonClassNames,
-    RefineButtonTestIds,
+  RefineButtonClassNames,
+  RefineButtonTestIds,
 } from "@refinedev/ui-types";
 
-import { CreateButtonProps } from "../types";
+import type { CreateButtonProps } from "../types";
 
 /**
  * <CreateButton> uses Ant Design's {@link https://ant.design/components/button/ `<Button> component`}.
@@ -26,92 +17,51 @@ import { CreateButtonProps } from "../types";
  * @see {@link https://refine.dev/docs/api-reference/antd/components/buttons/create-button} for more details.
  */
 export const CreateButton: React.FC<CreateButtonProps> = ({
-    resource: resourceNameFromProps,
-    resourceNameOrRouteName: propResourceNameOrRouteName,
-    hideText = false,
-    accessControl,
-    meta,
-    children,
-    onClick,
-    ...rest
+  resource: resourceNameFromProps,
+  resourceNameOrRouteName: propResourceNameOrRouteName,
+  hideText = false,
+  accessControl,
+  meta,
+  children,
+  onClick,
+  ...rest
 }) => {
-    const accessControlContext = useContext(AccessControlContext);
+  const { hidden, disabled, label, title, LinkComponent, to } = useCreateButton(
+    {
+      resource: resourceNameFromProps ?? propResourceNameOrRouteName,
+      accessControl,
+      meta,
+    },
+  );
 
-    const accessControlEnabled =
-        accessControl?.enabled ??
-        accessControlContext.options.buttons.enableAccessControl;
+  if (hidden) return null;
 
-    const hideIfUnauthorized =
-        accessControl?.hideIfUnauthorized ??
-        accessControlContext.options.buttons.hideIfUnauthorized;
-
-    const translate = useTranslate();
-    const routerType = useRouterType();
-    const Link = useLink();
-    const { Link: LegacyLink } = useRouterContext();
-
-    const ActiveLink = routerType === "legacy" ? LegacyLink : Link;
-
-    const { createUrl: generateCreateUrl } = useNavigation();
-
-    const { resource } = useResource(
-        resourceNameFromProps ?? propResourceNameOrRouteName,
-    );
-
-    const { data } = useCan({
-        resource: resource?.name,
-        action: "create",
-        queryOptions: {
-            enabled: accessControlEnabled,
-        },
-        params: {
-            resource,
-        },
-    });
-
-    const createButtonDisabledTitle = () => {
-        if (data?.can) return "";
-        else if (data?.reason) return data.reason;
-        else
-            return translate(
-                "buttons.notAccessTitle",
-                "You don't have permission to access",
-            );
-    };
-
-    const createUrl = resource ? generateCreateUrl(resource, meta) : "";
-
-    if (accessControlEnabled && hideIfUnauthorized && !data?.can) {
-        return null;
-    }
-
-    return (
-        <ActiveLink
-            to={createUrl}
-            replace={false}
-            onClick={(e: React.PointerEvent<HTMLButtonElement>) => {
-                if (data?.can === false) {
-                    e.preventDefault();
-                    return;
-                }
-                if (onClick) {
-                    e.preventDefault();
-                    onClick(e);
-                }
-            }}
-        >
-            <Button
-                icon={<PlusSquareOutlined />}
-                disabled={data?.can === false}
-                title={createButtonDisabledTitle()}
-                data-testid={RefineButtonTestIds.CreateButton}
-                className={RefineButtonClassNames.CreateButton}
-                type="primary"
-                {...rest}
-            >
-                {!hideText &&
-                    (children ?? translate("buttons.create", "Create"))}
-            </Button>
-        </ActiveLink>
-    );
+  return (
+    <LinkComponent
+      to={to}
+      replace={false}
+      onClick={(e: React.PointerEvent<HTMLButtonElement>) => {
+        if (disabled) {
+          e.preventDefault();
+          return;
+        }
+        if (onClick) {
+          e.preventDefault();
+          onClick(e);
+        }
+      }}
+    >
+      <Button
+        icon={<PlusSquareOutlined />}
+        disabled={disabled}
+        title={title}
+        data-testid={RefineButtonTestIds.CreateButton}
+        className={RefineButtonClassNames.CreateButton}
+        type="primary"
+        {...rest}
+      >
+        {!hideText && (children ?? label)}
+      </Button>
+    </LinkComponent>
+  );
 };

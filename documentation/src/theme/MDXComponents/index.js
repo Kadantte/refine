@@ -1,10 +1,6 @@
 import MDXComponents from "@theme-original/MDXComponents";
 
 import { BannerRandom } from "@site/src/components/banner/banner-random";
-import DiscordBanner from "@site/src/components/blog/discord-banner";
-import GithubBanner from "@site/src/components/blog/github-banner";
-import PromotionBanner from "@site/src/components/blog/promotion";
-import TwitterBanner from "@site/src/components/blog/twitter-banner";
 import Checklist from "@site/src/components/checklist";
 import ChecklistItem from "@site/src/components/checklist-item";
 import CodeSandboxExample from "@site/src/components/codesandbox-example";
@@ -22,6 +18,7 @@ import CommonSummary from "@site/src/refine-theme/common-summary";
 import CommonTabItem from "@site/src/refine-theme/common-tab-item";
 import CommonTabs from "@site/src/refine-theme/common-tabs";
 import { Blockquote } from "@site/src/refine-theme/common-blockquote";
+import { DocThumbsUpDownFeedbackWidget } from "@site/src/refine-theme/doc-thumbs-up-down-feedback-widget";
 import { Image } from "@site/src/components/image";
 import { Table, FullTable } from "@site/src/refine-theme/common-table";
 import { CreateRefineAppCommand } from "@site/src/partials/npm-scripts/create-refine-app-command.tsx";
@@ -30,34 +27,31 @@ import { TutorialConditional } from "@site/src/refine-theme/tutorial-conditional
 import { VideoInView } from "@site/src/components/video-in-view";
 
 export default {
-    ...MDXComponents,
-    Checklist: Checklist,
-    ChecklistItem: ChecklistItem,
-    UIConditional: UIConditional,
-    DiscordBanner: DiscordBanner,
-    GithubBanner: GithubBanner,
-    TwitterBanner: TwitterBanner,
-    PropsTable: PropsTable,
-    PropTag: PropTag,
-    details: CommonDetails,
-    summary: CommonSummary,
-    PromotionBanner: PromotionBanner,
-    Tabs: CommonTabs,
-    TabItem: CommonTabItem,
-    blockquote: Blockquote,
-    GeneralConceptsLink,
-    CodeSandboxExample,
-    ExampleLocalPrompt,
-    ExampleSourcePrompt,
-    BannerRandom,
-    GuideBadge,
-    RouterBadge,
-    GlobalConfigBadge,
-    Image,
-    table: Table,
-    CreateRefineAppCommand: CreateRefineAppCommand,
-    InstallPackagesCommand: InstallPackagesCommand,
-    FullTable: FullTable,
-    TutorialConditional,
-    VideoInView: VideoInView,
+  ...MDXComponents,
+  Checklist: Checklist,
+  ChecklistItem: ChecklistItem,
+  UIConditional: UIConditional,
+  PropsTable: PropsTable,
+  PropTag: PropTag,
+  details: CommonDetails,
+  summary: CommonSummary,
+  Tabs: CommonTabs,
+  TabItem: CommonTabItem,
+  blockquote: Blockquote,
+  GeneralConceptsLink,
+  CodeSandboxExample,
+  ExampleLocalPrompt,
+  ExampleSourcePrompt,
+  BannerRandom,
+  GuideBadge,
+  RouterBadge,
+  GlobalConfigBadge,
+  Image,
+  table: Table,
+  CreateRefineAppCommand: CreateRefineAppCommand,
+  InstallPackagesCommand: InstallPackagesCommand,
+  FullTable: FullTable,
+  TutorialConditional,
+  VideoInView: VideoInView,
+  DocThumbsUpDownFeedbackWidget,
 };

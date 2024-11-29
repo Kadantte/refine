@@ -12,13 +12,14 @@ export function MaterialUILayout() {
         "@refinedev/simple-rest": "latest",
         "@refinedev/react-router-v6": "latest",
         "@refinedev/inferencer": "latest",
-        "@refinedev/mui": "latest",
+        "@refinedev/mui": "5.0.0",
         "react-router-dom": "latest",
         "react-router": "latest",
         "@emotion/react": "^11.8.2",
         "@emotion/styled": "^11.8.1",
         "@mui/lab": "^5.0.0-alpha.85",
         "@mui/material": "^5.14.2",
+        "@mui/system": "latest",
         "@mui/x-data-grid": "^6.6.0",
       }}
       startRoute="/my-products"
@@ -102,11 +103,10 @@ export default function App() {
 
 const ListTsxCode = `
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { IResourceComponentsProps } from "@refinedev/core";
 import { List, ShowButton, useDataGrid } from "@refinedev/mui";
 import React from "react";
 
-export const ProductList: React.FC<IResourceComponentsProps> = () => {
+export const ProductList = () => {
   const { dataGridProps } = useDataGrid();
 
   const columns = React.useMemo<GridColDef[]>(
@@ -158,7 +158,7 @@ export const ProductList: React.FC<IResourceComponentsProps> = () => {
 
 const ShowTsxCode = `
 import { Stack, Typography } from "@mui/material";
-import { IResourceComponentsProps, useShow } from "@refinedev/core";
+import { useShow } from "@refinedev/core";
 import {
   MarkdownField,
   NumberField,
@@ -166,9 +166,9 @@ import {
   TextFieldComponent as TextField,
 } from "@refinedev/mui";
 
-export const ProductShow: React.FC<IResourceComponentsProps> = () => {
-  const { queryResult } = useShow();
-  const { data, isLoading } = queryResult;
+export const ProductShow = () => {
+  const { query } = useShow();
+  const { data, isLoading } = query;
 
   const record = data?.data;
 

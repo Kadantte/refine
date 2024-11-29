@@ -1,13 +1,13 @@
-import { useBack, useShow, IResourceComponentsProps } from "@refinedev/core";
-import { ICategory } from "../../interfaces";
+import { useBack, useShow } from "@refinedev/core";
+import type { ICategory } from "../../interfaces";
 import { Button, Card, CardHeader, CardBody, Image } from "@nextui-org/react";
 
 import { ArrowLongLeftIcon } from "@heroicons/react/24/outline";
 
-export const CategoryShow: React.FC<IResourceComponentsProps> = () => {
+export const CategoryShow = () => {
   const goBack = useBack();
 
-  const { queryResult } = useShow<ICategory>();
+  const { query: queryResult } = useShow<ICategory>();
 
   const category = queryResult?.data?.data;
 

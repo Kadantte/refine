@@ -14,7 +14,7 @@ export default function AuthPage() {
         "@refinedev/simple-rest": "^4.5.4",
         "@refinedev/react-table": "^5.6.4",
         "@tanstack/react-table": "^8.2.6",
-        "@tabler/icons": "^1.119.0",
+        "@tabler/icons-react": "^3.1.0",
         "@emotion/react": "^11.8.2",
         "@mantine/core": "^5.10.4",
         "@mantine/hooks": "^5.10.4",
@@ -89,7 +89,7 @@ import {
     ErrorComponent,
     ThemedLayoutV2,
     RefineThemes,
-    notificationProvider,
+    useNotificationProvider,
     AuthPage
 } from "@refinedev/mantine";
 import { NotificationsProvider } from "@mantine/notifications";
@@ -115,7 +115,7 @@ const App: React.FC = () => {
                 <Global styles={{ body: { WebkitFontSmoothing: "auto" } }} />
                 <NotificationsProvider position="top-right">
                     <Refine
-                        notificationProvider={notificationProvider}
+                        notificationProvider={useNotificationProvider}
                         routerProvider={routerProvider}
                         dataProvider={dataProvider(
                             "https://api.fake-rest.refine.dev",
@@ -129,7 +129,7 @@ const App: React.FC = () => {
                         ]}
                     >
                         <Routes>
-                            <Route element={<Authenticated fallback={<Navigate to="/login" />}><Outlet /></Authenticated>}>
+                            <Route element={<Authenticated key="inner" fallback={<Navigate to="/login" />}><Outlet /></Authenticated>}>
                               <Route
                                   element={
                                       <ThemedLayoutV2>
@@ -142,7 +142,7 @@ const App: React.FC = () => {
                                   <Route path="*" element={<ErrorComponent />} />
                               </Route>
                             </Route>
-                            <Route element={<Authenticated fallback={<Outlet />}><NavigateToResource resource="products" /></Authenticated>}>
+                            <Route element={<Authenticated key="outer" fallback={<Outlet />}><NavigateToResource resource="products" /></Authenticated>}>
                                 <Route
                                     path="/login"
                                     element={(
@@ -219,7 +219,7 @@ export const ProductList = () => {
             setCurrent,
             pageCount,
             current,
-            tableQueryResult: { data: tableData },
+            tableQuery: { data: tableData },
         },
     } = useTable({
         columns,

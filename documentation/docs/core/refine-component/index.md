@@ -634,6 +634,84 @@ With `@refinedev/core`'s `v4.35.0`, Refine introduced new query and mutation key
 
 By default, Refine uses the legacy keys for backward compatibility and in the future versions it will switch to using the new query keys. You can easily switch to using new keys by setting `useNewQueryKeys` to `true`.
 
+### title
+
+Refine's predefined layout and auth components displays a title for the app, which consists of the app name and an icon. These values can be customized globally by passing `options.title` to the `<Refine>` component.
+
+`title` is an object that can have the following properties:
+
+- `icon`: A React Node to be used as the app icon. By default, it's Refine logo.
+- `text`: A React Node to be used as the app name. By default, it's `"Refine Project"`.
+
+```tsx title="App.tsx"
+const App = () => (
+  <Refine
+    options={{
+      // highlight-start
+      title: {
+        icon: <CustomIcon />,
+        text: "Custom App Name",
+      },
+      // highlight-end
+    }}
+  />
+);
+```
+
+If you wish to use separate values for your `<AuthPage />` and `<ThemedLayoutV2 />` components, you can `Title` prop to override the default title component (which is the `<ThemedTitleV2 />` component from the respective package).
+
+```tsx
+import { Refine } from "@refinedev/core";
+// ThemedTitleV2 accepts `text` and `icon` props with same types as `options.title`
+// This component is used in both AuthPage and ThemedLayoutV2 components.
+import { ThemedLayoutV2, AuthPage, ThemedTitleV2 } from "@refinedev/antd";
+
+const App = () => {
+  return (
+    <Refine
+      options={{
+        // highlight-start
+        title: {
+          text: "My App",
+          icon: <IconA />,
+        },
+        // highlight-end
+      }}
+    >
+      {/* ... */}
+      <ThemedLayoutV2
+        // highlight-start
+        Title={(props) => (
+          <ThemedTitleV2
+            // These values will override the global title values
+            text="A Different Value"
+            icon={<IconB />}
+            {...props}
+          />
+        )}
+        // highlight-end
+      >
+        {/* ... */}
+      </ThemedLayoutV2>
+      {/* ... */}
+      <AuthPage
+        type="login"
+        // highlight-start
+        title={
+          <ThemedTitleV2
+            collapsed={false}
+            // These values will override the global title values
+            text="A Different Value"
+            icon={<IconC />}
+          />
+        }
+        // highlight-end
+      />
+    </Refine>
+  );
+};
+```
+
 ## onLiveEvent
 
 Callback to handle all live events.
@@ -641,6 +719,8 @@ Callback to handle all live events.
 > For more information, refer to the [live provider documentation &#8594](/docs/realtime/live-provider#Refine)
 
 ## ~~catchAll~~ <PropTag deprecated />
+
+| 🚨 Use the `<CustomErrorPage />` component in your routes instead.
 
 When the app is navigated to a non-existent route, Refine shows a default error page. A custom error component can be used for this error page by passing the customized component to the `catchAll` property:
 
@@ -657,6 +737,8 @@ const App = () => (
 ```
 
 ## ~~LoginPage~~ <PropTag deprecated />
+
+| 🚨 Use the `<AuthPage />` component in your routes instead.
 
 Refine has a default login page form which is served on the `/login` route when the `authProvider` configuration is provided.
 
@@ -675,6 +757,8 @@ const App = () => (
 ```
 
 ## ~~DashboardPage~~ <PropTag deprecated />
+
+| 🚨 Use the `<CustomDashboardPage />` component in your routes instead.
 
 A custom dashboard page can be passed to the `DashboardPage` prop which is accessible on the root route.
 
@@ -712,11 +796,15 @@ const App = () => (
 
 ## ~~Sider~~ <PropTag deprecated />
 
+| 🚨 Use `Sider` prop of `<ThemedLayoutV2 />` component instead.
+
 The default sidebar can be customized by using Refine hooks and passing custom components to the `Sider` property.
 
 > For more information, refer to the [`useMenu` hook documentation &#8594](/docs/core/hooks/utilities/use-menu)
 
 ## ~~Footer~~ <PropTag deprecated />
+
+| 🚨 Use `Footer` prop of `<ThemedLayoutV2 />` component instead.
 
 The default app footer can be customized by passing the `Footer` property.
 
@@ -734,7 +822,7 @@ const App = () => (
 
 ## ~~Header~~ <PropTag deprecated />
 
-The default app header can be customized by passing the `Header` property.
+| 🚨 Use `Header` prop of `<ThemedLayoutV2 />` component instead.
 
 ```tsx title="App.tsx"
 // highlight-next-line
@@ -749,6 +837,8 @@ const App = () => (
 ```
 
 ## ~~Layout~~ <PropTag deprecated />
+
+| 🚨 Use `<ThemedLayoutV2 />` as children of `<Refine />` instead.
 
 The default layout can be customized by passing the `Layout` property.
 
@@ -795,6 +885,8 @@ const App = () => (
 
 ## ~~OffLayoutArea~~ <PropTag deprecated />
 
+| 🚨 Use `OffLayoutArea` prop of `<ThemedLayoutV2 />` component instead.
+
 The component wanted to be placed out of the app layout structure can be set by passing to the `OffLayoutArea` prop.
 
 ```tsx title="App.tsx"
@@ -810,11 +902,15 @@ const App = () => (
 
 ## ~~Title~~ <PropTag deprecated />
 
+| 🚨 Use `Title` prop of `<ThemedLayoutV2 />` component instead.
+
 The app title can be set by passing the `Title` property.
 
 ```tsx title="App.tsx"
 // highlight-start
-const CustomTitle = ({ collapsed }) => <div>{collapsed ? "Collapsed Title" : "Full Title"}</div>;
+const CustomTitle = ({ collapsed }) => (
+  <div>{collapsed ? "Collapsed Title" : "Full Title"}</div>
+);
 // highlight-end
 
 const App = () => (

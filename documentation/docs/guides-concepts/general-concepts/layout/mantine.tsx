@@ -15,7 +15,7 @@ export function MantineLayout() {
         "@refinedev/react-table": "latest",
         "react-router-dom": "latest",
         "react-router": "latest",
-        "@tabler/icons": "^1.119.0",
+        "@tabler/icons-react": "^3.1.0",
         "@emotion/react": "^11.8.2",
         "@mantine/core": "^5.10.4",
         "@mantine/hooks": "^5.10.4",
@@ -110,13 +110,12 @@ export default function App() {
 
 const ListTsxCode = `
 import { Group, Pagination, ScrollArea, Table } from "@mantine/core";
-import { IResourceComponentsProps } from "@refinedev/core";
 import { List, ShowButton } from "@refinedev/mantine";
 import { useTable } from "@refinedev/react-table";
 import { ColumnDef, flexRender } from "@tanstack/react-table";
 import React from "react";
 
-export const ProductList: React.FC<IResourceComponentsProps> = () => {
+export const ProductList = () => {
   const columns = React.useMemo<ColumnDef<any>[]>(
     () => [
       {
@@ -154,7 +153,7 @@ export const ProductList: React.FC<IResourceComponentsProps> = () => {
       setCurrent,
       pageCount,
       current,
-      tableQueryResult: { data: tableData },
+      tableQuery: { data: tableData },
     },
   } = useTable({
     columns,
@@ -215,7 +214,7 @@ export const ProductList: React.FC<IResourceComponentsProps> = () => {
 
 const ShowTsxCode = `
 import { Title } from "@mantine/core";
-import { IResourceComponentsProps, useShow } from "@refinedev/core";
+import { useShow } from "@refinedev/core";
 import {
   MarkdownField,
   NumberField,
@@ -223,9 +222,9 @@ import {
   TextField,
 } from "@refinedev/mantine";
 
-export const ProductShow: React.FC<IResourceComponentsProps> = () => {
-  const { queryResult } = useShow();
-  const { data, isLoading } = queryResult;
+export const ProductShow = () => {
+  const { query } = useShow();
+  const { data, isLoading } = query;
 
   const record = data?.data;
 

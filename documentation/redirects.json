@@ -165,18 +165,6 @@
       "to": "/docs/data/hooks/use-show"
     },
     {
-      "from": "/docs/core/hooks/translate/useGetLocale/",
-      "to": "/docs/i18n/hooks/use-get-locale"
-    },
-    {
-      "from": "/docs/core/hooks/translate/useSetLocale/",
-      "to": "/docs/i18n/hooks/use-set-locale"
-    },
-    {
-      "from": "/docs/core/hooks/translate/useTranslate/",
-      "to": "/docs/i18n/hooks/use-translate"
-    },
-    {
       "from": "/docs/core/hooks/ui/useMenu/",
       "to": "/docs/core/hooks/utilities/use-menu"
     },
@@ -271,14 +259,6 @@
     {
       "from": "/docs/guides-and-concepts/multi-level-menu/",
       "to": "/docs/advanced-tutorials/multi-level-menu/"
-    },
-    {
-      "from": "/docs/guides-and-concepts/multi-tenancy/appwrite/",
-      "to": "/docs/guides-concepts/multi-tenancy"
-    },
-    {
-      "from": "/docs/guides-and-concepts/multi-tenancy/strapi-v4/",
-      "to": "/docs/guides-concepts/multi-tenancy"
     },
     {
       "from": "/docs/guides-and-concepts/mutation-mode/",
@@ -1096,18 +1076,6 @@
     {
       "from": "/docs/api-reference/core/hooks/useTable",
       "to": "/docs/data/hooks/use-table"
-    },
-    {
-      "from": "/docs/api-reference/core/hooks/translate/useGetLocale",
-      "to": "/docs/i18n/hooks/use-get-locale"
-    },
-    {
-      "from": "/docs/api-reference/core/hooks/translate/useSetLocale",
-      "to": "/docs/i18n/hooks/use-set-locale"
-    },
-    {
-      "from": "/docs/api-reference/core/hooks/translate/useTranslate",
-      "to": "/docs/i18n/hooks/use-translate"
     },
     {
       "from": "/docs/api-reference/core/hooks/ui/useModal",
@@ -1974,18 +1942,6 @@
       "to": "/docs/routing/hooks/use-navigation"
     },
     {
-      "from": "/docs/core/hooks/translate/use-get-locale",
-      "to": "/docs/i18n/hooks/use-get-locale"
-    },
-    {
-      "from": "/docs/core/hooks/translate/use-set-locale",
-      "to": "/docs/i18n/hooks/use-set-locale"
-    },
-    {
-      "from": "/docs/core/hooks/translate/use-translate",
-      "to": "/docs/i18n/hooks/use-translate"
-    },
-    {
       "from": "/docs/core/hooks/utilities/use-notification",
       "to": "/docs/notification/hooks/use-notification"
     },
@@ -2050,12 +2006,24 @@
       "to": "/blog/javascript-vs-typescript/"
     },
     {
+      "from": "/docs/guides-and-concepts/multi-tenancy/appwrite/",
+      "to": "/docs/guides-concepts/multitenancy"
+    },
+    {
+      "from": "/docs/guides-and-concepts/multi-tenancy/strapi-v4/",
+      "to": "/docs/guides-concepts/multitenancy"
+    },
+    {
       "from": "/docs/advanced-tutorials/multi-tenancy/appwrite",
-      "to": "/docs/guides-concepts/multi-tenancy"
+      "to": "/docs/guides-concepts/multitenancy"
     },
     {
       "from": "/docs/advanced-tutorials/multi-tenancy/strapi-v4",
-      "to": "/docs/guides-concepts/multi-tenancy"
+      "to": "/docs/guides-concepts/multitenancy"
+    },
+    {
+      "from": "/docs/guides-concepts/multi-tenancy",
+      "to": "/docs/guides-concepts/multitenancy"
     },
     {
       "from": "/docs/advanced-tutorials/import-export/csv-import/",
@@ -2196,6 +2164,39 @@
     {
       "from": "/blog/e-mail-subscription-panel-with-refine/",
       "to": "/blog"
+    },
+    {
+      "from": "/tutorial/next-steps/cli/react-router",
+      "to": "/tutorial/next-steps/cli/react-router/ant-design"
+    },
+    {
+      "from": "/tutorial/next-steps/devtools/react-router",
+      "to": "/tutorial/next-steps/devtools/react-router/ant-design"
+    },
+    {
+      "from": "/tutorial/next-steps/summary",
+      "to": "/tutorial/next-steps/summary/react-router/ant-design"
+    },
+    {
+      "from": "/blog/2024/01/26/git-stash/",
+      "to": "/blog/git-stash"
+    },
+    {
+      "to": "/docs/i18n/hooks/use-translation",
+      "from": [
+        "/docs/i18n/hooks/use-get-locale",
+        "/docs/i18n/hooks/use-set-locale",
+        "/docs/i18n/hooks/use-translate",
+        "/docs/core/hooks/translate/use-get-locale",
+        "/docs/core/hooks/translate/use-set-locale",
+        "/docs/core/hooks/translate/use-translate",
+        "/docs/api-reference/core/hooks/translate/useGetLocale",
+        "/docs/api-reference/core/hooks/translate/useSetLocale",
+        "/docs/api-reference/core/hooks/translate/useTranslate",
+        "/docs/core/hooks/translate/useGetLocale/",
+        "/docs/core/hooks/translate/useSetLocale/",
+        "/docs/core/hooks/translate/useTranslate/"
+      ]
     }
   ]
 }

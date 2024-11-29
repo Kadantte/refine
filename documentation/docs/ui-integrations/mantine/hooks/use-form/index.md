@@ -58,7 +58,10 @@ const PostList: React.FC = () => {
           return (
             <MantineGroup spacing="xs" noWrap>
               <MantineEditButton hideText recordItemId={getValue() as number} />
-              <MantineCloneButton hideText recordItemId={getValue() as number} />
+              <MantineCloneButton
+                hideText
+                recordItemId={getValue() as number}
+              />
             </MantineGroup>
           );
         },
@@ -87,7 +90,12 @@ const PostList: React.FC = () => {
                     <th key={header.id}>
                       {!header.isPlaceholder && (
                         <MantineGroup spacing="xs" noWrap>
-                          <MantineBox>{flexRender(header.column.columnDef.header, header.getContext())}</MantineBox>
+                          <MantineBox>
+                            {flexRender(
+                              header.column.columnDef.header,
+                              header.getContext(),
+                            )}
+                          </MantineBox>
                         </MantineGroup>
                       )}
                     </th>
@@ -101,7 +109,14 @@ const PostList: React.FC = () => {
               return (
                 <tr key={row.id}>
                   {row.getVisibleCells().map((cell) => {
-                    return <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>;
+                    return (
+                      <td key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext(),
+                        )}
+                      </td>
+                    );
                   })}
                 </tr>
               );
@@ -109,7 +124,12 @@ const PostList: React.FC = () => {
           </tbody>
         </MantineTable>
         <br />
-        <MantinePagination position="right" total={pageCount} page={current} onChange={setCurrent} />
+        <MantinePagination
+          position="right"
+          total={pageCount}
+          page={current}
+          onChange={setCurrent}
+        />
       </MantineList>
     </MantineScrollArea>
   );
@@ -122,15 +142,23 @@ const PostEdit: React.FC = () => {
       content: "",
     },
     validate: {
-      title: (value) => value.length < 3 && "Title must be at least 3 characters",
-      content: (value) => value.length < 10 && "Content must be at least 10 characters",
+      title: (value) =>
+        value.length < 3 && "Title must be at least 3 characters",
+      content: (value) =>
+        value.length < 10 && "Content must be at least 10 characters",
     },
   });
 
   return (
     <MantineEdit saveButtonProps={saveButtonProps}>
       <form>
-        <MantineTextInput mt={8} label="Title" placeholder="Title" withAsterisk {...getInputProps("title")} />
+        <MantineTextInput
+          mt={8}
+          label="Title"
+          placeholder="Title"
+          withAsterisk
+          {...getInputProps("title")}
+        />
 
         <MantineTextarea
           label="Content"
@@ -152,15 +180,23 @@ const PostCreate: React.FC = () => {
       content: "",
     },
     validate: {
-      title: (value) => value.length < 3 && "Title must be at least 3 characters",
-      content: (value) => value.length < 10 && "Content must be at least 10 characters",
+      title: (value) =>
+        value.length < 3 && "Title must be at least 3 characters",
+      content: (value) =>
+        value.length < 10 && "Content must be at least 10 characters",
     },
   });
 
   return (
     <MantineCreate saveButtonProps={saveButtonProps}>
       <form>
-        <MantineTextInput mt={8} label="Title" placeholder="Title" withAsterisk {...getInputProps("title")} />
+        <MantineTextInput
+          mt={8}
+          label="Title"
+          placeholder="Title"
+          withAsterisk
+          {...getInputProps("title")}
+        />
         <MantineTextarea
           label="Content"
           placeholder="Content"
@@ -202,7 +238,13 @@ const PostEdit: React.FC = () => {
   return (
     <Edit saveButtonProps={saveButtonProps}>
       <form>
-        <TextInput mt={8} label="Title" placeholder="Title" withAsterisk {...getInputProps("title")} />
+        <TextInput
+          mt={8}
+          label="Title"
+          placeholder="Title"
+          withAsterisk
+          {...getInputProps("title")}
+        />
         <Select
           mt={8}
           label="Status"
@@ -272,15 +314,23 @@ const PostCreatePage: React.FC = () => {
       content: "",
     },
     validate: {
-      title: (value) => value.length < 3 && "Title must be at least 3 characters",
-      content: (value) => value.length < 10 && "Content must be at least 10 characters",
+      title: (value) =>
+        value.length < 3 && "Title must be at least 3 characters",
+      content: (value) =>
+        value.length < 10 && "Content must be at least 10 characters",
     },
   });
 
   return (
     <Create saveButtonProps={saveButtonProps}>
       <form>
-        <TextInput mt={8} label="Title" placeholder="Title" withAsterisk {...getInputProps("title")} />
+        <TextInput
+          mt={8}
+          label="Title"
+          placeholder="Title"
+          withAsterisk
+          {...getInputProps("title")}
+        />
         <Textarea
           label="Content"
           placeholder="Content"
@@ -315,7 +365,7 @@ render(<RefineMantineDemo />);
 
 `action: "edit"` is used for editing an existing record. It requires the `id` for determining the record to edit. By default, it uses the `id` from the route. It can be changed with the `setId` function or `id` property.
 
-It fetches the record data according to the `id` with [`useOne`](/docs/data/hooks/use-one) and returns the `queryResult` for you to fill the form. After the form is submitted, it updates the record with [`useUpdate`](/docs/data/hooks/use-update).
+It fetches the record data according to the `id` with [`useOne`](/docs/data/hooks/use-one) and returns the `query` for you to fill the form. After the form is submitted, it updates the record with [`useUpdate`](/docs/data/hooks/use-update).
 
 In the following example, we will show how to use `useForm` with `action: "edit"`:
 
@@ -335,15 +385,23 @@ const PostEditPage: React.FC = () => {
       content: "",
     },
     validate: {
-      title: (value) => value.length < 3 && "Title must be at least 3 characters",
-      content: (value) => value.length < 10 && "Content must be at least 10 characters",
+      title: (value) =>
+        value.length < 3 && "Title must be at least 3 characters",
+      content: (value) =>
+        value.length < 10 && "Content must be at least 10 characters",
     },
   });
 
   return (
     <Edit saveButtonProps={saveButtonProps}>
       <form>
-        <TextInput mt={8} label="Title" placeholder="Title" withAsterisk {...getInputProps("title")} />
+        <TextInput
+          mt={8}
+          label="Title"
+          placeholder="Title"
+          withAsterisk
+          {...getInputProps("title")}
+        />
         <Textarea
           label="Content"
           placeholder="Content"
@@ -380,7 +438,7 @@ render(<RefineMantineDemo />);
 
 You can think `action:clone` like save as. It's similar to `action:edit` but it creates a new record instead of updating the existing one.
 
-It fetches the record data according to the `id` with [`useOne`](/docs/data/hooks/use-one) and returns the `queryResult` for you to fill the form. After the form is submitted, it creates a new record with [`useCreate`](/docs/data/hooks/use-create).
+It fetches the record data according to the `id` with [`useOne`](/docs/data/hooks/use-one) and returns the `query` for you to fill the form. After the form is submitted, it creates a new record with [`useCreate`](/docs/data/hooks/use-create).
 
 In the following example, we will show how to use `useForm` with `action: "clone"`. You will see `action:clone` toggle at the top of the page. You can toggle it to set the action to `clone`.
 
@@ -400,15 +458,23 @@ const PostCreatePage: React.FC = () => {
       content: "",
     },
     validate: {
-      title: (value) => value.length < 3 && "Title must be at least 3 characters",
-      content: (value) => value.length < 10 && "Content must be at least 10 characters",
+      title: (value) =>
+        value.length < 3 && "Title must be at least 3 characters",
+      content: (value) =>
+        value.length < 10 && "Content must be at least 10 characters",
     },
   });
 
   return (
     <Create saveButtonProps={saveButtonProps}>
       <form>
-        <TextInput mt={8} label="Title" placeholder="Title" withAsterisk {...getInputProps("title")} />
+        <TextInput
+          mt={8}
+          label="Title"
+          placeholder="Title"
+          withAsterisk
+          {...getInputProps("title")}
+        />
         <Textarea
           label="Content"
           placeholder="Content"
@@ -713,8 +779,10 @@ In addition to the [`meta`](#meta) property, you can also pass the `queryMeta` p
 
 ```tsx
 useForm({
-  queryMeta: {
-    querySpecificValue: "someValue",
+  refineCoreProps: {
+    queryMeta: {
+      querySpecificValue: "someValue",
+    },
   },
 });
 ```
@@ -727,8 +795,10 @@ In addition to the [`meta`](#meta) property, you can also pass the `mutationMeta
 
 ```tsx
 useForm({
-  mutationMeta: {
-    mutationSpecificValue: "someValue",
+  refineCoreProps: {
+    mutationMeta: {
+      mutationSpecificValue: "someValue",
+    },
   },
 });
 ```
@@ -835,10 +905,12 @@ Return `overtime` object from this hook. `elapsedTime` is the elapsed time in mi
 ```tsx
 const { overtime } = useForm({
   //...
-  overtimeOptions: {
-    interval: 1000,
-    onInterval(elapsedInterval) {
-      console.log(elapsedInterval);
+  refineCoreProps: {
+    overtimeOptions: {
+      interval: 1000,
+      onInterval(elapsedInterval) {
+        console.log(elapsedInterval);
+      },
     },
   },
 });
@@ -913,28 +985,28 @@ useForm({
 
 All [`mantine useForm`][use-form-mantine] and [`core useForm`][use-form-core] return values also available in `useForm`.
 
-### queryResult
+### query
 
-If the `action` is set to `"edit"` or `"clone"` or if a `resource` with an `id` is provided, `useForm` will call [`useOne`](/docs/data/hooks/use-one) and set the returned values as the `queryResult` property.
+If the `action` is set to `"edit"` or `"clone"` or if a `resource` with an `id` is provided, `useForm` will call [`useOne`](/docs/data/hooks/use-one) and set the returned values as the `query` property.
 
 ```tsx
 const {
-  refineCore: { queryResult },
+  refineCore: { query },
 } = useForm();
 
-const { data } = queryResult;
+const { data } = query;
 ```
 
-### mutationResult
+### mutation
 
-When in `"create"` or `"clone"` mode, `useForm` will call [`useCreate`](/docs/data/hooks/use-create). When in `"edit"` mode, it will call [`useUpdate`](/docs/data/hooks/use-update) and set the resulting values as the `mutationResult` property."
+When in `"create"` or `"clone"` mode, `useForm` will call [`useCreate`](/docs/data/hooks/use-create). When in `"edit"` mode, it will call [`useUpdate`](/docs/data/hooks/use-update) and set the resulting values as the `mutation` property."
 
 ```tsx
 const {
-  refineCore: { mutationResult },
+  refineCore: { mutation },
 } = useForm();
 
-const { data } = mutationResult;
+const { data } = mutation;
 ```
 
 ### setId
@@ -1000,6 +1072,14 @@ console.log(overtime.elapsedTime); // undefined, 1000, 2000, 3000 4000, ...
 
 If `autoSave` is enabled, this hook returns `autoSaveProps` object with `data`, `error`, and `status` properties from mutation.
 
+### ~~mutationResult~~ <PropTag deprecated />
+
+This prop is deprecated and will be removed in the future versions. Use [`mutation`](#mutation) instead.
+
+### ~~queryResult~~ <PropTag deprecated />
+
+This prop is deprecated and will be removed in the future versions. Use [`query`](#query) instead.
+
 ## FAQ
 
 ### How can invalidate other resources?
@@ -1057,8 +1137,18 @@ const UserCreate: React.FC = () => {
   return (
     <Create saveButtonProps={saveButtonProps}>
       <form>
-        <TextInput mt={8} label="Name" placeholder="Name" {...getInputProps("name")} />
-        <TextInput mt={8} label="Surname" placeholder="Surname" {...getInputProps("surname")} />
+        <TextInput
+          mt={8}
+          label="Name"
+          placeholder="Name"
+          {...getInputProps("name")}
+        />
+        <TextInput
+          mt={8}
+          label="Surname"
+          placeholder="Surname"
+          {...getInputProps("surname")}
+        />
       </form>
     </Create>
   );
@@ -1071,7 +1161,7 @@ You can use `meta` property to pass common values to the mutation and the query.
 
 ### How can I handle server-side form validation?
 
-[Refer to the Server-Side form validation documentation for more information. →](/docs/advanced-tutorials/forms/server-side-form-validation/#example-with-mantine-useform)
+[Refer to the Server-Side form validation documentation for more information. →](/docs/guides-concepts/forms/#server-side-validation-#example-with-mantine-useform)
 
 ## API Reference
 
@@ -1112,7 +1202,7 @@ const {
     ..., // @mantine/form's useForm return values
     saveButtonProps,
     refineCore: {
-        queryResult,
+        query,
         ...  // @refinedev/core's useForm return values
     },
 } = useForm({ ... });

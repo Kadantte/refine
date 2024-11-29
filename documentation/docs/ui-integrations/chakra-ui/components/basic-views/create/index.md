@@ -12,7 +12,11 @@ setRefineProps({
 });
 
 const Wrapper = ({ children }) => {
-  return <ChakraUI.ChakraProvider theme={RefineChakra.refineTheme}>{children}</ChakraUI.ChakraProvider>;
+  return (
+    <ChakraUI.ChakraProvider theme={RefineChakra.refineTheme}>
+      {children}
+    </ChakraUI.ChakraProvider>
+  );
 };
 
 const DummyListPage = () => (
@@ -47,7 +51,13 @@ import { CreateButton } from "@refinedev/chakra-ui";
 
 // visible-block-start
 import { Create } from "@refinedev/chakra-ui";
-import { FormControl, FormErrorMessage, FormLabel, Input, Select } from "@chakra-ui/react";
+import {
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  Input,
+  Select,
+} from "@chakra-ui/react";
 import { useSelect } from "@refinedev/core";
 import { useForm } from "@refinedev/react-hook-form";
 
@@ -67,7 +77,11 @@ const PostCreate: React.FC = () => {
     <Create isLoading={formLoading} saveButtonProps={saveButtonProps}>
       <FormControl mb="3" isInvalid={!!errors?.title}>
         <FormLabel>Title</FormLabel>
-        <Input id="title" type="text" {...register("title", { required: "Title is required" })} />
+        <Input
+          id="title"
+          type="text"
+          {...register("title", { required: "Title is required" })}
+        />
         <FormErrorMessage>{`${errors.title?.message}`}</FormErrorMessage>
       </FormControl>
       <FormControl mb="3" isInvalid={!!errors?.status}>
@@ -290,7 +304,7 @@ import { CreateButton } from "@refinedev/chakra-ui";
 // visible-block-start
 import { Create } from "@refinedev/chakra-ui";
 /* highlight-next-line */
-import { IconMoodSmile } from "@tabler/icons";
+import { IconMoodSmile } from "@tabler/icons-react";
 
 const PostCreate: React.FC = () => {
   return (
@@ -465,7 +479,7 @@ render(
 );
 ```
 
-> For more information, refer to the [`Box` documentation from Chakra UI &#8594](https://chakra-ui.com/docs/components/box/usage)
+> For more information, refer to the [`Box` documentation from Chakra UI &#8594](https://www.chakra-ui.com/docs/components/box#usage)
 
 ### headerProps
 
@@ -516,7 +530,7 @@ render(
 );
 ```
 
-> For more information, refer to the [`Box` documentation from Chakra UI &#8594](https://chakra-ui.com/docs/components/box/usage)
+> For more information, refer to the [`Box` documentation from Chakra UI &#8594](https://www.chakra-ui.com/docs/components/box#usage)
 
 ### contentProps
 
@@ -567,7 +581,7 @@ render(
 );
 ```
 
-> For more information, refer to the [`Box` documentation from Chakra UI &#8594](https://chakra-ui.com/docs/components/box/usage)
+> For more information, refer to the [`Box` documentation from Chakra UI &#8594](https://www.chakra-ui.com/docs/components/box#usage)
 
 ### headerButtons
 
@@ -673,7 +687,7 @@ render(
 );
 ```
 
-> For more information, refer to the [`Box` documentation from Chakra UI &#8594](https://chakra-ui.com/docs/components/box/usage)
+> For more information, refer to the [`Box` documentation from Chakra UI &#8594](https://www.chakra-ui.com/docs/components/box#usage)
 
 ### footerButtons
 
@@ -832,7 +846,7 @@ render(
 );
 ```
 
-> For more information, refer to the [`Box` documentation from Chakra UI &#8594](https://chakra-ui.com/docs/components/box/usage)
+> For more information, refer to the [`Box` documentation from Chakra UI &#8594](https://www.chakra-ui.com/docs/components/box#usage)
 
 ## API Reference
 

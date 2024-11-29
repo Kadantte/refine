@@ -4,7 +4,6 @@ description: We'll explore the key features of our CRM app, the technologies we 
 slug: react-crm-with-refine
 authors: necati
 tags: [Refine, react]
-is_featured: true
 image: https://refine.ams3.cdn.digitaloceanspaces.com/blog/2023-10-02-refine-crm-overview/social.jpg
 hide_table_of_contents: false
 ---
@@ -15,15 +14,10 @@ I want to introduce our newest example app – a full-fledged React CRM (Custome
 
 👉 [Live Demo](https://example.crm.refine.dev/)
 
-👉 [You can find the source code on GitHub here](https://github.com/refinedev/refine/tree/master/examples/app-crm)
-
-This example is open-source, which means anyone can freely utilize and customize the source code as they see fit. It's not just another application; it's a comprehensive solution that boasts all the features and functionalities required for an accurate enterprise-level application.
-
-Moreover, this application serves as a guiding light for all developers. Whether you're a seasoned pro or just starting, our project is a valuable resource that can be used as a reference to better understand best practices and modern development techniques.
-
 A minimal CRM app tutorial from scratch was published on [YouTube](https://www.youtube.com/watch?v=6a3Dz8gwjdg). You can follow the Refine to get notified for more real use case examples!
 
 Twitter: https://twitter.com/refine_dev
+
 GitHub: https://github.com/refinedev/refine
 
 ## Introduction

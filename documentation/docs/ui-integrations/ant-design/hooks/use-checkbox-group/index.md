@@ -91,9 +91,26 @@ const { selectProps } = useCheckboxGroup({
 });
 ```
 
+### selectedOptionsOrder
+
+`selectedOptionsOrder` allows us to sort `selectedOptions` on `defaultValue`. It can be:
+
+- `"in-place"`: sort `selectedOptions` at the bottom. It is by default.
+- `"selected-first"`: sort `selectedOptions` at the top.
+
+```tsx
+const { selectProps } = useCheckboxGroup({
+  resource: "languages",
+  // highlight-next-line
+  defaultValue: [1, 2],
+  // highlight-next-line
+  selectedOptionsOrder: "selected-first", // in-place | selected-first
+});
+```
+
 The easiest way to select default values for checkbox fields is by passing in `defaultValue`.
 
-### optionLabel and `optionValue`
+### optionLabel and optionValue
 
 ```tsx
 const { checkboxGroupProps } = useCheckboxGroup({
@@ -110,13 +127,48 @@ const { checkboxGroupProps } = useCheckboxGroup({
 These properties also support nested property access with [Object path](https://lodash.com/docs/4.17.15#get) syntax.
 
 ```tsx
-const { options } = useSelect({
+const { options } = useCheckboxGroup({
   resource: "categories",
   // highlight-start
   optionLabel: "nested.title",
   optionValue: "nested.id",
   // highlight-end
 });
+```
+
+It's also possible to pass function to these props. These functions will receive `item` argument.
+
+```tsx
+const { options } = useCheckboxGroup({
+  optionLabel: (item) => `${item.firstName} ${item.lastName}`,
+  optionValue: (item) => item.id,
+});
+```
+
+### searchField
+
+Can be used to specify which field will be searched with value given to `onSearch` function.
+
+```tsx
+const { onSearch } = useCheckboxGroup({ searchField: "name" });
+
+onSearch("John"); // Searches by `name` field with value John.
+```
+
+By default, it uses `optionLabel`'s value, if `optionLabel` is a string. Uses `title` field otherwise.
+
+```tsx
+// When `optionLabel` is string.
+const { onSearch } = useCheckboxGroup({ optionLabel: "name" });
+
+onSearch("John"); // Searches by `name` field with value John.
+
+// When `optionLabel` is function.
+const { onSearch } = useCheckboxGroup({
+  optionLabel: (item) => `${item.id} - ${item.name}`,
+});
+
+onSearch("John"); // Searches by `title` field with value John.
 ```
 
 ### filters
@@ -192,7 +244,7 @@ const { checkboxGroupProps } = useCheckboxGroup({
 For example, lets say that we have 1000 post records:
 
 ```ts
-const { selectProps } = useSelect({
+const { selectProps } = useCheckboxGroup({
   resource: "categories",
   // highlight-next-line
   pagination: { current: 3, pageSize: 8 },
@@ -225,3 +277,7 @@ Use `sorters` instead.
 
 [baserecord]: /docs/core/interface-references#baserecord
 [httperror]: /docs/core/interface-references#httperror
+
+```
+
+```

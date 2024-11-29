@@ -703,6 +703,7 @@ Or, instead of using the `defaultButtons`, you can create your own buttons. If y
 ```tsx live disableScroll previewHeight=280px url=http://localhost:3000/posts/create
 // visible-block-start
 import { Create, SaveButton } from "@refinedev/antd";
+import { Button } from "antd";
 
 const PostCreate: React.FC = () => {
   return (
@@ -710,7 +711,11 @@ const PostCreate: React.FC = () => {
       // highlight-start
       footerButtons={({ saveButtonProps }) => (
         <>
-          <SaveButton {...saveButtonProps} type="primary" style={{ marginRight: 8 }}>
+          <SaveButton
+            {...saveButtonProps}
+            type="primary"
+            style={{ marginRight: 8 }}
+          >
             Save
           </SaveButton>
           <Button type="primary">Custom Button</Button>

@@ -8,7 +8,8 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 ```tsx live  shared
-const { useNavigation: useNavigationShared, useLogout: useLogoutShared } = RefineCore;
+const { useNavigation: useNavigationShared, useLogout: useLogoutShared } =
+  RefineCore;
 const {
   Typography: { Title: SharedTitle },
   Button,
@@ -309,9 +310,12 @@ const authProvider: AuthProvider = {
   },
   forgotPassword: async ({ email }) => {
     try {
-      const { data, error } = await supabaseClient.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/update-password`,
-      });
+      const { data, error } = await supabaseClient.auth.resetPasswordForEmail(
+        email,
+        {
+          redirectTo: `${window.location.origin}/update-password`,
+        },
+      );
 
       if (error) {
         return {
@@ -577,7 +581,13 @@ export const PostList: React.FC = () => {
   return (
     <List>
       <Table {...tableProps} rowKey="id">
-        <Table.Column key="id" dataIndex="id" title="ID" sorter defaultSortOrder={getDefaultSortOrder("id", sorter)} />
+        <Table.Column
+          key="id"
+          dataIndex="id"
+          title="ID"
+          sorter
+          defaultSortOrder={getDefaultSortOrder("id", sorter)}
+        />
         <Table.Column key="title" dataIndex="title" title="Title" sorter />
         <Table.Column
           key="categoryId"
@@ -586,7 +596,12 @@ export const PostList: React.FC = () => {
           defaultSortOrder={getDefaultSortOrder("categories.title", sorter)}
           filterDropdown={(props) => (
             <FilterDropdown {...props}>
-              <Select style={{ minWidth: 200 }} mode="multiple" placeholder="Select Category" {...selectProps} />
+              <Select
+                style={{ minWidth: 200 }}
+                mode="multiple"
+                placeholder="Select Category"
+                {...selectProps}
+              />
             </FilterDropdown>
           )}
         />
@@ -672,7 +687,12 @@ export const PostCreate: React.FC = () => {
           <MDEditor data-color-mode="light" />
         </Form.Item>
         <Form.Item label="Images">
-          <Form.Item name="images" valuePropName="fileList" normalize={normalizeFile} noStyle>
+          <Form.Item
+            name="images"
+            valuePropName="fileList"
+            normalize={normalizeFile}
+            noStyle
+          >
             <Upload.Dragger
               name="file"
               listType="picture"
@@ -680,12 +700,16 @@ export const PostCreate: React.FC = () => {
               customRequest={async ({ file, onError, onSuccess }) => {
                 try {
                   const rcFile = file as RcFile;
-                  await supabaseClient.storage.from("refine").upload(`public/${rcFile.name}`, file, {
-                    cacheControl: "3600",
-                    upsert: true,
-                  });
+                  await supabaseClient.storage
+                    .from("refine")
+                    .upload(`public/${rcFile.name}`, file, {
+                      cacheControl: "3600",
+                      upsert: true,
+                    });
 
-                  const { data } = await supabaseClient.storage.from("refine").getPublicUrl(`public/${rcFile.name}`);
+                  const { data } = await supabaseClient.storage
+                    .from("refine")
+                    .getPublicUrl(`public/${rcFile.name}`);
 
                   const xhr = new XMLHttpRequest();
                   onSuccess && onSuccess({ url: data?.publicUrl }, xhr);
@@ -717,7 +741,13 @@ We'll need a page for editing a record in Supabase API. Copy and paste following
 ```tsx title="src/pages/posts/edit.tsx"
 import React, { useState } from "react";
 
-import { Edit, ListButton, RefreshButton, useForm, useSelect } from "@refinedev/antd";
+import {
+  Edit,
+  ListButton,
+  RefreshButton,
+  useForm,
+  useSelect,
+} from "@refinedev/antd";
 import { Alert, Button, Form, Input, Select, Upload } from "antd";
 import { RcFile } from "antd/lib/upload/interface";
 
@@ -728,21 +758,21 @@ import { supabaseClient, normalizeFile } from "utility";
 
 export const PostEdit: React.FC = () => {
   const [isDeprecated, setIsDeprecated] = useState(false);
-  const { formProps, saveButtonProps, queryResult } = useForm<IPost>({
+  const { formProps, saveButtonProps, query } = useForm<IPost>({
     liveMode: "manual",
     onLiveEvent: () => {
       setIsDeprecated(true);
     },
   });
 
-  const postData = queryResult?.data?.data;
+  const postData = query?.data?.data;
   const { selectProps: categorySelectProps } = useSelect<ICategory>({
     resource: "categories",
     defaultValue: postData?.categoryId,
   });
 
   const handleRefresh = () => {
-    queryResult?.refetch();
+    query?.refetch();
     setIsDeprecated(false);
   };
 
@@ -808,7 +838,12 @@ export const PostEdit: React.FC = () => {
           <MDEditor data-color-mode="light" />
         </Form.Item>
         <Form.Item label="Images">
-          <Form.Item name="images" valuePropName="fileList" normalize={normalizeFile} noStyle>
+          <Form.Item
+            name="images"
+            valuePropName="fileList"
+            normalize={normalizeFile}
+            noStyle
+          >
             <Upload.Dragger
               name="file"
               listType="picture"
@@ -817,15 +852,19 @@ export const PostEdit: React.FC = () => {
                 const rcFile = file as RcFile;
                 const fileUrl = `public/${rcFile.name}`;
 
-                const { error } = await supabaseClient.storage.from("refine").upload(fileUrl, file, {
-                  cacheControl: "3600",
-                  upsert: true,
-                });
+                const { error } = await supabaseClient.storage
+                  .from("refine")
+                  .upload(fileUrl, file, {
+                    cacheControl: "3600",
+                    upsert: true,
+                  });
 
                 if (error) {
                   return onError?.(error);
                 }
-                const { data, error: urlError } = await supabaseClient.storage.from("refine").getPublicUrl(fileUrl);
+                const { data, error: urlError } = await supabaseClient.storage
+                  .from("refine")
+                  .getPublicUrl(fileUrl);
 
                 if (urlError) {
                   return onError?.(urlError);
@@ -1028,7 +1067,10 @@ Let's check out the `Authentication` property:
 import { Refine, Authenticated } from "@refinedev/core";
 //highlight-start
 import { AuthPage, RefineThemes, ThemedLayoutV2 } from "@refinedev/antd";
-import routerProvider, { NavigateToResource, CatchAllNavigate } from "@refinedev/react-router-v6";
+import routerProvider, {
+  NavigateToResource,
+  CatchAllNavigate,
+} from "@refinedev/react-router-v6";
 //highlight-end
 
 import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
@@ -1067,8 +1109,14 @@ function App() {
             >
               <Route path="/login" element={<AuthPage />} />
               <Route path="/register" element={<AuthPage type="register" />} />
-              <Route path="/forgot-password" element={<AuthPage type="forgotPassword" />} />
-              <Route path="/update-password" element={<AuthPage type="updatePassword" />} />
+              <Route
+                path="/forgot-password"
+                element={<AuthPage type="forgotPassword" />}
+              />
+              <Route
+                path="/update-password"
+                element={<AuthPage type="updatePassword" />}
+              />
             </Route>
             {/* highlight-end */}
           </Routes>
@@ -1113,7 +1161,16 @@ interface IPost {
 }
 
 import { useMany } from "@refinedev/core";
-import { List, TextField, TagField, useTable, Create, useForm, useSelect, CreateButton } from "@refinedev/antd";
+import {
+  List,
+  TextField,
+  TagField,
+  useTable,
+  Create,
+  useForm,
+  useSelect,
+  CreateButton,
+} from "@refinedev/antd";
 import { Table, Form, Input, Select } from "antd";
 
 const PostCreate: React.FC = () => {
@@ -1184,7 +1241,8 @@ const PostList: React.FC = () => {
     syncWithLocation: true,
   });
 
-  const categoryIds = tableProps?.dataSource?.map((item) => item.category.id) ?? [];
+  const categoryIds =
+    tableProps?.dataSource?.map((item) => item.category.id) ?? [];
   const { data, isLoading } = useMany<ICategory>({
     resource: "categories",
     ids: categoryIds,
@@ -1206,10 +1264,18 @@ const PostList: React.FC = () => {
               return <TextField value="Loading..." />;
             }
 
-            return <TextField value={data?.data.find((item) => item.id === value)?.title} />;
+            return (
+              <TextField
+                value={data?.data.find((item) => item.id === value)?.title}
+              />
+            );
           }}
         />
-        <Table.Column dataIndex="status" title="Status" render={(value: string) => <TagField value={value} />} />
+        <Table.Column
+          dataIndex="status"
+          title="Status"
+          render={(value: string) => <TagField value={value} />}
+        />
       </Table>
     </List>
   );
@@ -1308,12 +1374,12 @@ So far, we have implemented the followings:
 
 **Refine provides solutions for critical parts of the complete CRUD app requirements. It saves development time and effort by providing ready-to-use components and features.**
 
-## Supabase Real Time Support
+## Supabase Realtime Support
 
-Refine has a built-in support for [Supabase Real Time](https://supabase.com/docs/guides/realtime). It means that when you create, update, or delete a record, the changes will be reflected in the app in real-time.
-Required Supabase Real Time setup is already done in the [`@refinedev/supabase`](https://github.com/refinedev/refine/tree/master/packages/supabase)` data provider.
+Refine has a built-in support for [Supabase Realtime](https://supabase.com/docs/guides/realtime). It means that when you create, update, or delete a record, the changes will be reflected in the app in real-time.
+Required Supabase Realtime setup is already done in the [`@refinedev/supabase`](https://github.com/refinedev/refine/tree/master/packages/supabase)` data provider.
 
-[You can check the Supabase Real Time integration in the data provider source code &#8594](https://github.com/refinedev/refine/blob/master/packages/supabase/src/index.ts#L325)
+[You can check the Supabase Realtime integration in the data provider source code &#8594](https://github.com/refinedev/refine/blob/master/packages/supabase/src/index.ts#L325)
 
 We only need to register Refine's Supabase Live Provider to the `liveProvider` property to enable real-time support.
 
@@ -1341,13 +1407,9 @@ function App() {
 }
 ```
 
-:::note
-
 For live features to work automatically, we set `liveMode: "auto"` in the options prop.
 
 [Refer to Live Provider docs for more information &#8594](/docs/realtime/live-provider#livemode)
-
-:::
 
 ### Let see how real-time feature works in the app
 
@@ -1503,7 +1565,9 @@ const { tableProps, sorter } = useTable({
   resource: "posts",
   //highlight-start
   filters: {
-    initial: [{ field: "categories.title", operator: "eq", value: "Beginning" }],
+    initial: [
+      { field: "categories.title", operator: "eq", value: "Beginning" },
+    ],
   },
   meta: {
     select: "*, categories!inner(title)",
@@ -1536,6 +1600,34 @@ useList({
 By default the `exact` count is used.
 
 [Refer to the PostgREST docs for more information about the count property &#8594](https://postgrest.org/en/stable/references/api/tables_views.html#exact-count)
+
+## FAQ
+
+### How can I use Supabase Realtime with relational queries?
+
+We use `meta.select` property to fetch relational data from foreign tables in Supabase. However, Supabase client doesn't have [Supabase Realtime](#supabase-realtime-support) support for the relational data changes. To handle this, we need to [manually subscribe](https://refine.dev/docs/realtime/hooks/use-subscription) and refetch the data when a change occurs in the related table.
+
+```tsx
+import { useTable, useSubscription } from "@refinedev/core";
+
+export const PostList = () => {
+  const table = useTable({
+    meta: {
+      select: "*, categories(title)",
+    },
+  });
+
+  useSubscription({
+    channel: "categories",
+    types: ["*"],
+    onLiveEvent: () => {
+      table.tableQuery.refetch();
+    },
+  });
+
+  return <>{/* ... */}</>;
+};
+```
 
 ## Example
 

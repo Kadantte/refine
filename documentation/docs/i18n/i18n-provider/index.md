@@ -42,11 +42,7 @@ const App: React.FC = () => {
 };
 ```
 
-This will allow us to put translation features to the followings hooks:
-
-- [`useTranslate`][use-translate] shows translation between different languages.
-- [`useSetLocale`][use-setlocale] changes locale at runtime.
-- [`useGetLocale`][use-getlocale] getting current locale.
+This will allow us to put translation features to the [`useTranslation`][use-translation] hook
 
 ## Methods
 
@@ -82,11 +78,11 @@ const i18nProvider: I18nProvider = {
 ```
 
 ```tsx
-import { useTranslate } from "@refinedev/core";
+import { useTranslation } from "@refinedev/core";
 
 // ...
 
-const translate = useTranslate();
+const { translate } = useTranslation();
 
 // ...
 
@@ -106,7 +102,8 @@ import { useTranslation } from "react-i18next";
 const { t } = useTranslation();
 
 const i18nProvider: I18nProvider = {
-  translate: (key: string, options?: any, defaultMessage?: string) => t(key, defaultMessage, options),
+  translate: (key: string, options?: any, defaultMessage?: string) =>
+    t(key, defaultMessage, options),
   // ...
 };
 
@@ -114,11 +111,11 @@ const i18nProvider: I18nProvider = {
 ```
 
 ```tsx
-import { useTranslate } from "@refinedev/core";
+import { useTranslation } from "@refinedev/core";
 
 // ...
 
-const translate = useTranslate();
+const { translate } = useTranslation();
 
 // ...
 
@@ -127,7 +124,7 @@ const title = translate("posts.fields.title", { ns: "resources" }, "Title");
 // ...
 ```
 
-You can use the [`useTranslate`][use-translate] hook to call `translate` method.
+You can use the [`useTranslation`][use-translation] hook to call `translate` method.
 
 ### changeLocale
 
@@ -137,7 +134,7 @@ You can use the [`useTranslate`][use-translate] hook to call `translate` method.
 changeLocale: (locale: string, options?: any) => Promise<any>;
 ```
 
-You can use the [`useSetLocale`][use-setlocale] hook to call `changeLocale` method.
+You can use the [`useTranslation`][use-translation] hook to call `changeLocale` method.
 
 ### getLocale
 
@@ -147,7 +144,7 @@ You can use the [`useSetLocale`][use-setlocale] hook to call `changeLocale` meth
 getLocale: () => string;
 ```
 
-You can use the [`useGetLocale`][use-getlocale] hook to call `getLocale` method.
+You can use the [`useTranslation`][use-translation] hook to call `getLocale` method.
 
 ## Translation file
 
@@ -177,6 +174,4 @@ You can use the following community example project as a starting point for inco
 [i18nnextjs]: /examples/i18n/i18n-nextjs.md
 [react-i18next]: https://react.i18next.com/
 [create-refine-app]: /docs/getting-started/quickstart.md
-[use-translate]: /docs/i18n/hooks/use-translate
-[use-getlocale]: /docs/i18n/hooks/use-get-locale
-[use-setlocale]: /docs/i18n/hooks/use-set-locale
+[use-translation]: /docs/i18n/hooks/use-translation

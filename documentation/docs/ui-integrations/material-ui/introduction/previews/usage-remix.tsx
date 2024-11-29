@@ -8,7 +8,7 @@ export default function UsageRemix() {
       hidePreview
       showFiles
       dependencies={{
-        "@refinedev/mui": "latest",
+        "@refinedev/mui": "5.0.0",
         "@refinedev/core": "latest",
         "@refinedev/simple-rest": "latest",
         "@refinedev/react-hook-form": "^4.8.12",
@@ -16,8 +16,9 @@ export default function UsageRemix() {
         "@emotion/styled": "^11.8.1",
         "@mui/lab": "^5.0.0-alpha.85",
         "@mui/material": "^5.14.2",
+        "@mui/system": "latest",
         "@mui/x-data-grid": "^6.6.0",
-        "react-hook-form": "^7.30.0",
+        "react-hook-form": "^7.43.5",
         "@refinedev/remix-router": "latest",
       }}
       startRoute="/products"
@@ -157,7 +158,7 @@ export default function App() {
 const ProtectedTsxCode = /* jsx */ `
 import { ThemedLayoutV2 } from "@refinedev/mui";
 import { Outlet } from "@remix-run/react";
-import { LoaderArgs, redirect } from "@remix-run/node";
+import { LoaderFunctionArgs, redirect } from "@remix-run/node";
 
 import authProvider from "../auth-provider";
 
@@ -175,7 +176,7 @@ export default function AuthenticatedLayout() {
  * If not, we're redirecting the user to the login page.
  * This is applied for all routes that are nested under this layout (_protected).
  */
-export async function loader({ request }: LoaderArgs) {
+export async function loader({ request }: LoaderFunctionArgs) {
     const { authenticated, redirectTo } = await authProvider.check(request);
 
     if (!authenticated) {
@@ -188,7 +189,7 @@ export async function loader({ request }: LoaderArgs) {
 
 const AuthTsxCode = /* jsx */ `
 import { Outlet } from "@remix-run/react";
-import { LoaderArgs, redirect } from "@remix-run/node";
+import { LoaderFunctionArgs, redirect } from "@remix-run/node";
 
 import { authProvider } from "~/authProvider";
 
@@ -202,7 +203,7 @@ export default function AuthLayout() {
  * Alternatively, we could also use the \`Authenticated\` component inside the \`AuthLayout\` to handle the redirect.
  * But, server-side redirects are more performant.
  */
-export async function loader({ request }: LoaderArgs) {
+export async function loader({ request }: LoaderFunctionArgs) {
     const { authenticated, redirectTo } = await authProvider.check(request);
 
     if (authenticated) {

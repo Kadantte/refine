@@ -80,7 +80,7 @@ However, we can use [normalizeData](https://github.com/refinedev/refine/blob/27a
 
 :::caution
 
-To make this example more visual, we used the [`@refinedev/antd`](https://github.com/refinedev/refine/tree/master/packages/refine-antd) package. If you are using Refine headless, you need to provide the components, hooks, or helpers imported from the [`@refinedev/antd`](https://github.com/refinedev/refine/tree/master/packages/refine-antd) package.
+To make this example more visual, we used the [`@refinedev/antd`](https://github.com/refinedev/refine/tree/master/packages/antd) package. If you are using Refine headless, you need to provide the components, hooks, or helpers imported from the [`@refinedev/antd`](https://github.com/refinedev/refine/tree/master/packages/antd) package.
 
 :::
 
@@ -347,7 +347,12 @@ const PostList = () => {
           title="Category"
           filterDropdown={(props) => (
             <FilterDropdown {...props}>
-              <Select style={{ minWidth: 200 }} mode="multiple" placeholder="Select Category" {...selectProps} />
+              <Select
+                style={{ minWidth: 200 }}
+                mode="multiple"
+                placeholder="Select Category"
+                {...selectProps}
+              />
             </FilterDropdown>
           )}
         />
@@ -455,7 +460,14 @@ const API_URL = "https://api.strapi-v4.refine.dev";
 // visible-block-start
 // src/pages/posts/list.tsx
 
-import { List, EditButton, ShowButton, useSelect, FilterDropdown, useTable } from "@refinedev/antd";
+import {
+  List,
+  EditButton,
+  ShowButton,
+  useSelect,
+  FilterDropdown,
+  useTable,
+} from "@refinedev/antd";
 import {
   Table,
   Space,
@@ -516,7 +528,12 @@ const PostList = () => {
           title="Category"
           filterDropdown={(props) => (
             <FilterDropdown {...props}>
-              <Select style={{ minWidth: 200 }} mode="multiple" placeholder="Select Category" {...selectProps} />
+              <Select
+                style={{ minWidth: 200 }}
+                mode="multiple"
+                placeholder="Select Category"
+                {...selectProps}
+              />
             </FilterDropdown>
           )}
         />
@@ -525,7 +542,11 @@ const PostList = () => {
           dataIndex="publishedAt"
           title="Status"
           render={(value) => {
-            return <Tag color={value ? "green" : "blue"}>{value ? "Published" : "Draft"}</Tag>;
+            return (
+              <Tag color={value ? "green" : "blue"}>
+                {value ? "Published" : "Draft"}
+              </Tag>
+            );
           }}
         />
         {/* highlight-end */}
@@ -696,7 +717,12 @@ export const PostList: React.FC = () => {
           title="Category"
           filterDropdown={(props) => (
             <FilterDropdown {...props}>
-              <Select style={{ minWidth: 200 }} mode="multiple" placeholder="Select Category" {...selectProps} />
+              <Select
+                style={{ minWidth: 200 }}
+                mode="multiple"
+                placeholder="Select Category"
+                {...selectProps}
+              />
             </FilterDropdown>
           )}
         />
@@ -707,7 +733,11 @@ export const PostList: React.FC = () => {
           dataIndex="publishedAt"
           title="Status"
           render={(value) => {
-            return <Tag color={value ? "green" : "blue"}>{value ? "Published" : "Draft"}</Tag>;
+            return (
+              <Tag color={value ? "green" : "blue"}>
+                {value ? "Published" : "Draft"}
+              </Tag>
+            );
           }}
         />
         <Table.Column<{ id: string }>
@@ -738,7 +768,14 @@ import { ThemedLayoutV2, RefineThemes } from "@refinedev/antd";
 // visible-block-start
 // src/pages/posts/list.tsx
 
-import { List, EditButton, ShowButton, useSelect, FilterDropdown, useTable } from "@refinedev/antd";
+import {
+  List,
+  EditButton,
+  ShowButton,
+  useSelect,
+  FilterDropdown,
+  useTable,
+} from "@refinedev/antd";
 import { Table, Space, Select, Form, Radio, Tag } from "antd";
 
 const PostList = () => {
@@ -801,7 +838,12 @@ const PostList = () => {
           title="Category"
           filterDropdown={(props) => (
             <FilterDropdown {...props}>
-              <Select style={{ minWidth: 200 }} mode="multiple" placeholder="Select Category" {...selectProps} />
+              <Select
+                style={{ minWidth: 200 }}
+                mode="multiple"
+                placeholder="Select Category"
+                {...selectProps}
+              />
             </FilterDropdown>
           )}
         />
@@ -809,7 +851,11 @@ const PostList = () => {
           dataIndex="publishedAt"
           title="Status"
           render={(value) => {
-            return <Tag color={value ? "green" : "blue"}>{value ? "Published" : "Draft"}</Tag>;
+            return (
+              <Tag color={value ? "green" : "blue"}>
+                {value ? "Published" : "Draft"}
+              </Tag>
+            );
           }}
         />
         {/* highlight-start */}
@@ -872,13 +918,13 @@ render(<App />);
 When creating and editing posts you can use these API parameters in `meta`:
 
 ```tsx
-const { formProps, saveButtonProps, queryResult } = useForm<IPost>({
+const { formProps, saveButtonProps, query } = useForm<IPost>({
   meta: { publicationState: "preview" },
 });
 ```
 
 ```tsx title="EditList.tsx"
-const { formProps, saveButtonProps, queryResult } = useForm<IPost>({
+const { formProps, saveButtonProps, query } = useForm<IPost>({
   meta: { populate: ["category", "cover"] },
 });
 ```
@@ -984,7 +1030,9 @@ export const PostEdit: React.FC = () => {
     setError,
   } = useForm<IPost, HttpError, IPost & { category: ICategory; cover: any }>();
 
-  const onChangeHandler = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeHandler = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     try {
       setIsUploadLoading(true);
 
@@ -1013,10 +1061,24 @@ export const PostEdit: React.FC = () => {
 
   return (
     <Edit saveButtonProps={saveButtonProps}>
-      <Box component="form" sx={{ display: "flex", flexDirection: "column" }} autoComplete="off">
-        <Stack direction="row" gap={4} flexWrap="wrap" sx={{ marginTop: "16px" }}>
+      <Box
+        component="form"
+        sx={{ display: "flex", flexDirection: "column" }}
+        autoComplete="off"
+      >
+        <Stack
+          direction="row"
+          gap={4}
+          flexWrap="wrap"
+          sx={{ marginTop: "16px" }}
+        >
           <label htmlFor="images-input">
-            <Input id="images-input" type="file" sx={{ display: "none" }} onChange={onChangeHandler} />
+            <Input
+              id="images-input"
+              type="file"
+              sx={{ display: "none" }}
+              onChange={onChangeHandler}
+            />
             <input
               id="file"
               {...register("cover", {
@@ -1112,7 +1174,11 @@ export const PostEdit: React.FC = () => {
         <Text mt={8} weight={500} size="sm" color="#212529">
           Cover
         </Text>
-        <Dropzone accept={IMAGE_MIME_TYPE} onDrop={handleOnDrop} loading={isUploadLoading}>
+        <Dropzone
+          accept={IMAGE_MIME_TYPE}
+          onDrop={handleOnDrop}
+          loading={isUploadLoading}
+        >
           <Text align="center">Drop images here</Text>
         </Dropzone>
       </form>
@@ -1138,7 +1204,7 @@ By default, `@refinedev/strapi-v4` transforms the error response from Strapi int
 
 Thus, `useForm` will automatically set the error message for each field that has a validation error.
 
-[Refer to the server-side form validation documentation for more information &#8594 ](/docs/advanced-tutorials/forms/server-side-form-validation).
+[Refer to the server-side form validation documentation for more information &#8594 ](/docs/guides-concepts/forms/#server-side-validation-).
 
 ## Example
 
